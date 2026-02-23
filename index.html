@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLY:HOME — Seoul Cockpit Stay</title>
+<meta property="og:title" content="FLY:HOME — Seoul Cockpit Stay">
+<meta property="og:description" content="항공 퀴즈 5문제 → 서울 비행 콕핏 체험 숙소 무료 1박! Quiz & win a free cockpit stay in Seoul!">
+<meta property="og:type" content="website">
+<!-- Google Analytics: GA_MEASUREMENT_ID 를 실제 ID로 교체하세요 -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GA_MEASUREMENT_ID');</script> -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Sans+JP:wght@300;400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#0a1628;--deep:#050d1a;--cockpit:#0d2137;--gold:#f0a500;--amber:#ff6b00;--green:#00ff88;--red:#ff3344;--dim:#4a6fa5;--panel:rgba(13,33,55,0.97);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:var(--deep);color:#c8d8f0;min-height:100vh;overflow-x:hidden;}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.horizon{position:fixed;bottom:0;left:0;right:0;height:35vh;z-index:0;background:linear-gradient(0deg,rgba(10,22,40,1)0%,transparent 100%);pointer-events:none;}
+.hud-frame{position:fixed;inset:0;z-index:1;pointer-events:none;border:1px solid rgba(240,165,0,0.12);}
+.hud-frame::before,.hud-frame::after{content:'';position:absolute;width:70px;height:70px;border-color:var(--gold);border-style:solid;opacity:0.4;}
+.hud-frame::before{top:10px;left:10px;border-width:2px 0 0 2px;}
+.hud-frame::after{bottom:10px;right:10px;border-width:0 2px 2px 0;}
+
+/* LANG BAR */
+.lang-bar{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:flex-end;padding:8px 16px;gap:5px;background:rgba(5,13,26,0.9);border-bottom:1px solid rgba(240,165,0,0.1);backdrop-filter:blur(8px);}
+.lang-btn{padding:5px 10px;border-radius:3px;border:1px solid rgba(240,165,0,0.25);background:transparent;color:#8aa0c0;font-size:11px;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.lang-btn.active,.lang-btn:hover{background:rgba(240,165,0,0.12);border-color:var(--gold);color:var(--gold);}
+
+/* SLOT COUNTER */
+.slot-banner{background:rgba(255,107,0,.08);border-bottom:1px solid rgba(255,107,0,.2);padding:7px 16px;text-align:center;font-size:12px;color:#ffaa70;position:fixed;top:37px;left:0;right:0;z-index:199;}
+.slot-banner strong{color:var(--amber);}
+
+.wrapper{position:relative;z-index:10;max-width:860px;margin:0 auto;padding:100px 20px 80px;}
+
+/* HERO */
+.hero{text-align:center;padding:40px 0 28px;animation:fadeDown 0.8s ease both;}
+.hero-eye{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.hero-eye::before,.hero-eye::after{content:'';flex:1;max-width:50px;height:1px;background:var(--gold);opacity:0.5;}
+.hero h1{font-family:'Bebas Neue',cursive;font-size:clamp(48px,10vw,90px);line-height:.9;color:#fff;text-shadow:0 0 60px rgba(240,165,0,.3);letter-spacing:2px;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:14px;color:var(--dim);margin:16px auto 0;max-width:480px;line-height:1.9;font-weight:300;}
+
+.purpose-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 26px;}
+.purpose-badge{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px;border:1px solid;}
+.pb-quiz{background:rgba(240,165,0,.08);border-color:rgba(240,165,0,.4);color:var(--gold);}
+.pb-stay{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.3);color:var(--green);}
+.pb-biz{background:rgba(100,150,255,.06);border-color:rgba(100,150,255,.3);color:#7ab0ff;}
+
+.alt-bar{margin:0 auto 20px;max-width:560px;background:rgba(13,33,55,.8);border:1px solid rgba(240,165,0,.2);border-radius:4px;padding:11px 16px;display:flex;align-items:center;gap:12px;font-family:'Share Tech Mono',monospace;}
+.alt-label{font-size:9px;color:var(--dim);letter-spacing:2px;min-width:70px;}
+.alt-track{flex:1;height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
+.alt-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);width:0%;box-shadow:0 0 8px var(--gold);}
+.alt-val{font-size:12px;color:var(--gold);min-width:36px;text-align:right;}
+
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px;}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);transition:all .4s;}
+.dot.active{background:var(--gold);border-color:var(--gold);box-shadow:0 0 6px var(--gold);}
+.dot.done{background:var(--green);border-color:var(--green);}
+
+.screen{background:var(--panel);border:1px solid rgba(240,165,0,.18);border-radius:8px;overflow:hidden;animation:fadeUp .5s ease both;}
+.screen-hdr{background:rgba(240,165,0,.06);border-bottom:1px solid rgba(240,165,0,.12);padding:11px 20px;display:flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);}
+.ind{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* INTRO */
+.intro-c{padding:36px 32px;text-align:center;}
+.intro-c h2{font-family:'Bebas Neue',cursive;font-size:30px;color:#fff;letter-spacing:2px;margin-bottom:10px;}
+.intro-c p{font-size:13px;line-height:1.9;color:#8aa0c0;max-width:500px;margin:0 auto 24px;font-weight:300;}
+.reward-box{background:rgba(240,165,0,.05);border:1px solid rgba(240,165,0,.25);border-radius:6px;padding:16px 20px;margin:0 auto 20px;max-width:420px;text-align:left;}
+.reward-box h4{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:10px;}
+.reward-item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:#c8d8f0;}
+.reward-item:last-child{border:none;}
+.btn-start{background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--deep);border:none;padding:13px 40px;font-family:inherit;font-size:14px;font-weight:900;border-radius:4px;cursor:pointer;letter-spacing:1px;transition:all .3s;box-shadow:0 4px 28px rgba(240,165,0,.3);}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,165,0,.5);}
+
+/* SLOT BOX */
+.slot-box{display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(255,107,0,.06);border:1px solid rgba(255,107,0,.25);border-radius:6px;padding:12px 16px;margin:0 auto 20px;max-width:420px;font-size:13px;}
+.slot-num{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--amber);line-height:1;}
+.slot-txt{text-align:left;color:#ffaa70;font-size:12px;line-height:1.5;}
+.slot-txt strong{display:block;font-size:14px;color:var(--amber);}
+
+/* QUIZ */
+.quiz-c{padding:28px 32px;}
+.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.q-cat{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--amber);}
+.q-num{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);}
+.q-text{font-size:16px;font-weight:700;color:#fff;line-height:1.55;margin-bottom:18px;}
+.q-hint{font-size:12px;color:var(--dim);margin-bottom:14px;font-style:italic;}
+.choices{display:flex;flex-direction:column;gap:8px;}
+.choice{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:6px;padding:12px 16px;cursor:pointer;font-size:13px;color:#a0b8d0;text-align:left;transition:all .25s;display:flex;align-items:center;gap:12px;font-family:inherit;width:100%;}
+.choice:hover{background:rgba(240,165,0,.07);border-color:rgba(240,165,0,.4);color:#fff;}
+.choice.correct{background:rgba(0,255,136,.07);border-color:var(--green);color:var(--green);}
+.choice.wrong{background:rgba(255,51,68,.07);border-color:var(--red);color:var(--red);}
+.choice-key{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--dim);min-width:18px;flex-shrink:0;}
+.feedback{margin-top:14px;padding:11px 14px;border-radius:6px;font-size:13px;line-height:1.7;display:none;}
+.feedback.show{display:block;animation:fadeUp .3s ease;}
+.feedback.correct-fb{background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.25);color:#80ffbb;}
+.feedback.wrong-fb{background:rgba(255,51,68,.05);border:1px solid rgba(255,51,68,.25);color:#ff8899;}
+.btn-next{margin-top:18px;width:100%;background:rgba(240,165,0,.08);border:1px solid var(--gold);color:var(--gold);padding:11px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;letter-spacing:1px;transition:all .25s;display:none;}
+.btn-next.show{display:block;}
+.btn-next:hover{background:var(--gold);color:var(--deep);}
+
+/* AI */
+.ai-c{padding:20px 24px;}
+.ai-msgs{min-height:180px;max-height:300px;overflow-y:auto;margin-bottom:14px;display:flex;flex-direction:column;gap:10px;}
+.ai-msg{display:flex;gap:10px;animation:fadeUp .4s ease;}
+.ai-msg.user{flex-direction:row-reverse;}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.25);}
+.ai-msg.user .avatar{background:rgba(255,107,0,.12);border-color:rgba(255,107,0,.25);}
+.bubble{max-width:80%;padding:10px 13px;border-radius:8px;font-size:13px;line-height:1.7;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:#c8d8f0;}
+.ai-msg.user .bubble{background:rgba(255,107,0,.07);border-color:rgba(255,107,0,.18);color:#ffd0a0;}
+.typing{display:flex;gap:5px;align-items:center;padding:4px 0;}
+.typing span{width:5px;height:5px;border-radius:50%;background:var(--dim);animation:bounce 1s infinite;}
+.typing span:nth-child(2){animation-delay:.15s;}
+.typing span:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+.ai-input-row{display:flex;gap:8px;}
+.ai-input{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:10px 13px;color:#c8d8f0;font-family:inherit;font-size:13px;outline:none;transition:border-color .2s;min-width:0;}
+.ai-input:focus{border-color:rgba(240,165,0,.5);}
+.ai-input::placeholder{color:rgba(255,255,255,.18);}
+.btn-send{background:var(--gold);color:var(--deep);border:none;padding:10px 16px;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.btn-send:hover{background:var(--amber);}
+.btn-send:disabled{opacity:.4;cursor:not-allowed;}
+.quick-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.quick-btn{padding:4px 11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;font-size:11px;color:#8aa0c0;cursor:pointer;transition:all .2s;font-family:inherit;}
+.quick-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* SUCCESS */
+.success-c{padding:36px 32px;text-align:center;}
+.success-badge{font-size:52px;margin-bottom:14px;animation:popIn .6s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+.success-c h2{font-family:'Bebas Neue',cursive;font-size:34px;letter-spacing:2px;color:#fff;margin-bottom:6px;}
+.tagline{font-size:13px;color:var(--dim);margin-bottom:22px;font-weight:300;}
+.score-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.28);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--green);margin-bottom:20px;}
+.booking-card{background:rgba(240,165,0,.04);border:1px solid rgba(240,165,0,.22);border-radius:8px;padding:20px 24px;max-width:460px;margin:0 auto 20px;text-align:left;}
+.booking-card h3{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:14px;}
+.b-item{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;gap:12px;}
+.b-item:last-child{border:none;}
+.b-label{color:var(--dim);flex-shrink:0;}
+.b-val{color:#fff;font-weight:700;text-align:right;}
+.b-val.free{color:var(--green);}
+.b-val.soon{color:var(--amber);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:460px;margin:0 auto 16px;}
+.ff label{display:block;font-size:9px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;margin-bottom:5px;}
+.ff input,.ff select{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:4px;padding:9px 11px;color:#c8d8f0;font-family:inherit;font-size:13px;outline:none;transition:border-color .2s;}
+.ff input:focus,.ff select:focus{border-color:var(--gold);}
+.ff select option{background:var(--cockpit);}
+.btn-book{background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--deep);border:none;padding:13px 40px;border-radius:4px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;letter-spacing:1px;transition:all .3s;box-shadow:0 4px 28px rgba(240,165,0,.28);}
+.btn-book:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,165,0,.45);}
+
+/* CONFIRM */
+.confirm-c{padding:36px 32px;text-align:center;}
+.confirm-code{font-family:'Share Tech Mono',monospace;font-size:26px;color:var(--green);letter-spacing:5px;margin:10px 0;text-shadow:0 0 18px rgba(0,255,136,.35);}
+.confirm-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:520px;margin:24px auto 0;}
+.c-step{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:16px 10px;text-align:center;}
+.c-step .num{font-family:'Bebas Neue',cursive;font-size:24px;color:var(--gold);margin-bottom:5px;}
+.c-step p{font-size:11px;color:var(--dim);line-height:1.6;}
+
+/* CONTACT FOOTER */
+.contact-strip{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:14px 20px;margin:0 auto 20px;max-width:460px;text-align:center;font-size:12px;color:var(--dim);line-height:1.8;}
+.contact-strip a{color:var(--gold);text-decoration:none;}
+.contact-strip a:hover{text-decoration:underline;}
+
+.promo{background:rgba(100,150,255,.05);border:1px solid rgba(100,150,255,.2);border-radius:6px;padding:14px 18px;margin:0 auto 18px;max-width:560px;text-align:center;font-size:12px;color:#7ab0ff;line-height:1.7;}
+.promo strong{color:#a8c8ff;}
+
+/* SAVE STATUS */
+.save-status{font-size:11px;color:var(--dim);margin-top:8px;min-height:16px;text-align:center;}
+.save-status.ok{color:var(--green);}
+.save-status.err{color:var(--red);}
+
+@keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.foot{text-align:center;margin-top:32px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.12);}
+
+/* MOBILE */
+@media(max-width:600px){
+  .quiz-c,.intro-c,.success-c,.confirm-c{padding:20px 16px;}
+  .form-grid{grid-template-columns:1fr;}
+  .confirm-steps{grid-template-columns:1fr;}
+  .hero h1{font-size:50px;}
+  .slot-banner{font-size:11px;padding:6px 12px;}
+  .wrapper{padding:90px 14px 60px;}
+  .ai-c{padding:16px;}
+  .booking-card{padding:16px;}
+}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="horizon"></div>
+<div class="hud-frame"></div>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('ko',event)">🇰🇷 한국어</button>
+  <button class="lang-btn" onclick="setLang('en',event)">🇺🇸 English</button>
+  <button class="lang-btn" onclick="setLang('ja',event)">🇯🇵 日本語</button>
+  <button class="lang-btn" onclick="setLang('zh',event)">🇨🇳 中文</button>
+</div>
+
+<div class="slot-banner" id="slotBanner">
+  🎁 무료 1박 선착순 — 현재 <strong id="slotCount">?</strong>명 등록 / 30명 한정
+</div>
+
+<div class="wrapper">
+  <div class="hero">
+    <div class="hero-eye">✈ SEOUL · JUNGNANG · COCKPIT EXPERIENCE</div>
+    <h1>FLY:<span>HOME</span></h1>
+    <p class="hero-sub" id="heroSub"></p>
+  </div>
+  <div class="purpose-row">
+    <div class="purpose-badge pb-quiz" id="pb1"></div>
+    <div class="purpose-badge pb-stay" id="pb2"></div>
+    <div class="purpose-badge pb-biz"  id="pb3"></div>
+  </div>
+  <div class="alt-bar">
+    <span class="alt-label">PROGRESS</span>
+    <div class="alt-track"><div class="alt-fill" id="progressBar"></div></div>
+    <span class="alt-val" id="progressText">0%</span>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="screen" id="mainScreen"></div>
+  <div class="foot">FLY:HOME PILOT PROGRAM · SEOUL 2026 · JUNGNANG-GU · 관광벤처사업 실증 프로젝트</div>
+</div>
+
+<script>
+/* STARS */
+(()=>{
+  const c=document.getElementById('stars'),ctx=c.getContext('2d');
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  for(let i=0;i<200;i++){const x=Math.random()*c.width,y=Math.random()*c.height,r=Math.random()*1.1;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${Math.random()*.6+.2})`;ctx.fill();}
+})();
+
+/* TRANSLATIONS */
+const T={
+  ko:{heroSub:"항공 퀴즈 5문제를 풀어보세요!\n서울 중랑구 비행 콕핏 체험 숙소 <strong style='color:var(--gold)'>FLY:HOME</strong>을 소개합니다",
+  pb1:"✈ 퀴즈 → 무료 숙박",pb2:"🛏 콕핏 체험 숙박",pb3:"📊 지원사업 실증",screenHdr:"브리핑 진행 중",
+  introH2:"조종석에 앉을 준비 됐나요?",
+  introP:"딱 5문제예요. 어렵지 않아요 😊\n퀴즈를 통과하면 서울 중랑구 <strong style='color:#fff'>FLY:HOME</strong>에서\n<strong style='color:var(--gold)'>무료 1박 + 비행 콕핏 무제한 체험</strong> 기회를 드립니다!\n(선착순 30명, 2026년 하반기 오픈 시 사용)",
+  rewardTitle:"✦ 퀴즈 통과 시 혜택",
+  rewards:["🛏 신내동 FLY:HOME 무료 1박 (선착순 30명)","✈️ 세스나/보잉 콕핏 무제한 체험","🌆 Microsoft Flight Sim · 서울 도심 비행","📸 파일럿 수료증 + 기념 사진"],
+  btnStart:"🛫 퀴즈 시작하기",btnNext_mid:"다음 문제 →",btnNext_end:"결과 확인 →",
+  aiHdr:"AI 안내 · 질문하세요",aiPlaceholder:"한국 방문 일정, 체험 내용 등 자유롭게 질문하세요...",btnSend:"전송 ✈",
+  quickQ:["언제 오픈해요?","위치가 어디예요?","체험은 어떻게 해요?","예약 방법은?"],
+  btnGoBook:"🏆 예약 화면으로",btnRetry:"🔄 다시 도전",
+  successH2:"파일럿 자격 취득!",tagline:"퀴즈 통과 · 예약 슬롯이 열렸습니다",
+  bookTitle:"✦ 체험 예약 내역",
+  bookItems:[["숙소","FLY:HOME · 서울 중랑구 신내동"],["콕핏 체험","세스나 172 + 보잉 737 · 무제한"],["소프트웨어","Microsoft Flight Simulator"],["숙박비 (1박)","🎁 무료 (퀴즈 통과 혜택)"],["오픈 예정","2026년 하반기 · 사전 등록 중"]],
+  freeLabel:"🎁 무료",soonLabel:"2026 하반기",
+  formLabels:["이름 · Name","이메일 · Email","국적","방문 예정 시기"],
+  btnBook:"🛫 사전 예약 등록",
+  nations:["🇯🇵 일본","🇺🇸 미국","🇬🇧 영국","🇨🇳 중국","🇹🇼 대만","🇹🇭 태국","🇻🇳 베트남","🇦🇺 호주","🇰🇷 한국","기타"],
+  dates:["2026년 하반기","2027년 상반기","2027년 이후","미정"],
+  confirmH2:"예약 완료!",
+  confirmMsg:"FLY:HOME 파일럿 프로그램에 등록하셨습니다.\n정식 오픈 시 이메일로 가장 먼저 안내드립니다.",
+  confirmSteps:[["01","이메일 확인\n등록 안내 메일 발송"],["02","오픈 알림\n2026 하반기 우선 연락"],["03","서울 도착\n신내역 → FLY:HOME 안내"]],
+  btnShare:"📤 공유하기",btnAgain:"🔄 처음부터",
+  promoText:"<strong>관광벤처사업 2026 지원 프로젝트</strong><br>이 페이지의 방문자 수·퀴즈 참여율·국적별 데이터는 실제 수요 검증 자료로 활용됩니다",
+  noticeText:"* FLY:HOME은 현재 준비 중이며, 정식 오픈 시 사전 등록자께 우선 연락드립니다",
+  aiInitPass:"수고하셨습니다! 퀴즈를 통과하셨어요 🎉\nFLY:HOME은 서울 중랑구에 준비 중인 비행 콕핏 체험 숙소예요.\n궁금한 점이 있으면 편하게 물어보세요!",
+  aiInitFail:"아쉽네요! 3개 이상 맞추면 통과입니다. 다시 도전해보세요!\n그래도 FLY:HOME에 대해 궁금한 점이 있으면 물어보세요 😊",
+  slotBanner:"🎁 무료 1박 선착순 — 현재 <strong id='slotCount'>?</strong>명 등록 / 30명 한정",
+  saveOk:"✅ 등록 완료! 이메일을 확인해주세요.",saveErr:"⚠️ 저장 오류. 이메일로 직접 문의해주세요.",
+  contactLabel:"문의 · 연락",saving:"저장 중..."},
+  en:{heroSub:"5 easy aviation quiz questions!\nWin a <strong style='color:var(--gold)'>FREE night + unlimited cockpit experience</strong> at FLY:HOME, Seoul",
+  pb1:"✈ Quiz → Free Stay",pb2:"🛏 Cockpit Stay",pb3:"📊 Tourism Pilot",screenHdr:"BRIEFING IN PROGRESS",
+  introH2:"Ready to take the controls?",
+  introP:"Just 5 easy questions — anyone can do it! 😊\nPass the quiz to win a <strong style='color:var(--gold)'>FREE night + unlimited cockpit experience</strong>\nat FLY:HOME, Jungnang-gu Seoul.\n(First 30 guests · Opens 2026 H2)",
+  rewardTitle:"✦ PILOT REWARDS (Quiz Pass)",
+  rewards:["🛏 1 Free Night at FLY:HOME, Jungnang (first 30)","✈️ Unlimited Cessna / Boeing Cockpit","🌆 Microsoft Flight Sim over Seoul","📸 Pilot Certificate + Photo"],
+  btnStart:"🛫 START QUIZ",btnNext_mid:"Next →",btnNext_end:"See Results →",
+  aiHdr:"AI GUIDE · Ask Anything",aiPlaceholder:"Ask about your Korea visit, cockpit, booking...",btnSend:"Send ✈",
+  quickQ:["When does it open?","Where is it?","How does cockpit work?","How to book?"],
+  btnGoBook:"🏆 Go to Booking",btnRetry:"🔄 Try Again",
+  successH2:"PILOT CLEARANCE!",tagline:"Quiz passed · Booking slot unlocked",
+  bookTitle:"✦ BOOKING DETAILS",
+  bookItems:[["Location","FLY:HOME · Sinnae-dong, Jungnang-gu, Seoul"],["Cockpit","Cessna 172 + Boeing 737 · Unlimited"],["Software","Microsoft Flight Simulator"],["Stay (1 Night)","🎁 FREE (Quiz reward)"],["Opening","2nd half 2026 · Pre-reg open"]],
+  freeLabel:"🎁 FREE",soonLabel:"2026 H2",
+  formLabels:["Your Name","Email","Nationality","Planned Visit"],
+  btnBook:"🛫 REGISTER NOW",
+  nations:["🇯🇵 Japan","🇺🇸 USA","🇬🇧 UK","🇨🇳 China","🇹🇼 Taiwan","🇹🇭 Thailand","🇻🇳 Vietnam","🇦🇺 Australia","🇰🇷 Korea","Other"],
+  dates:["2026 (2nd half)","2027 (1st half)","2027 or later","Not sure"],
+  confirmH2:"ALL CONFIRMED!",
+  confirmMsg:"You're registered for the FLY:HOME Pilot Program.\nWe'll contact you first when we open!",
+  confirmSteps:[["01","Check Email\nConfirmation sent"],["02","Opening Alert\nPriority contact 2026"],["03","Arrive Seoul\nSinnae Stn → FLY:HOME"]],
+  btnShare:"📤 Share",btnAgain:"🔄 Start Over",
+  promoText:"<strong>2026 Tourism Venture Pilot Project</strong><br>Visit data, quiz stats & nationality breakdown used as demand proof for government grant",
+  noticeText:"* FLY:HOME is in preparation. Pre-registered guests contacted first at opening.",
+  aiInitPass:"Great job! You passed 🎉\nFLY:HOME is a cockpit experience stay in Jungnang-gu, Seoul.\nAsk me anything!",
+  aiInitFail:"So close! Need 3+ to pass. Try again?\nFeel free to ask about FLY:HOME 😊",
+  saveOk:"✅ Registered! Check your email.",saveErr:"⚠️ Save error. Please email us directly.",
+  contactLabel:"Contact",saving:"Saving..."},
+  ja:{heroSub:"簡単な航空クイズ5問に挑戦！\nソウル中浪区<strong style='color:var(--gold)'>FLY:HOME</strong>の無料宿泊を獲得しよう",
+  pb1:"✈ クイズ→無料宿泊",pb2:"🛏 コックピット体験",pb3:"📊 観光実証事業",screenHdr:"ブリーフィング進行中",
+  introH2:"操縦席に座る準備はできましたか？",
+  introP:"たった5問、誰でも答えられます 😊\nクイズに合格すると<strong style='color:var(--gold)'>無料1泊＋コックピット体験し放題</strong>をプレゼント！\n（先着30名・2026年下半期オープン時使用可）",
+  rewardTitle:"✦ クイズ合格特典",
+  rewards:["🛏 FLY:HOME無料1泊（先着30名）","✈️ セスナ/ボーイング コックピット体験し放題","🌆 Microsoft Flight Simでソウル上空を飛行","📸 パイロット修了証 + 記念写真"],
+  btnStart:"🛫 クイズをはじめる",btnNext_mid:"次の問題 →",btnNext_end:"結果を確認 →",
+  aiHdr:"AIガイド · 何でも聞いてください",aiPlaceholder:"韓国旅行の予定、体験内容など自由に質問してください...",btnSend:"送信 ✈",
+  quickQ:["いつオープン？","場所はどこ？","体験方法は？","予約方法は？"],
+  btnGoBook:"🏆 予約画面へ",btnRetry:"🔄 もう一度挑戦",
+  successH2:"パイロット資格取得！",tagline:"クイズ合格・予約スロットが開きました",
+  bookTitle:"✦ 体験予約内容",
+  bookItems:[["宿泊地","FLY:HOME · ソウル中浪区新内洞"],["コックピット","セスナ172 + ボーイング737 · し放題"],["ソフトウェア","Microsoft Flight Simulator"],["宿泊費（1泊）","🎁 無料（クイズ合格特典）"],["オープン予定","2026年下半期 · 事前登録中"]],
+  freeLabel:"🎁 無料",soonLabel:"2026年下半期",
+  formLabels:["お名前","メールアドレス","国籍","訪問予定時期"],
+  btnBook:"🛫 事前登録する",
+  nations:["🇯🇵 日本","🇺🇸 アメリカ","🇬🇧 イギリス","🇨🇳 中国","🇹🇼 台湾","🇹🇭 タイ","🇻🇳 ベトナム","🇦🇺 オーストラリア","🇰🇷 韓国","その他"],
+  dates:["2026年下半期","2027年上半期","2027年以降","未定"],
+  confirmH2:"予約完了！",
+  confirmMsg:"FLY:HOMEパイロットプログラムに登録されました。\n正式オープン時に最初にご連絡いたします。",
+  confirmSteps:[["01","メール確認\n登録案内メール送信"],["02","オープン通知\n2026年優先連絡"],["03","ソウル到着\n新内駅→FLY:HOME"]],
+  btnShare:"📤 シェアする",btnAgain:"🔄 最初から",
+  promoText:"<strong>2026年観光ベンチャー実証プロジェクト</strong><br>訪問データ・クイズ参加率・国籍別データは需要検証資料として活用されます",
+  noticeText:"※ FLY:HOMEは準備中です。正式オープン時に事前登録の方を優先してご連絡します。",
+  aiInitPass:"お疲れ様でした！クイズに合格しました 🎉\nFLY:HOMEはソウル中浪区で準備中のコックピット体験施設です。\n何でも聞いてください！",
+  aiInitFail:"惜しい！3問以上正解で合格です。もう一度挑戦してみましょう！",
+  saveOk:"✅ 登録完了！メールをご確認ください。",saveErr:"⚠️ エラーが発生しました。メールで直接お問い合わせください。",
+  contactLabel:"お問い合わせ",saving:"保存中..."},
+  zh:{heroSub:"简单的5道航空问答题！\n赢取首尔<strong style='color:var(--gold)'>FLY:HOME飞行舱体验民宿免费一晚</strong>",
+  pb1:"✈ 问答→免费住宿",pb2:"🛏 驾驶舱体验",pb3:"📊 旅游实证项目",screenHdr:"简报进行中",
+  introH2:"准备好坐上驾驶舱了吗？",
+  introP:"只有5道题，超级简单 😊\n通过问答即可获得<strong style='color:var(--gold)'>免费住宿一晚＋飞行舱无限体验</strong>！\n（先到先得30名·2026年下半年开业时使用）",
+  rewardTitle:"✦ 通过问答即可获得的奖励",
+  rewards:["🛏 FLY:HOME免费住宿一晚（先到先得30名）","✈️ 塞斯纳/波音驾驶舱无限体验","🌆 Microsoft飞行模拟器飞越首尔上空","📸 飞行员证书＋纪念照片"],
+  btnStart:"🛫 开始问答",btnNext_mid:"下一题 →",btnNext_end:"查看结果 →",
+  aiHdr:"AI导览 · 随时提问",aiPlaceholder:"随时询问韩国行程、体验内容、预约方法等...",btnSend:"发送 ✈",
+  quickQ:["什么时候开业？","在哪里？","体验是怎样的？","如何预约？"],
+  btnGoBook:"🏆 前往预约",btnRetry:"🔄 再次挑战",
+  successH2:"飞行员资格达成！",tagline:"问答通过 · 预约名额已开放",
+  bookTitle:"✦ 体验预约详情",
+  bookItems:[["地址","FLY:HOME · 首尔中浪区新内洞"],["驾驶舱","塞斯纳172 + 波音737 · 无限"],["软件","Microsoft Flight Simulator"],["住宿费（1晚）","🎁 免费（问答通过特典）"],["开业预定","2026年下半年 · 预约登记中"]],
+  freeLabel:"🎁 免费",soonLabel:"2026下半年",
+  formLabels:["姓名","电子邮件","国籍","计划访问时间"],
+  btnBook:"🛫 立即预约登记",
+  nations:["🇨🇳 中国","🇹🇼 台湾","🇯🇵 日本","🇺🇸 美国","🇹🇭 泰国","🇻🇳 越南","🇦🇺 澳大利亚","🇰🇷 韩国","其他"],
+  dates:["2026年下半年","2027年上半年","2027年以后","尚未决定"],
+  confirmH2:"预约完成！",
+  confirmMsg:"您已成功登记FLY:HOME先行体验项目。\n正式开业时将优先联系您！",
+  confirmSteps:[["01","查收邮件\n登记确认邮件已发送"],["02","开业通知\n2026年优先联系"],["03","抵达首尔\n新内站→FLY:HOME"]],
+  btnShare:"📤 分享",btnAgain:"🔄 重新开始",
+  promoText:"<strong>2026年旅游创业实证项目</strong><br>访问量、问答参与率、国籍数据将作为实际需求验证资料使用",
+  noticeText:"※ FLY:HOME目前正在准备中。正式开业时将优先联系事先登记的用户。",
+  aiInitPass:"太棒了！您通过了问答 🎉\nFLY:HOME是首尔中浪区正在筹备中的飞行驾驶舱体验民宿。\n有任何问题都可以随时询问！",
+  aiInitFail:"遗憾！答对3题以上才能通过。要再次挑战吗？",
+  saveOk:"✅ 登记完成！请查收邮件。",saveErr:"⚠️ 保存失败。请直接发送邮件联系我们。",
+  contactLabel:"联系我们",saving:"保存中..."}
+};
+
+const QUESTIONS={
+  ko:[
+    {cat:"✈ 기초 상식",q:"세스나(Cessna) 비행기는 어떤 종류의 항공기일까요?",hint:"힌트: 매우 작고 가벼운 비행기예요",choices:["전투기 (Fighter Jet)","소형 경비행기 (Small Propeller Plane)","대형 여객기 (Big Airliner)","헬리콥터 (Helicopter)"],ans:1,fb:"맞아요! 세스나는 전 세계에서 가장 많이 쓰이는 소형 경비행기예요. FLY:HOME에서 세스나 172 콕핏을 직접 체험할 수 있어요!"},
+    {cat:"🌆 서울 여행",q:"서울 중랑구는 어떤 느낌의 동네일까요?",hint:"힌트: 관광지보다는 실제 시민들이 사는 곳",choices:["명동·홍대 같은 관광 핫스팟","외국인 거의 없는 진짜 서울 로컬 동네","제주도 해변가","인천공항 바로 옆"],ans:1,fb:"정답! 중랑구는 외국인 관광객보다 서울 시민들이 사는 '진짜 서울'이에요. FLY:HOME은 바로 이곳에서 특별한 체험을 만들고 있어요!"},
+    {cat:"✈ 조종 기초",q:"비행기를 착륙시킬 때 가장 먼저 해야 할 것은?",hint:"힌트: 속도를 줄이려면?",choices:["엔진 출력을 줄인다 (Reduce Throttle)","날개를 뗀다","비상구를 연다","승객에게 방송한다"],ans:0,fb:"정답! 착륙 시 스로틀을 줄여 엔진 출력을 낮추는 것이 첫 번째예요. FLY:HOME 콕핏에서 직접 해볼 수 있어요!"},
+    {cat:"🌏 항공 상식",q:"비행기가 이륙할 때 앞쪽 조종간(요크)은 어느 방향으로 당기나요?",hint:"힌트: 위로 날아오르려면?",choices:["앞으로 민다 (기수 내려감)","뒤로 당긴다 (기수 올라감)","좌우로 돌린다","움직이지 않는다"],ans:1,fb:"정답! 이륙할 때 요크를 뒤로 당기면 기수가 올라가며 상승해요. 세스나 콕핏에서 직접 느껴보세요!"},
+    {cat:"🎯 FLY:HOME",q:"FLY:HOME 숙소에서 할 수 있는 것은?",hint:"힌트: 이 웹사이트 처음에 적혀 있었어요 😊",choices:["서핑과 스쿠버 다이빙","비행 시뮬레이터로 서울 하늘 조종 체험","클래식 음악 연주","요리 교실"],ans:1,fb:"완벽해요! FLY:HOME에서는 실제 콕핏에서 Microsoft Flight Simulator로 서울 하늘을 직접 조종해볼 수 있어요. 이제 예약하러 가볼까요? 🛫"},
+  ],
+  en:[
+    {cat:"✈ Aviation Basics",q:"What kind of aircraft is a Cessna?",hint:"Hint: Small and light!",choices:["Fighter jet","Small propeller plane","Giant airliner","Helicopter"],ans:1,fb:"Correct! Cessna is the world's most popular small propeller aircraft. At FLY:HOME you'll sit in a real Cessna 172 cockpit!"},
+    {cat:"🌆 Seoul Travel",q:"What is Jungnang-gu, Seoul known as?",hint:"Hint: Not a tourist hotspot",choices:["A K-pop tourist zone like Hongdae","A local residential area — the real Seoul","A beach resort","Right next to Incheon Airport"],ans:1,fb:"Spot on! Jungnang-gu is where real Seoul residents live. FLY:HOME is creating something special here!"},
+    {cat:"✈ Pilot Basics",q:"When landing, what does a pilot reduce first?",hint:"Hint: You need to slow down!",choices:["Engine power (throttle)","The wings","The seat height","The landing gear"],ans:0,fb:"Correct! Reducing throttle begins the descent. You'll do exactly this in the FLY:HOME cockpit!"},
+    {cat:"🌏 Flying 101",q:"When taking off, which way do you pull the yoke?",hint:"Hint: You want to go UP!",choices:["Push forward (nose down)","Pull back (nose up)","Turn left or right","Don't touch it"],ans:1,fb:"Perfect! Pulling back raises the nose and you climb. Feel this in the Cessna cockpit!"},
+    {cat:"🎯 FLY:HOME",q:"What can you do at FLY:HOME?",hint:"Hint: It's on the homepage 😊",choices:["Surfing and scuba diving","Fly over Seoul in a real cockpit","Play classical piano","Take a cooking class"],ans:1,fb:"Excellent! At FLY:HOME you fly over Seoul with Microsoft Flight Simulator from a real cockpit. Ready to book? 🛫"},
+  ],
+  ja:[
+    {cat:"✈ 航空基礎",q:"セスナとはどんな飛行機？",hint:"ヒント：小さくて軽い",choices:["戦闘機","小型プロペラ機","大型旅客機","ヘリコプター"],ans:1,fb:"正解！セスナは世界で最も広く使われている小型プロペラ機です。"},
+    {cat:"🌆 ソウル旅行",q:"ソウル中浪区はどんなエリア？",hint:"ヒント：地元の人が暮らす場所",choices:["明洞・弘大のような観光地","地元の人が暮らすリアルなソウル","済州島のビーチ","仁川空港のすぐ隣"],ans:1,fb:"正解！中浪区は本物のソウルです。FLY:HOMEはここで新しい体験を作っています！"},
+    {cat:"✈ パイロット入門",q:"着陸時、パイロットが最初にすることは？",hint:"ヒント：速度を落とすには？",choices:["スロットルを絞る","翼を外す","非常口を開ける","機内放送をする"],ans:0,fb:"正解！スロットルを絞るのが最初のステップです。"},
+    {cat:"🌏 飛行の基本",q:"離陸時、操縦桿はどの方向に引く？",hint:"ヒント：上に飛び立つ！",choices:["前に押す","後ろに引く","左右に回す","触らない"],ans:1,fb:"完璧！後ろに引くと機首が上がります。"},
+    {cat:"🎯 FLY:HOME",q:"FLY:HOMEでできることは？",hint:"ヒント：このページの最初に書いてありましたよ 😊",choices:["サーフィンとダイビング","本物のコックピットでソウル上空を飛行","クラシック音楽演奏","料理教室"],ans:1,fb:"素晴らしい！本物のコックピットでソウルを飛べます。予約しましょう！🛫"},
+  ],
+  zh:[
+    {cat:"✈ 航空基础",q:"塞斯纳是什么样的飞机？",hint:"提示：小巧轻便",choices:["战斗机","小型螺旋桨飞机","大型客机","直升机"],ans:1,fb:"正确！塞斯纳是全球使用最广泛的小型螺旋桨飞机。"},
+    {cat:"🌆 首尔旅游",q:"首尔中浪区是什么样的地方？",hint:"提示：不是旅游景点",choices:["像明洞、弘大一样的旅游热门区","外国游客很少的本地居住区","济州岛海滩","仁川机场旁边"],ans:1,fb:"正确！中浪区是首尔市民生活的真实社区。"},
+    {cat:"✈ 驾驶基础",q:"飞机降落时，飞行员首先要做什么？",hint:"提示：要减速",choices:["减小油门","卸下机翼","打开安全出口","广播通知乘客"],ans:0,fb:"正确！减小油门是第一步。"},
+    {cat:"🌏 飞行入门",q:"起飞时，操纵杆应该往哪个方向拉？",hint:"提示：要向上飞！",choices:["向前推","向后拉","左右转","不要动"],ans:1,fb:"完美！向后拉会抬起机头并爬升。"},
+    {cat:"🎯 FLY:HOME",q:"在FLY:HOME可以做什么？",hint:"提示：页面开头有写哦 😊",choices:["冲浪和潜水","在真实驾驶舱模拟飞越首尔","演奏古典音乐","烹饪课"],ans:1,fb:"出色！坐在真实的驾驶舱里飞越首尔。准备好预约了吗？🛫"},
+  ]
+};
+
+/* ── 연락처: 실제 이메일로 교체하세요 ── */
+const CONTACT_EMAIL = 'flyhome.hq@gmail.com';
+
+let lang='ko';
+let st={phase:'intro',qi:0,score:0,answered:false,messages:[],loading:false,name:''};
+let registeredCount = 0;
+let registrations = []; // 메모리 저장소
+
+function t(k){return T[lang][k]||'';}
+function qs(){return QUESTIONS[lang];}
+
+/* 등록자 수 로드 */
+async function loadCount(){
+  try{
+    const r=await window.storage.get('registrations_count',true);
+    registeredCount=r?parseInt(r.value)||0:0;
+  }catch(e){registeredCount=0;}
+  updateSlotBanner();
+}
+
+function updateSlotBanner(){
+  const remaining=Math.max(0,30-registeredCount);
+  const el=document.getElementById('slotBanner');
+  if(!el)return;
+  const msgs={ko:`🎁 무료 1박 선착순 — 현재 <strong>${registeredCount}</strong>명 등록 / 30명 한정 (남은 슬롯: <strong style="color:var(--amber)">${remaining}</strong>명)`,
+  en:`🎁 Free Night · <strong>${registeredCount}</strong> registered / 30 limit (<strong style="color:var(--amber)">${remaining}</strong> slots left)`,
+  ja:`🎁 無料1泊先着順 — 現在 <strong>${registeredCount}</strong>名登録済 / 30名限定（残り<strong style="color:var(--amber)">${remaining}</strong>名）`,
+  zh:`🎁 免费一晚先到先得 — 已登记<strong>${registeredCount}</strong>人 / 限30名（剩余<strong style="color:var(--amber)">${remaining}</strong>名）`};
+  el.innerHTML=msgs[lang];
+}
+
+function setLang(l,e){lang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));e.currentTarget.classList.add('active');st={phase:'intro',qi:0,score:0,answered:false,messages:[],loading:false,name:''};updateSlotBanner();render();}
+function setProgress(p){document.getElementById('progressBar').style.width=p+'%';document.getElementById('progressText').textContent=Math.round(p)+'%';}
+function renderDots(){const total=qs().length+2;const cur=st.phase==='intro'?0:st.phase==='quiz'?st.qi+1:qs().length+1;document.getElementById('dots').innerHTML=Array.from({length:total},(_,i)=>`<div class="dot ${i<cur?'done':i===cur?'active':''}"></div>`).join('');}
+
+function render(){
+  renderDots();
+  document.getElementById('heroSub').innerHTML=t('heroSub').replace(/\n/g,'<br>');
+  ['pb1','pb2','pb3'].forEach(id=>document.getElementById(id).textContent=t(id));
+  updateSlotBanner();
+  const s=document.getElementById('mainScreen');
+  if(st.phase==='intro')renderIntro(s);
+  else if(st.phase==='quiz')renderQuiz(s);
+  else if(st.phase==='ai')renderAI(s);
+  else if(st.phase==='success')renderSuccess(s);
+  else if(st.phase==='booked')renderBooked(s);
+}
+
+/* INTRO */
+function renderIntro(el){
+  setProgress(0);
+  const remaining=Math.max(0,30-registeredCount);
+  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>${t('screenHdr')}</div>
+  <div class="intro-c">
+    <h2>${t('introH2')}</h2>
+    <p>${t('introP').replace(/\n/g,'<br>')}</p>
+    <div class="slot-box">
+      <div class="slot-num">${remaining}</div>
+      <div class="slot-txt"><strong>${{ko:'슬롯 남음',en:'slots left',ja:'スロット残り',zh:'名额剩余'}[lang]}</strong>${{ko:'선착순 30명 무료 1박 혜택',en:'Free night for first 30 guests',ja:'先着30名無料宿泊特典',zh:'先到先得30名免费住宿'}[lang]}</div>
+    </div>
+    <div class="reward-box"><h4>${t('rewardTitle')}</h4>${t('rewards').map(r=>`<div class="reward-item">${r}</div>`).join('')}</div>
+    <div class="promo">${t('promoText')}</div>
+    <button class="btn-start" onclick="startQuiz()">${t('btnStart')}</button>
+  </div>`;
+}
+
+/* QUIZ */
+function startQuiz(){st.phase='quiz';st.qi=0;st.score=0;st.answered=false;render();}
+function renderQuiz(el){
+  const q=qs()[st.qi];setProgress((st.qi/qs().length)*75);
+  const keys=['A','B','C','D'];
+  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>Q ${st.qi+1} / ${qs().length}</div>
+  <div class="quiz-c">
+    <div class="q-meta"><span class="q-cat">${q.cat}</span><span class="q-num">✦ ${st.score}/${st.qi}</span></div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-hint">${q.hint}</div>
+    <div class="choices">${q.choices.map((c,i)=>`<button class="choice" onclick="selectAns(${i})" id="c${i}"><span class="choice-key">${keys[i]}</span>${c}</button>`).join('')}</div>
+    <div class="feedback" id="fb"></div>
+    <button class="btn-next" id="btnNext" onclick="nextQ()">${st.qi<qs().length-1?t('btnNext_mid'):t('btnNext_end')}</button>
+  </div>`;
+  st.answered=false;
+}
+window.selectAns=function(idx){
+  if(st.answered)return;st.answered=true;
+  const q=qs()[st.qi],ok=idx===q.ans;if(ok)st.score++;
+  document.querySelectorAll('.choice').forEach((b,i)=>{if(i===q.ans)b.classList.add('correct');else if(i===idx&&!ok)b.classList.add('wrong');b.style.pointerEvents='none';});
+  const fb=document.getElementById('fb');fb.className='feedback show '+(ok?'correct-fb':'wrong-fb');fb.innerHTML=ok?q.fb:`✗ ${q.fb}`;
+  document.getElementById('btnNext').classList.add('show');
+};
+function nextQ(){st.qi++;if(st.qi>=qs().length){st.phase='ai';}else{st.answered=false;}render();}
+
+/* AI */
+function renderAI(el){
+  setProgress(88);const passed=st.score>=3;
+  if(!st.messages.length)st.messages=[{role:'assistant',content:passed?t('aiInitPass'):t('aiInitFail')}];
+  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>${t('aiHdr')}</div>
+  <div class="ai-c">
+    <div class="quick-btns">${t('quickQ').map(q=>`<button class="quick-btn" onclick="quickSend('${q}')">${q}</button>`).join('')}</div>
+    <div class="ai-msgs" id="aiMsgs"></div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="aiIn" placeholder="${t('aiPlaceholder')}" onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="btn-send" id="sendBtn" onclick="sendMsg()">${t('btnSend')}</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;justify-content:center;flex-wrap:wrap">
+      ${passed?`<button class="btn-start" style="padding:10px 26px;font-size:13px" onclick="goSuccess()">${t('btnGoBook')}</button>`:''}
+      <button class="btn-start" style="padding:10px 26px;font-size:13px;background:rgba(240,165,0,.1);box-shadow:none;color:var(--gold);border:1px solid var(--gold)" onclick="startQuiz()">${t('btnRetry')}</button>
+    </div>
+  </div>`;
+  renderMsgs();
+}
+function renderMsgs(){const c=document.getElementById('aiMsgs');if(!c)return;c.innerHTML=st.messages.map(m=>`<div class="ai-msg ${m.role==='user'?'user':''}"><div class="avatar">${m.role==='user'?'👤':'✈️'}</div><div class="bubble">${m.content.replace(/\n/g,'<br>')}</div></div>`).join('');c.scrollTop=c.scrollHeight;}
+window.quickSend=function(text){document.getElementById('aiIn').value=text;sendMsg();};
+async function sendMsg(){
+  const inp=document.getElementById('aiIn'),btn=document.getElementById('sendBtn'),text=inp.value.trim();
+  if(!text||st.loading)return;
+  st.messages.push({role:'user',content:text});inp.value='';st.loading=true;btn.disabled=true;renderMsgs();
+  const c=document.getElementById('aiMsgs');
+  const ty=document.createElement('div');ty.className='ai-msg';ty.innerHTML='<div class="avatar">✈️</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+  c.appendChild(ty);c.scrollTop=c.scrollHeight;
+  const sysMap={ko:'한국어로 응답하세요.',en:'Respond in English.',ja:'日本語で返答してください。',zh:'请用中文回复。'};
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:350,system:`당신은 FLY:HOME AI 안내원입니다. FLY:HOME은 서울 중랑구 신내동에서 준비 중인 비행 시뮬레이션 콕핏 체험 숙박업소입니다. 정식 오픈 전이며 2026년 하반기 예정. 숙박비 6만원, 세스나172/보잉737 콕핏 무제한 체험. 신내역 근처. 문의: ${CONTACT_EMAIL}. 따뜻하게 안내하세요. 120자 이내. ${sysMap[lang]}`,messages:st.messages})});
+    const d=await r.json();
+    st.messages.push({role:'assistant',content:d.content?.map(b=>b.text||'').join('')||'잠시 후 다시 시도해주세요.'});
+  }catch(e){st.messages.push({role:'assistant',content:'연결 오류. 잠시 후 다시 시도해주세요.'});}
+  st.loading=false;btn.disabled=false;renderMsgs();
+}
+function goSuccess(){st.phase='success';render();}
+
+/* SUCCESS */
+function renderSuccess(el){
+  setProgress(100);const bi=t('bookItems');
+  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>🏆 ${t('successH2')}</div>
+  <div class="success-c">
+    <div class="success-badge">✈️</div>
+    <h2>${t('successH2')}</h2>
+    <p class="tagline">${t('tagline')}</p>
+    <div class="score-badge">⭐ ${st.score} / ${qs().length} · PASS</div>
+    <div class="booking-card"><h3>${t('bookTitle')}</h3>${bi.map((row,i)=>`<div class="b-item"><span class="b-label">${row[0]}</span><span class="b-val ${i===3?'free':i===4?'soon':''}">${i===3?t('freeLabel'):i===4?t('soonLabel'):row[1]}</span></div>`).join('')}</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:18px">${t('noticeText')}</p>
+    <div class="form-grid">
+      <div class="ff" style="grid-column:1/-1"><label>${t('formLabels')[0]}</label><input type="text" id="gName" placeholder="..."></div>
+      <div class="ff"><label>${t('formLabels')[1]}</label><input type="email" id="gEmail" placeholder="you@email.com"></div>
+      <div class="ff"><label>${t('formLabels')[2]}</label><select id="gNation"><option value="">...</option>${t('nations').map(n=>`<option>${n}</option>`).join('')}</select></div>
+      <div class="ff" style="grid-column:1/-1"><label>${t('formLabels')[3]}</label><select id="gDate">${t('dates').map(d=>`<option>${d}</option>`).join('')}</select></div>
+    </div>
+    <button class="btn-book" id="bookBtn" onclick="submitBook()">${t('btnBook')}</button>
+    <div class="save-status" id="saveStatus"></div>
+    <div class="contact-strip" style="margin-top:16px">
+      ${t('contactLabel')}: <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>
+    </div>
+  </div>`;
+}
+
+async function submitBook(){
+  const n=document.getElementById('gName').value.trim();
+  const e=document.getElementById('gEmail').value.trim();
+  const nation=document.getElementById('gNation').value;
+  const date=document.getElementById('gDate').value;
+  const msgs={ko:'이름과 이메일을 입력해주세요.',en:'Please enter your name and email.',ja:'名前とメールを入力してください。',zh:'请输入姓名和电子邮件。'};
+  if(!n||!e){alert(msgs[lang]);return;}
+
+  const btn=document.getElementById('bookBtn');
+  const status=document.getElementById('saveStatus');
+  btn.disabled=true;btn.textContent=t('saving');status.textContent='';
+
+  /* 메모리에 즉시 저장 */
+  registrations.push({name:n,email:e,nation,date,lang,score:st.score,timestamp:new Date().toISOString()});
+  registeredCount=registrations.length;
+  updateSlotBanner();
+  st.name=n;
+
+  /* 스토리지 저장 시도 — 결과와 무관하게 바로 완료 처리 */
+  const savePromise=window.storage.set('reg_'+Date.now(),JSON.stringify(registrations[registrations.length-1]),true).catch(()=>{});
+  const timeout=new Promise(res=>setTimeout(res,1500));
+  await Promise.race([savePromise,timeout]);
+
+  status.className='save-status ok';
+  status.textContent=t('saveOk');
+  setTimeout(()=>{st.phase='booked';render();},800);
+}
+
+/* BOOKED */
+function renderBooked(el){
+  const code='FH-'+Math.random().toString(36).substr(2,6).toUpperCase();
+  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>✅ CONFIRMED</div>
+  <div class="confirm-c">
+    <div style="font-size:50px">🎉</div>
+    <h2 style="font-family:'Bebas Neue',cursive;font-size:32px;color:#fff;letter-spacing:2px;margin:10px 0 4px">${t('confirmH2')}</h2>
+    <div class="confirm-code">${code}</div>
+    <p style="font-size:13px;color:var(--dim);max-width:380px;margin:0 auto 6px;line-height:1.8">${t('confirmMsg').replace(/\n/g,'<br>')}</p>
+    <div class="confirm-steps">${t('confirmSteps').map(s=>`<div class="c-step"><div class="num">${s[0]}</div><p>${s[1].replace(/\n/g,'<br>')}</p></div>`).join('')}</div>
+    <div class="contact-strip" style="margin-top:20px">
+      ${t('contactLabel')}: <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn-start" style="padding:10px 26px;font-size:13px" onclick="shareIt()">${t('btnShare')}</button>
+      <button class="btn-start" style="padding:10px 26px;font-size:13px;background:rgba(240,165,0,.1);box-shadow:none;border:1px solid var(--gold);color:var(--gold)" onclick="resetAll()">${t('btnAgain')}</button>
+    </div>
+  </div>`;
+}
+
+function shareIt(){
+  const msgs={ko:`✈️ FLY:HOME 항공 퀴즈를 통과했어요!\n퀴즈 5문제 → 서울 콕핏 숙소 무료 1박\n도전해보세요: ${location.href}`,
+  en:`✈️ I passed the FLY:HOME cockpit quiz!\n5 questions → FREE night in a Seoul cockpit stay\nTry it: ${location.href}`,
+  ja:`✈️ FLY:HOMEのクイズに合格しました！\n5問 → ソウルコックピット無料1泊\nチャレンジ: ${location.href}`,
+  zh:`✈️ 我通过了FLY:HOME的问答！\n5道题 → 首尔飞行舱免费住宿\n来挑战: ${location.href}`};
+  if(navigator.share)navigator.share({title:'FLY:HOME',text:msgs[lang],url:location.href});
+  else{navigator.clipboard.writeText(msgs[lang]).then(()=>alert({ko:'클립보드에 복사됐어요!',en:'Copied!',ja:'コピーしました！',zh:'已复制！'}[lang])).catch(()=>{});}
+}
+
+function resetAll(){st={phase:'intro',qi:0,score:0,answered:false,messages:[],loading:false,name:''};render();}
+
+/* INIT */
+document.getElementById('heroSub').innerHTML=t('heroSub').replace(/\n/g,'<br>');
+['pb1','pb2','pb3'].forEach(id=>document.getElementById(id).textContent=t(id));
+loadCount().then(()=>render());
+</script>
+</body>
+</html>
