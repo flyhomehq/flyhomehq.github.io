@@ -786,7 +786,9 @@ body{
     </div>
     <div class="hero-img-wrap">
       <!-- 사진 교체: <img class="hero-img" src="YOUR_PHOTO_URL" alt="FLY:HOME"> -->
-      <div class="hero-img-placeholder" id="heroImgSlot">
+      <img class="hero-img" src="hero.png" alt="FLY:HOME — Seoul flight simulation"
+           onerror="this.style.display='none';document.getElementById('heroImgSlot').style.display='flex'">
+      <div class="hero-img-placeholder" id="heroImgSlot" style="display:none">
         <div class="icon">✈</div>
         <div class="label">PHOTO COMING SOON</div>
       </div>
@@ -804,6 +806,13 @@ body{
     <blockquote class="host-quote" id="hostQuote"></blockquote>
     <p class="host-body" id="hostBody"></p>
     <p class="host-sig" id="hostSig"></p>
+  <div style="margin-top:28px;border-radius:16px;overflow:hidden;max-width:500px;opacity:0.7">
+    <img src="host1.jpg" alt="35년 전 여행 중" style="width:100%;display:block;filter:sepia(30%) contrast(0.9)"
+         onerror="this.parentElement.style.display='none'">
+    <p style="font-size:11px;color:rgba(255,255,255,0.3);padding:10px 0;font-style:italic;text-align:center">
+      35년 전, 대만 여행 중에서
+    </p>
+  </div>
   </div>
 </section>
 
@@ -823,7 +832,14 @@ body{
     <p class="label-tag" id="expLabel"></p>
     <h2 class="section-h" id="expTitle"></h2>
     <p class="section-p" id="expBody"></p>
-    <div class="exp-grid" id="expGrid"></div>
+    <div style="margin:20px 0 32px;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.1)">
+    <img src="sim1.jpg" alt="실제 비행 시뮬레이터 화면 — 서울 한강" style="width:100%;display:block;max-height:320px;object-fit:cover"
+         onerror="this.parentElement.style.display='none'">
+    <p style="font-size:11px;color:var(--gray2);padding:10px 16px;font-style:italic;background:var(--white)">
+      ▲ FLY:HOME 실제 비행 화면 — 서울 한강 상공
+    </p>
+  </div>
+  <div class="exp-grid" id="expGrid"></div>
   </div>
 </section>
 
@@ -1621,26 +1637,67 @@ function nextQ(){
 
 function renderAI(el){
   const passed=(st.score>=PASS);
-  const msg=t(passed?'passMsg':'failMsg').replace('{score}',st.score);
-  if(!st.messages.length)st.messages=[{role:'assistant',content:msg}];
+  const FAQ={
+    ko:[
+      {q:'언제 오픈하나요?',a:'2026년 3분기(6월 이후) 오픈 예정이에요. 지금 알림 신청하시면 가장 먼저 연락드려요!'},
+      {q:'위치가 어디예요?',a:'서울 중랑구 망우동이에요. 경의중앙선 망우역에서 도보 11~14분이에요. 명동까지 39분, 강남까지 47분이에요.'},
+      {q:'장비가 뭔가요?',a:'Winwing + Thrustmaster 최신 조종 장치, RTX 4090급 PC, 3면 대형 스크린, Microsoft Flight Simulator 2024예요. 시뮬레이터 카페보다 훨씬 좋아요!'},
+      {q:'초보자도 괜찮아요?',a:'물론이에요! 사전 학습 자료를 드리고, 당일 안내도 해드려요. 하루밤이면 충분해요.'},
+      {q:'가격이 얼마예요?',a:'베타 무료 1박: 퀴즈 통과자 선착순 30명 한정이에요. 이후 일반 요금은 6~8만원/박 예정이에요. 장비 이용은 숙박비에 포함이에요.'},
+      {q:'공항에서 어떻게 오나요?',a:'인천공항에서 공항버스로 약 2시간이에요. 김포공항도 버스 직결이에요. 공항에서 바로 올 수 있어요!'},
+      {q:'무료 1박 조건은?',a:'퀴즈 5문제 중 4개 이상 맞추면 통과예요. 통과자 선착순 30명에게 무료 1박을 드려요. 지금 바로 신청하세요!'},
+    ],
+    en:[
+      {q:'When do you open?',a:'We plan to open in Q3 2026 (from June). Register now and you'll be the first to hear!'},
+      {q:'Where exactly?',a:'Mangu-dong, Jungnang-gu, Seoul. 11-14 min walk from Mangu Station (Gyeongui-Jungang Line). Myeongdong 39 min, Gangnam 47 min.'},
+      {q:'What gear do you have?',a:'Winwing + Thrustmaster latest controls, RTX 4090-class PC, triple widescreen, Microsoft Flight Simulator 2024. Better than most sim cafés!'},
+      {q:'OK for beginners?',a:'Absolutely! We send study materials in advance and guide you on arrival. One night is genuinely enough.'},
+      {q:'How much does it cost?',a:'Beta FREE stay: first 30 quiz passers only. Regular rate approx. ₩60,000–80,000/night. Sim hardware fully included.'},
+      {q:'Getting here from the airport?',a:'About 2 hours by direct airport coach from Incheon. Gimpo also has a direct bus. Come straight from the airport!'},
+      {q:'How does the free night work?',a:'Score 4 or more out of 5 on the quiz to qualify. First 30 qualifiers get a free night. Register now!'},
+    ],
+    ja:[
+      {q:'いつオープン予定？',a:'2026年Q3（6月以降）オープン予定です。今すぐ登録いただければ最優先でご連絡します！'},
+      {q:'場所を教えてください',a:'ソウル中浪区望憂洞です。京義中央線・望憂駅から徒歩11〜14分。明洞まで39分、江南まで47分です。'},
+      {q:'どんな機材ですか？',a:'Winwing＋Thrustmaster最新操縦装置、RTX 4090クラスPC、3面大型スクリーン、Microsoft Flight Simulator 2024です。'},
+      {q:'初心者でも大丈夫？',a:'もちろんです！事前に学習資料をお送りし、当日もご案内します。一晩で十分楽しめます。'},
+      {q:'料金はいくら？',a:'テスト期間無料：クイズ合格者先着30名様限定。通常料金は6〜8万ウォン/泊予定。シミュレーター利用は宿泊費込みです。'},
+      {q:'空港からのアクセスは？',a:'仁川空港から空港バスで約2時間（直通）。金浦空港からも直通バスあり。空港から直接お越しいただけます！'},
+      {q:'無料1泊の条件は？',a:'クイズ5問中4問以上正解で合格。合格者先着30名様に無料1泊をご提供。今すぐご登録ください！'},
+    ],
+    zh:[
+      {q:'什么时候开业？',a:'计划2026年Q3（6月起）开业。现在登记，开业时第一时间通知您！'},
+      {q:'在哪里？',a:'首尔中浪区望憂洞。京义中央线望憂站步行11~14分钟。明洞39分钟，江南47分钟。'},
+      {q:'有什么设备？',a:'Winwing+Thrustmaster最新操控设备、RTX 4090级PC、三面大屏幕、Microsoft Flight Simulator 2024。'},
+      {q:'初学者可以吗？',a:'当然可以！我们会提前发送学习资料，当天也会指导您。一晚上完全够用。'},
+      {q:'价格是多少？',a:'测试期免费：仅限答题通过者前30名。正式开业后约6~8万韩元/晚。模拟器使用费含在房价内。'},
+      {q:'从机场怎么来？',a:'仁川机场乘大巴约2小时（直达）。金浦机场也有直达车。从机场直接过来即可！'},
+      {q:'免费住宿条件？',a:'5道题答对4道即可通过。前30名通过者获赠免费住宿一晚。立即登记！'},
+    ],
+  };
+  const faqs=FAQ[lang]||FAQ.en;
+  const passed_label={ko:passed?'통과! 🎉':'아쉽지만 다음에!',en:passed?'PASS! 🎉':'So close!',ja:passed?'合格！🎉':'惜しい！',zh:passed?'通过！🎉':'差一点！'};
+  const sub_label={ko:'궁금한 점을 클릭해서 확인하세요',en:'Click any question to learn more',ja:'気になる質問をクリックしてください',zh:'点击查看常见问题'};
   el.innerHTML=`
   <div class="qcard">
     <div class="qcard-top">
-      <span class="qcard-top-label">AI GUIDE</span>
+      <span class="qcard-top-label">FAQ</span>
       <span class="qcard-top-score">${st.score}/${st.shuffledQ.length} ★</span>
     </div>
     <div class="qbody" style="padding-top:20px">
       <div class="ai-result">
         <div class="ai-score">${st.score}<span style="font-size:22px;color:var(--gray2)">/${st.shuffledQ.length}</span></div>
-        <div class="ai-result-label ${passed?'ai-pass':''}">${passed?'PASS ✓':'Keep trying!'}</div>
+        <div class="ai-result-label ${passed?'ai-pass':''}">${passed_label[lang]}</div>
       </div>
-      <div class="quick-btns">
-        ${t('quickQ').map(q=>`<button class="quick-btn" onclick="quickSend('${q}')">${q}</button>`).join('')}
-      </div>
-      <div class="ai-msgs" id="aiMsgs"></div>
-      <div class="ai-input-row">
-        <input class="ai-input" id="aiIn" placeholder="${t('aiPlaceholder')}" onkeydown="if(event.key==='Enter')sendMsg()">
-        <button class="btn-send" id="sendBtn" onclick="sendMsg()">${t('btnSend')}</button>
+      <p style="font-size:13px;color:var(--gray2);text-align:center;margin-bottom:14px">${sub_label[lang]}</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px" id="faqList">
+        ${faqs.map((f,i)=>`
+          <div style="border:1.5px solid var(--gray3);border-radius:12px;overflow:hidden">
+            <button onclick="toggleFaq(${i})" style="width:100%;text-align:left;padding:13px 16px;background:var(--bg);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--black);display:flex;justify-content:space-between;align-items:center">
+              ${f.q}<span id="faqArr${i}" style="color:var(--gray2);transition:transform .2s">›</span>
+            </button>
+            <div id="faqAns${i}" style="display:none;padding:12px 16px;font-size:13px;color:var(--gray1);line-height:1.8;background:var(--white);border-top:1px solid var(--gray3)">${f.a}</div>
+          </div>`).join('')}
       </div>
       <div class="ai-actions">
         <button class="btn-pill dark" style="font-size:13px;padding:11px 22px" onclick="goReg()">${t('btnGoReg')}</button>
@@ -1648,20 +1705,19 @@ function renderAI(el){
       </div>
     </div>
   </div>`;
-  renderMsgs();
 }
 
-function renderMsgs(){
-  const c=document.getElementById('aiMsgs');if(!c)return;
-  c.innerHTML=st.messages.map(m=>`
-    <div class="ai-msg ${m.role==='user'?'user':''}">
-      <div class="avatar">${m.role==='user'?'👤':'✈️'}</div>
-      <div class="bubble">${m.content.replace(/\n/g,'<br>')}</div>
-    </div>`).join('');
-  c.scrollTop=c.scrollHeight;
-}
+window.toggleFaq=function(i){
+  const ans=document.getElementById('faqAns'+i);
+  const arr=document.getElementById('faqArr'+i);
+  const isOpen=ans.style.display!=='none';
+  document.querySelectorAll('[id^="faqAns"]').forEach(el=>el.style.display='none');
+  document.querySelectorAll('[id^="faqArr"]').forEach(el=>el.style.transform='');
+  if(!isOpen){ans.style.display='block';arr.style.transform='rotate(90deg)';}
+};
 
-window.quickSend=function(text){document.getElementById('aiIn').value=text;sendMsg();};
+function renderMsgs(){}
+window.quickSend=function(text){};
 
 async function sendMsg(){
   const inp=document.getElementById('aiIn'),btn=document.getElementById('sendBtn');
@@ -1756,9 +1812,13 @@ function renderReg(el){
           <div style="font-size:24px;margin-bottom:8px">✅</div>
           <p style="font-size:14px;color:#166534;line-height:1.8">${t('alreadyTitle')}<br>${t('alreadyCode')}<strong style="font-family:monospace">${st.bookCode}</strong></p>
         </div>
+        <div style="text-align:center;margin:16px 0">
+          <button class="btn-pill dark" style="font-size:13px;padding:11px 22px" onclick="retryQuizOnly()">${lang==='ko'?'✈ 퀴즈 다시 도전':lang==='en'?'✈ Try Quiz Again':lang==='ja'?'✈ クイズに再挑戦':'✈ 重新答题'}</button>
+          <p style="font-size:11px;color:var(--gray2);margin-top:8px">${lang==='ko'?'오픈 알림은 완료됐어요. 퀴즈만 다시 도전할 수 있어요.':lang==='en'?'Already registered. Retake the quiz anytime!':lang==='ja'?'通知登録済み。クイズのみ再挑戦できます。':'通知已登记，可随时重新答题。'}</p>
+        </div>
         <div class="contact-foot">${t('contact')}: <a href="mailto:${CONTACT}">${CONTACT}</a></div>
       </div>
-    </div>`;return;
+    </div>\`;return;
   }
   el.innerHTML=`
   <div class="reg-card">
@@ -1944,6 +2004,12 @@ function showToast(){
   const el=document.getElementById('shareToast');if(!el)return;
   el.className='share-toast show';
   setTimeout(()=>el.classList.remove('show'),3000);
+}
+function retryQuizOnly(){
+  st.phase='quiz';st.qi=0;st.score=0;st.answered=false;
+  st.shuffledQ=shuffle(QUESTIONS[lang]);
+  render();
+  goToSection('#quizSection');
 }
 function retryAll(){
   st={phase:'quiz',qi:0,score:0,answered:false,messages:[],loading:false,
