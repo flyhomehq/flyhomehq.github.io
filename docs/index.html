@@ -3,601 +3,2000 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLY:HOME — Seoul Cockpit Stay</title>
-<meta property="og:title" content="FLY:HOME — Seoul Cockpit Stay">
-<meta property="og:description" content="항공 퀴즈 5문제 → 서울 비행 콕핏 체험 숙소 무료 1박! Quiz & win a free cockpit stay in Seoul!">
+<title>FLY:HOME — Seoul is calling.</title>
+<meta name="description" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 3분기 오픈 예정.">
+<meta name="keywords" content="FLY HOME, 비행 시뮬레이션, 서울 숙소, 중랑구, 테마 숙소, flight simulator, Seoul stay">
+<meta property="og:title" content="FLY:HOME — Seoul is calling.">
+<meta property="og:description" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소.">
 <meta property="og:type" content="website">
-<!-- Google Analytics: GA_MEASUREMENT_ID 를 실제 ID로 교체하세요 -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GA_MEASUREMENT_ID');</script> -->
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Sans+JP:wght@300;400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-:root{--sky:#0a1628;--deep:#050d1a;--cockpit:#0d2137;--gold:#f0a500;--amber:#ff6b00;--green:#00ff88;--red:#ff3344;--dim:#4a6fa5;--panel:rgba(13,33,55,0.97);}
+/* 중국어 폰트 fallback (구글폰트 차단 대비) */
+@font-face {
+  font-family: 'DM Sans';
+  font-display: swap;
+}
+/* 언어별 폰트 스택 */
+:lang(zh) body, .zh-active body {
+  font-family: 'DM Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'SimSun', sans-serif;
+}
+:lang(ja) body, .ja-active body {
+  font-family: 'DM Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
+}
+/* 중국어 모드 빨간 포인트 컬러 */
+.zh-active .live-dot { background: #e02020; }
+.zh-active .hero h1 em { color: #c8202a; }
+.zh-active .cd-unit .cd-num { color: #ff4d4d; }
+.zh-active .counter-num { color: #c8202a; }
+.zh-active .code-val { color: #c8202a; }
+.zh-active .confirm-icon + h2 { color: var(--black); }
+.zh-active .btn-pill.dark { background: #c8202a; }
+.zh-active .btn-pill.dark:hover { background: #a01820; }
+.zh-active .btn-register { background: #c8202a; }
+.zh-active .btn-register:hover { background: #a01820; }
+.zh-active .btn-send { background: #c8202a; }
+.zh-active .cstep .num { color: #c8202a; }
+.zh-active .section-h em { color: #c8202a; }
+.zh-active .host-quote::before { color: #ff6666; }
+/* 위챗 공유 버튼 */
+.btn-wechat {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 20px; border-radius: 980px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: all .2s; border: none;
+  background: #07c160; color: #fff;
+}
+.btn-wechat:hover { background: #06a854; }
+.btn-wechat-icon { font-size: 15px; }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:var(--deep);color:#c8d8f0;min-height:100vh;overflow-x:hidden;}
-#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
-.horizon{position:fixed;bottom:0;left:0;right:0;height:35vh;z-index:0;background:linear-gradient(0deg,rgba(10,22,40,1)0%,transparent 100%);pointer-events:none;}
-.hud-frame{position:fixed;inset:0;z-index:1;pointer-events:none;border:1px solid rgba(240,165,0,0.12);}
-.hud-frame::before,.hud-frame::after{content:'';position:absolute;width:70px;height:70px;border-color:var(--gold);border-style:solid;opacity:0.4;}
-.hud-frame::before{top:10px;left:10px;border-width:2px 0 0 2px;}
-.hud-frame::after{bottom:10px;right:10px;border-width:0 2px 2px 0;}
+:root{
+  --bg:#f5f5f7;
+  --white:#ffffff;
+  --black:#1d1d1f;
+  --gray1:#6e6e73;
+  --gray2:#aeaeb2;
+  --gray3:#d2d2d7;
+  --gray4:#f5f5f7;
+  --gold:#b07d0a;
+  --gold-light:#f5a623;
+  --blue:#0071e3;
+  --green:#1a7f4b;
+  --red:#cc0022;
+  --radius:18px;
+  --shadow:0 2px 20px rgba(0,0,0,0.07);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.11);
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);color:var(--black);
+  -webkit-font-smoothing:antialiased;
+}
 
-/* LANG BAR */
-.lang-bar{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:flex-end;padding:8px 16px;gap:5px;background:rgba(5,13,26,0.9);border-bottom:1px solid rgba(240,165,0,0.1);backdrop-filter:blur(8px);}
-.lang-btn{padding:5px 10px;border-radius:3px;border:1px solid rgba(240,165,0,0.25);background:transparent;color:#8aa0c0;font-size:11px;cursor:pointer;transition:all 0.2s;font-family:inherit;}
-.lang-btn.active,.lang-btn:hover{background:rgba(240,165,0,0.12);border-color:var(--gold);color:var(--gold);}
+/* ── LANG BAR ── */
+.lang-bar{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;justify-content:center;align-items:center;gap:4px;
+  padding:7px 20px;
+  background:rgba(245,245,247,0.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.06);
+  flex-wrap:wrap;
+}
+.lang-btn{
+  padding:5px 14px;border-radius:20px;border:none;
+  background:transparent;color:var(--gray1);
+  font-size:12px;font-family:'DM Sans',sans-serif;
+  cursor:pointer;transition:all 0.2s;font-weight:500;
+}
+.lang-btn.active,.lang-btn:hover{background:var(--black);color:var(--white);}
 
-/* SLOT COUNTER */
-.slot-banner{background:rgba(255,107,0,.08);border-bottom:1px solid rgba(255,107,0,.2);padding:7px 16px;text-align:center;font-size:12px;color:#ffaa70;position:fixed;top:37px;left:0;right:0;z-index:199;}
-.slot-banner strong{color:var(--amber);}
+/* 날짜/시계 */
+.live-clock{
+  margin-left:auto;
+  font-size:11px;color:var(--gray2);
+  font-family:'DM Sans',monospace;
+  letter-spacing:.5px;white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
+}
+.live-clock .clock-sep{color:var(--gray3);}
+.live-clock .clock-date-part{color:var(--gray1);font-weight:600;}
+@media(max-width:500px){
+  .live-clock{margin-left:0;font-size:10px;gap:4px;}
+  .clock-time-part,.clock-sep{display:none;}
+  .lang-bar{justify-content:flex-start;gap:2px;padding:5px 10px;}
+}
 
-.wrapper{position:relative;z-index:10;max-width:860px;margin:0 auto;padding:100px 20px 80px;}
+/* 카운트다운 배너 */
+.countdown-bar{
+  background:var(--black);
+  padding:10px 20px;
+  display:flex;justify-content:center;align-items:center;
+  gap:20px;flex-wrap:wrap;
+  margin-top:40px; /* lang-bar 높이 */
+}
+.countdown-bar .cd-label{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  color:rgba(255,255,255,0.4);text-transform:uppercase;
+}
+.cd-units{display:flex;gap:12px;align-items:center;}
+.cd-unit{text-align:center;}
+.cd-unit .cd-num{
+  font-family:'DM Serif Display',serif;
+  font-size:26px;color:var(--gold-light);
+  line-height:1;display:block;
+}
+.cd-unit .cd-text{
+  font-size:9px;letter-spacing:1.5px;
+  color:rgba(255,255,255,0.3);text-transform:uppercase;
+  display:block;margin-top:2px;
+}
+.cd-colon{
+  font-size:20px;color:rgba(255,255,255,0.2);
+  margin-bottom:8px;font-weight:300;
+}
 
-/* HERO */
-.hero{text-align:center;padding:40px 0 28px;animation:fadeDown 0.8s ease both;}
-.hero-eye{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px;}
-.hero-eye::before,.hero-eye::after{content:'';flex:1;max-width:50px;height:1px;background:var(--gold);opacity:0.5;}
-.hero h1{font-family:'Bebas Neue',cursive;font-size:clamp(48px,10vw,90px);line-height:.9;color:#fff;text-shadow:0 0 60px rgba(240,165,0,.3);letter-spacing:2px;}
-.hero h1 span{color:var(--gold);}
-.hero-sub{font-size:14px;color:var(--dim);margin:16px auto 0;max-width:480px;line-height:1.9;font-weight:300;}
+/* 신청자 카운터 */
+.counter-strip{
+  background:linear-gradient(135deg,rgba(176,125,10,0.08),rgba(245,166,35,0.05));
+  border:1px solid rgba(176,125,10,0.15);
+  border-radius:14px;padding:14px 20px;
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;flex-wrap:wrap;margin-bottom:20px;
+}
+.counter-main{
+  display:flex;align-items:baseline;gap:6px;
+}
+.counter-num{
+  font-family:'DM Serif Display',serif;
+  font-size:32px;color:var(--gold);line-height:1;
+}
+.counter-denom{
+  font-size:13px;color:var(--gray2);
+}
+.counter-bar-wrap{
+  flex:1;min-width:120px;max-width:200px;
+}
+.counter-bar-bg{
+  height:4px;background:var(--gray3);border-radius:4px;overflow:hidden;
+}
+.counter-bar-fill{
+  height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1);
+}
+.counter-label{font-size:11px;color:var(--gray1);line-height:1.6;}
 
-.purpose-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 26px;}
-.purpose-badge{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px;border:1px solid;}
-.pb-quiz{background:rgba(240,165,0,.08);border-color:rgba(240,165,0,.4);color:var(--gold);}
-.pb-stay{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.3);color:var(--green);}
-.pb-biz{background:rgba(100,150,255,.06);border-color:rgba(100,150,255,.3);color:#7ab0ff;}
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:130px 24px 60px;
+  background:var(--white);position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%,rgba(245,166,35,0.07) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 85%,rgba(0,113,227,0.04) 0%,transparent 60%);
+}
+.hero-inner{position:relative;z-index:1;max-width:720px;width:100%;}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,0,0,0.05);border-radius:20px;
+  padding:6px 16px;font-size:11px;font-weight:600;
+  letter-spacing:1.5px;color:var(--gray1);
+  text-transform:uppercase;margin-bottom:28px;
+}
+.live-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold-light);
+  animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
-.alt-bar{margin:0 auto 20px;max-width:560px;background:rgba(13,33,55,.8);border:1px solid rgba(240,165,0,.2);border-radius:4px;padding:11px 16px;display:flex;align-items:center;gap:12px;font-family:'Share Tech Mono',monospace;}
-.alt-label{font-size:9px;color:var(--dim);letter-spacing:2px;min-width:70px;}
-.alt-track{flex:1;height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
-.alt-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);width:0%;box-shadow:0 0 8px var(--gold);}
-.alt-val{font-size:12px;color:var(--gold);min-width:36px;text-align:right;}
+.hero h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(52px,10vw,96px);
+  line-height:.95;letter-spacing:-1.5px;
+  color:var(--black);margin-bottom:6px;
+}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.beta-label{
+  font-size:13px;color:var(--gray2);
+  letter-spacing:2px;margin-bottom:18px;
+  font-weight:400;
+}
+.hero-tagline{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(18px,3vw,26px);
+  color:var(--gray1);font-style:italic;
+  margin-bottom:12px;font-weight:400;
+}
+.hero-sub{
+  font-size:16px;line-height:1.75;color:var(--gray1);
+  font-weight:300;max-width:500px;margin:0 auto 36px;
+}
+.hero-sub strong{color:var(--black);font-weight:600;}
 
-.dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px;}
-.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);transition:all .4s;}
-.dot.active{background:var(--gold);border-color:var(--gold);box-shadow:0 0 6px var(--gold);}
-.dot.done{background:var(--green);border-color:var(--green);}
+.cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.btn-pill{
+  padding:14px 30px;border-radius:980px;border:none;
+  font-family:'DM Sans',sans-serif;font-size:15px;
+  font-weight:600;cursor:pointer;transition:all 0.22s;
+  letter-spacing:.1px;
+}
+.btn-pill.dark{background:var(--black);color:var(--white);}
+.btn-pill.dark:hover{background:#3a3a3c;transform:scale(1.02);}
+.btn-pill.outline{
+  background:transparent;color:var(--blue);
+  border:1.5px solid rgba(0,113,227,0.3);
+}
+.btn-pill.outline:hover{background:rgba(0,113,227,0.06);}
 
-.screen{background:var(--panel);border:1px solid rgba(240,165,0,.18);border-radius:8px;overflow:hidden;animation:fadeUp .5s ease both;}
-.screen-hdr{background:rgba(240,165,0,.06);border-bottom:1px solid rgba(240,165,0,.12);padding:11px 20px;display:flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);}
-.ind{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pulse 1.5s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* Hero image slot */
+.hero-img-wrap{
+  width:100%;max-width:720px;border-radius:20px;
+  overflow:hidden;box-shadow:var(--shadow-lg);position:relative;
+}
+.hero-img{
+  width:100%;height:360px;object-fit:cover;display:block;
+  background:linear-gradient(135deg,#0d1f35 0%,#1a3352 50%,#0f2a40 100%);
+}
+.hero-img-placeholder{
+  width:100%;height:360px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;opacity:0.2;
+  background:linear-gradient(135deg,#0d1f35 0%,#1a3352 50%,#0f2a40 100%);
+}
+.hero-img-placeholder .icon{font-size:48px;color:#fff;}
+.hero-img-placeholder .label{
+  font-size:10px;letter-spacing:3px;color:#fff;
+  font-family:'DM Sans',monospace;
+}
+.hero-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.45) 0%,transparent 55%);
+  display:flex;align-items:flex-end;padding:20px 24px;
+}
+.hero-img-caption{
+  font-size:12px;color:rgba(255,255,255,0.65);
+  font-style:italic;
+}
 
-/* INTRO */
-.intro-c{padding:36px 32px;text-align:center;}
-.intro-c h2{font-family:'Bebas Neue',cursive;font-size:30px;color:#fff;letter-spacing:2px;margin-bottom:10px;}
-.intro-c p{font-size:13px;line-height:1.9;color:#8aa0c0;max-width:500px;margin:0 auto 24px;font-weight:300;}
-.reward-box{background:rgba(240,165,0,.05);border:1px solid rgba(240,165,0,.25);border-radius:6px;padding:16px 20px;margin:0 auto 20px;max-width:420px;text-align:left;}
-.reward-box h4{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:10px;}
-.reward-item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:#c8d8f0;}
-.reward-item:last-child{border:none;}
-.btn-start{background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--deep);border:none;padding:13px 40px;font-family:inherit;font-size:14px;font-weight:900;border-radius:4px;cursor:pointer;letter-spacing:1px;transition:all .3s;box-shadow:0 4px 28px rgba(240,165,0,.3);}
-.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,165,0,.5);}
+/* ── SECTION BASE ── */
+.section{padding:80px 24px;}
+.section-inner{max-width:840px;margin:0 auto;}
+.label-tag{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  color:var(--gray2);text-transform:uppercase;margin-bottom:14px;
+}
+.section-h{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(30px,5vw,50px);
+  line-height:1.1;color:var(--black);
+  margin-bottom:18px;letter-spacing:-.5px;
+}
+.section-h em{font-style:italic;color:var(--gold);}
+.section-p{
+  font-size:16px;line-height:1.85;color:var(--gray1);
+  font-weight:300;max-width:580px;
+}
 
-/* SLOT BOX */
-.slot-box{display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(255,107,0,.06);border:1px solid rgba(255,107,0,.25);border-radius:6px;padding:12px 16px;margin:0 auto 20px;max-width:420px;font-size:13px;}
-.slot-num{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--amber);line-height:1;}
-.slot-txt{text-align:left;color:#ffaa70;font-size:12px;line-height:1.5;}
-.slot-txt strong{display:block;font-size:14px;color:var(--amber);}
+/* ── HOST STORY ── */
+.host-section{
+  background:var(--black);padding:80px 24px;
+}
+.host-inner{max-width:720px;margin:0 auto;}
+.host-quote{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(22px,3.5vw,34px);
+  line-height:1.5;color:rgba(255,255,255,0.9);
+  font-style:italic;margin-bottom:28px;
+  position:relative;padding-left:24px;
+}
+.host-quote::before{
+  content:'"';position:absolute;left:0;top:-8px;
+  font-size:60px;color:var(--gold-light);opacity:0.4;
+  font-family:'DM Serif Display',serif;line-height:1;
+}
+.host-body{
+  font-size:15px;line-height:2;color:rgba(255,255,255,0.55);
+  font-weight:300;margin-bottom:24px;
+}
+.host-sig{
+  font-size:13px;color:rgba(255,255,255,0.35);
+  font-style:italic;border-top:1px solid rgba(255,255,255,0.08);
+  padding-top:18px;
+}
+.host-highlight{
+  color:rgba(255,255,255,0.8);font-weight:500;
+}
 
-/* QUIZ */
-.quiz-c{padding:28px 32px;}
-.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
-.q-cat{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--amber);}
-.q-num{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);}
-.q-text{font-size:16px;font-weight:700;color:#fff;line-height:1.55;margin-bottom:18px;}
-.q-hint{font-size:12px;color:var(--dim);margin-bottom:14px;font-style:italic;}
+/* ── NOT FOR EVERYONE ── */
+.honest-section{background:var(--bg);padding:80px 24px;}
+.honest-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:20px;margin-top:36px;
+}
+.honest-card{
+  background:var(--white);border-radius:var(--radius);
+  padding:28px;box-shadow:var(--shadow);
+  border:1px solid rgba(0,0,0,0.04);
+}
+.honest-card h3{
+  font-size:14px;font-weight:700;
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.honest-card ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.honest-card ul li{
+  font-size:13px;color:var(--gray1);
+  line-height:1.6;display:flex;align-items:flex-start;gap:8px;
+}
+.honest-card ul li .mark{flex-shrink:0;font-size:13px;margin-top:1px;}
+.honest-card.good h3{color:var(--green);}
+.honest-card.caution h3{color:var(--gray1);}
+
+/* ── EXPERIENCE ── */
+.exp-section{background:var(--white);padding:80px 24px;}
+.exp-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:16px;margin-top:40px;
+}
+.exp-card{
+  background:var(--bg);border-radius:var(--radius);
+  padding:28px;border:1px solid rgba(0,0,0,0.04);
+  cursor:pointer;transition:all 0.22s;
+  position:relative;overflow:hidden;
+}
+.exp-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-lg);
+  background:var(--white);
+}
+.exp-card .card-icon{font-size:32px;margin-bottom:14px;}
+.exp-card h3{
+  font-size:16px;font-weight:700;
+  color:var(--black);margin-bottom:8px;
+}
+.exp-card p{
+  font-size:13px;color:var(--gray1);
+  line-height:1.7;font-weight:300;
+}
+.exp-card .arrow{
+  position:absolute;top:24px;right:24px;
+  font-size:16px;color:var(--gray3);
+  transition:all 0.2s;
+}
+.exp-card:hover .arrow{color:var(--black);transform:translateX(3px);}
+.exp-card.span-full{grid-column:1/-1;}
+.exp-card.dark-card{
+  background:var(--black);
+}
+.exp-card.dark-card h3{color:var(--white);}
+.exp-card.dark-card p{color:rgba(255,255,255,0.5);}
+.exp-card.dark-card .arrow{color:rgba(255,255,255,0.2);}
+.exp-card.dark-card:hover .arrow{color:rgba(255,255,255,0.8);}
+
+/* EXP DETAIL (expandable) */
+.exp-detail{
+  display:none;
+  background:var(--white);border-radius:var(--radius);
+  padding:28px;margin-top:12px;
+  border:1px solid var(--gray3);
+  animation:fadeUp 0.3s ease;
+}
+.exp-detail.open{display:block;}
+.exp-detail h4{
+  font-size:13px;font-weight:700;letter-spacing:1.5px;
+  color:var(--gray2);text-transform:uppercase;margin-bottom:14px;
+}
+.exp-detail p{
+  font-size:14px;line-height:1.85;color:var(--gray1);
+  font-weight:300;margin-bottom:10px;
+}
+.exp-detail ul{
+  list-style:none;display:flex;flex-direction:column;gap:7px;margin:12px 0;
+}
+.exp-detail ul li{
+  font-size:13px;color:var(--gray1);
+  display:flex;gap:8px;align-items:flex-start;line-height:1.6;
+}
+.spec-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;}
+.spec-chip{
+  background:var(--bg);border:1px solid var(--gray3);
+  border-radius:20px;padding:4px 12px;
+  font-size:11px;font-weight:600;color:var(--gray1);
+  letter-spacing:.5px;
+}
+
+/* ── LOCATION ── */
+.loc-section{background:var(--bg);padding:80px 24px;}
+.loc-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:16px;margin-top:36px;
+}
+.loc-card{
+  background:var(--white);border-radius:var(--radius);
+  padding:24px 28px;box-shadow:var(--shadow);
+  border:1px solid rgba(0,0,0,0.04);
+}
+.loc-card .loc-icon{font-size:24px;margin-bottom:12px;}
+.loc-card h3{font-size:14px;font-weight:700;margin-bottom:8px;}
+.loc-card p{font-size:13px;color:var(--gray1);line-height:1.7;font-weight:300;}
+.loc-card.accent{
+  background:var(--black);grid-column:1/-1;
+}
+.loc-card.accent h3{color:rgba(255,255,255,0.9);}
+.loc-card.accent p{color:rgba(255,255,255,0.45);}
+.transit-row{
+  display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;
+}
+.transit-badge{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+  border-radius:8px;padding:6px 14px;
+  font-size:12px;color:rgba(255,255,255,0.7);font-weight:500;
+}
+
+/* ── QUIZ AREA ── */
+.quiz-section{padding:60px 24px 20px;}
+.quiz-inner{max-width:640px;margin:0 auto;}
+.dots-row{display:flex;gap:6px;justify-content:center;margin-bottom:24px;}
+.dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gray3);transition:all .3s;
+}
+.dot.active{background:var(--black);transform:scale(1.4);}
+.dot.done{background:var(--green);}
+
+.qcard{
+  background:var(--white);border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow-lg);
+  border:1px solid rgba(0,0,0,0.04);
+  animation:fadeUp .4s ease;
+}
+.qcard-top{
+  background:var(--black);padding:20px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.qcard-top-label{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  color:rgba(255,255,255,0.45);text-transform:uppercase;
+}
+.qcard-top-score{
+  font-family:'DM Serif Display',serif;
+  font-size:20px;color:var(--gold-light);
+}
+.qprog{height:3px;background:rgba(255,255,255,0.1);}
+.qprog-fill{height:100%;background:var(--gold-light);transition:width .5s cubic-bezier(.4,0,.2,1);}
+.qbody{padding:28px;}
+.q-cat{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  color:var(--gray2);text-transform:uppercase;margin-bottom:10px;
+}
+.q-text{
+  font-family:'DM Serif Display',serif;
+  font-size:21px;line-height:1.4;color:var(--black);margin-bottom:6px;
+}
+.q-hint{font-size:13px;color:var(--gray2);margin-bottom:22px;font-style:italic;}
 .choices{display:flex;flex-direction:column;gap:8px;}
-.choice{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:6px;padding:12px 16px;cursor:pointer;font-size:13px;color:#a0b8d0;text-align:left;transition:all .25s;display:flex;align-items:center;gap:12px;font-family:inherit;width:100%;}
-.choice:hover{background:rgba(240,165,0,.07);border-color:rgba(240,165,0,.4);color:#fff;}
-.choice.correct{background:rgba(0,255,136,.07);border-color:var(--green);color:var(--green);}
-.choice.wrong{background:rgba(255,51,68,.07);border-color:var(--red);color:var(--red);}
-.choice-key{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--dim);min-width:18px;flex-shrink:0;}
-.feedback{margin-top:14px;padding:11px 14px;border-radius:6px;font-size:13px;line-height:1.7;display:none;}
+.choice{
+  background:var(--bg);border:1.5px solid var(--gray3);
+  border-radius:12px;padding:13px 18px;
+  font-family:'DM Sans',sans-serif;font-size:14px;
+  color:var(--black);text-align:left;cursor:pointer;
+  transition:all .18s;display:flex;align-items:center;
+  gap:12px;width:100%;font-weight:400;
+}
+.choice:hover:not(:disabled){
+  border-color:var(--black);background:var(--white);
+  transform:translateX(4px);
+}
+.choice.correct{background:#f0fdf4;border-color:#86efac;color:#166534;}
+.choice.wrong{background:#fff1f2;border-color:#fca5a5;color:#991b1b;}
+.choice:disabled{cursor:not-allowed;}
+.ckey{
+  width:24px;height:24px;border-radius:7px;
+  background:var(--white);border:1px solid var(--gray3);
+  font-size:10px;font-weight:700;color:var(--gray1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.choice.correct .ckey{background:#dcfce7;border-color:#86efac;color:#166534;}
+.choice.wrong .ckey{background:#fee2e2;border-color:#fca5a5;color:#991b1b;}
+.feedback{
+  margin-top:14px;padding:13px 16px;border-radius:12px;
+  font-size:13px;line-height:1.7;display:none;
+}
 .feedback.show{display:block;animation:fadeUp .3s ease;}
-.feedback.correct-fb{background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.25);color:#80ffbb;}
-.feedback.wrong-fb{background:rgba(255,51,68,.05);border:1px solid rgba(255,51,68,.25);color:#ff8899;}
-.btn-next{margin-top:18px;width:100%;background:rgba(240,165,0,.08);border:1px solid var(--gold);color:var(--gold);padding:11px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;letter-spacing:1px;transition:all .25s;display:none;}
+.feedback.correct-fb{background:#f0fdf4;border:1px solid #86efac;color:#166534;}
+.feedback.wrong-fb{background:#fff1f2;border:1px solid #fca5a5;color:#991b1b;}
+.btn-next{
+  margin-top:18px;width:100%;background:var(--black);color:var(--white);
+  border:none;border-radius:980px;padding:13px;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:all .2s;display:none;
+}
 .btn-next.show{display:block;}
-.btn-next:hover{background:var(--gold);color:var(--deep);}
+.btn-next:hover{background:#3a3a3c;}
 
 /* AI */
-.ai-c{padding:20px 24px;}
-.ai-msgs{min-height:180px;max-height:300px;overflow-y:auto;margin-bottom:14px;display:flex;flex-direction:column;gap:10px;}
-.ai-msg{display:flex;gap:10px;animation:fadeUp .4s ease;}
+.ai-result{
+  background:var(--bg);border-radius:14px;
+  padding:20px;margin-bottom:20px;text-align:center;
+}
+.ai-score{
+  font-family:'DM Serif Display',serif;
+  font-size:44px;color:var(--black);margin-bottom:4px;
+}
+.ai-result-label{font-size:14px;line-height:1.7;}
+.ai-pass{color:var(--green);font-weight:600;}
+.ai-msgs{
+  min-height:130px;max-height:240px;overflow-y:auto;
+  display:flex;flex-direction:column;gap:8px;margin-bottom:12px;
+}
+.ai-msg{display:flex;gap:9px;}
 .ai-msg.user{flex-direction:row-reverse;}
-.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.25);}
-.ai-msg.user .avatar{background:rgba(255,107,0,.12);border-color:rgba(255,107,0,.25);}
-.bubble{max-width:80%;padding:10px 13px;border-radius:8px;font-size:13px;line-height:1.7;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:#c8d8f0;}
-.ai-msg.user .bubble{background:rgba(255,107,0,.07);border-color:rgba(255,107,0,.18);color:#ffd0a0;}
-.typing{display:flex;gap:5px;align-items:center;padding:4px 0;}
-.typing span{width:5px;height:5px;border-radius:50%;background:var(--dim);animation:bounce 1s infinite;}
+.avatar{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--bg);border:1px solid var(--gray3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;
+}
+.bubble{
+  max-width:80%;padding:9px 13px;border-radius:13px;
+  font-size:13px;line-height:1.7;
+  background:var(--bg);color:var(--black);
+}
+.ai-msg.user .bubble{background:var(--black);color:var(--white);}
+.typing span{
+  width:4px;height:4px;border-radius:50%;
+  background:var(--gray2);display:inline-block;margin:0 2px;
+  animation:bounce 1s infinite;
+}
 .typing span:nth-child(2){animation-delay:.15s;}
 .typing span:nth-child(3){animation-delay:.3s;}
 @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+.quick-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.quick-btn{
+  padding:6px 13px;background:var(--white);
+  border:1px solid var(--gray3);border-radius:20px;
+  font-size:12px;color:var(--gray1);cursor:pointer;
+  transition:all .18s;font-family:'DM Sans',sans-serif;
+}
+.quick-btn:hover{border-color:var(--black);color:var(--black);}
 .ai-input-row{display:flex;gap:8px;}
-.ai-input{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:10px 13px;color:#c8d8f0;font-family:inherit;font-size:13px;outline:none;transition:border-color .2s;min-width:0;}
-.ai-input:focus{border-color:rgba(240,165,0,.5);}
-.ai-input::placeholder{color:rgba(255,255,255,.18);}
-.btn-send{background:var(--gold);color:var(--deep);border:none;padding:10px 16px;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px;transition:all .2s;white-space:nowrap;flex-shrink:0;}
-.btn-send:hover{background:var(--amber);}
-.btn-send:disabled{opacity:.4;cursor:not-allowed;}
-.quick-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.quick-btn{padding:4px 11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;font-size:11px;color:#8aa0c0;cursor:pointer;transition:all .2s;font-family:inherit;}
-.quick-btn:hover{border-color:var(--gold);color:var(--gold);}
+.ai-input{
+  flex:1;background:var(--bg);border:1.5px solid var(--gray3);
+  border-radius:12px;padding:10px 15px;
+  color:var(--black);font-family:'DM Sans',sans-serif;
+  font-size:14px;outline:none;transition:border-color .2s;
+}
+.ai-input:focus{border-color:var(--black);background:var(--white);}
+.ai-input::placeholder{color:var(--gray2);}
+.btn-send{
+  background:var(--black);color:var(--white);
+  border:none;padding:10px 18px;border-radius:12px;
+  cursor:pointer;font-weight:600;font-size:13px;
+  transition:all .2s;white-space:nowrap;flex-shrink:0;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-send:hover{background:#3a3a3c;}
+.btn-send:disabled{opacity:.35;cursor:not-allowed;}
+.ai-actions{display:flex;gap:10px;margin-top:16px;justify-content:center;flex-wrap:wrap;}
 
-/* SUCCESS */
-.success-c{padding:36px 32px;text-align:center;}
-.success-badge{font-size:52px;margin-bottom:14px;animation:popIn .6s cubic-bezier(.175,.885,.32,1.275);}
-@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
-.success-c h2{font-family:'Bebas Neue',cursive;font-size:34px;letter-spacing:2px;color:#fff;margin-bottom:6px;}
-.tagline{font-size:13px;color:var(--dim);margin-bottom:22px;font-weight:300;}
-.score-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.28);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--green);margin-bottom:20px;}
-.booking-card{background:rgba(240,165,0,.04);border:1px solid rgba(240,165,0,.22);border-radius:8px;padding:20px 24px;max-width:460px;margin:0 auto 20px;text-align:left;}
-.booking-card h3{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:14px;}
-.b-item{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;gap:12px;}
-.b-item:last-child{border:none;}
-.b-label{color:var(--dim);flex-shrink:0;}
-.b-val{color:#fff;font-weight:700;text-align:right;}
-.b-val.free{color:var(--green);}
-.b-val.soon{color:var(--amber);}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:460px;margin:0 auto 16px;}
-.ff label{display:block;font-size:9px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;margin-bottom:5px;}
-.ff input,.ff select{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:4px;padding:9px 11px;color:#c8d8f0;font-family:inherit;font-size:13px;outline:none;transition:border-color .2s;}
-.ff input:focus,.ff select:focus{border-color:var(--gold);}
-.ff select option{background:var(--cockpit);}
-.btn-book{background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--deep);border:none;padding:13px 40px;border-radius:4px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;letter-spacing:1px;transition:all .3s;box-shadow:0 4px 28px rgba(240,165,0,.28);}
-.btn-book:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,165,0,.45);}
+/* REG FORM */
+.reg-card{
+  background:var(--white);border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow-lg);
+  border:1px solid rgba(0,0,0,0.04);
+  animation:fadeUp .4s ease;
+}
+.reg-top{background:var(--black);padding:24px 28px;}
+.reg-top-title{
+  font-family:'DM Serif Display',serif;
+  font-size:22px;color:var(--white);margin-bottom:4px;
+}
+.reg-top-sub{font-size:13px;color:rgba(255,255,255,0.4);font-weight:300;}
+.reg-body{padding:28px;}
+.reg-notice{
+  background:rgba(176,125,10,0.07);
+  border:1px solid rgba(176,125,10,0.2);
+  border-radius:12px;padding:13px 16px;
+  margin-bottom:22px;font-size:13px;
+  color:var(--gold);line-height:1.7;
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.ff label{
+  display:block;font-size:10px;font-weight:700;
+  letter-spacing:1.5px;color:var(--gray2);
+  text-transform:uppercase;margin-bottom:6px;
+}
+.ff label .req{color:var(--red);margin-left:2px;}
+.ff input,.ff select{
+  width:100%;background:var(--bg);
+  border:1.5px solid var(--gray3);border-radius:11px;
+  padding:11px 14px;color:var(--black);
+  font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;transition:all .2s;
+}
+.ff input:focus,.ff select:focus{border-color:var(--black);background:var(--white);}
+.ff input::placeholder{color:var(--gray2);}
+.ff select option{background:#fff;}
+.ff input.error,.ff select.error{border-color:#fca5a5;background:#fff1f2;}
+.btn-register{
+  width:100%;background:var(--black);color:var(--white);
+  border:none;border-radius:980px;padding:15px;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
+  cursor:pointer;transition:all .25s;margin-top:6px;
+}
+.btn-register:hover{background:#3a3a3c;transform:scale(1.01);}
+.btn-register:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+.save-status{
+  font-size:13px;margin-top:10px;padding:11px 14px;
+  border-radius:11px;display:none;text-align:center;
+}
+.save-status.show{display:block;}
+.save-status.ok{background:#f0fdf4;border:1px solid #86efac;color:var(--green);}
+.save-status.loading{background:var(--bg);border:1px solid var(--gray3);color:var(--gray1);}
 
 /* CONFIRM */
-.confirm-c{padding:36px 32px;text-align:center;}
-.confirm-code{font-family:'Share Tech Mono',monospace;font-size:26px;color:var(--green);letter-spacing:5px;margin:10px 0;text-shadow:0 0 18px rgba(0,255,136,.35);}
-.confirm-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:520px;margin:24px auto 0;}
-.c-step{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:16px 10px;text-align:center;}
-.c-step .num{font-family:'Bebas Neue',cursive;font-size:24px;color:var(--gold);margin-bottom:5px;}
-.c-step p{font-size:11px;color:var(--dim);line-height:1.6;}
+.confirm-body{padding:36px 28px;text-align:center;}
+.confirm-icon{font-size:52px;margin-bottom:14px;animation:popIn .6s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+.confirm-title{
+  font-family:'DM Serif Display',serif;
+  font-size:32px;color:var(--black);margin-bottom:8px;
+}
+.confirm-msg{
+  font-size:14px;color:var(--gray1);
+  max-width:360px;margin:0 auto 22px;line-height:1.85;font-weight:300;
+}
+.code-box{
+  background:var(--bg);border:1px solid var(--gray3);
+  border-radius:16px;padding:18px 24px;
+  max-width:300px;margin:0 auto 22px;
+}
+.code-label{
+  font-size:9px;font-weight:700;letter-spacing:2.5px;
+  color:var(--gray2);text-transform:uppercase;margin-bottom:7px;
+}
+.code-val{
+  font-family:'DM Sans',monospace;font-size:22px;
+  font-weight:700;color:var(--black);letter-spacing:4px;
+}
+.code-hint{font-size:11px;color:var(--gray2);margin-top:6px;line-height:1.6;}
+.confirm-steps{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;max-width:480px;margin:0 auto 20px;
+}
+.cstep{
+  background:var(--bg);border-radius:13px;padding:16px 10px;
+  text-align:center;border:1px solid rgba(0,0,0,0.04);
+}
+.cstep .num{
+  font-family:'DM Serif Display',serif;
+  font-size:22px;color:var(--gold);margin-bottom:5px;
+}
+.cstep p{font-size:11px;color:var(--gray1);line-height:1.6;}
+.cancel-box{
+  background:var(--bg);border:1px solid rgba(0,0,0,0.06);
+  border-radius:13px;padding:14px 18px;
+  max-width:420px;margin:0 auto 18px;
+  text-align:left;font-size:12px;color:var(--gray1);line-height:1.9;
+}
+.cancel-box strong{
+  display:block;font-size:9px;font-weight:700;
+  letter-spacing:1.5px;color:var(--gray2);
+  text-transform:uppercase;margin-bottom:5px;
+}
+.cancel-box a{color:var(--blue);text-decoration:none;}
+.share-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.btn-share{
+  display:flex;align-items:center;gap:6px;
+  padding:10px 20px;border-radius:980px;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  font-weight:600;cursor:pointer;transition:all .2s;border:none;
+}
+.btn-share.dark{background:var(--black);color:var(--white);}
+.btn-share.dark:hover{background:#3a3a3c;}
+.btn-share.light{background:transparent;color:var(--blue);border:1.5px solid rgba(0,113,227,0.25);}
+.btn-share.light:hover{background:rgba(0,113,227,0.06);}
+.share-toast{
+  font-size:12px;color:var(--green);
+  margin-top:8px;text-align:center;display:none;
+}
+.share-toast.show{display:block;animation:fadeUp .3s ease;}
+.contact-foot{
+  text-align:center;padding:14px;
+  font-size:12px;color:var(--gray2);
+  border-top:1px solid rgba(0,0,0,0.05);margin-top:8px;
+}
+.contact-foot a{color:var(--blue);text-decoration:none;}
 
-/* CONTACT FOOTER */
-.contact-strip{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:14px 20px;margin:0 auto 20px;max-width:460px;text-align:center;font-size:12px;color:var(--dim);line-height:1.8;}
-.contact-strip a{color:var(--gold);text-decoration:none;}
-.contact-strip a:hover{text-decoration:underline;}
+/* FOOTER */
+.site-footer{
+  text-align:center;padding:40px 24px;
+  border-top:1px solid rgba(0,0,0,0.08);
+  background:var(--white);
+}
+.site-footer p{font-size:12px;color:var(--gray2);line-height:2;}
+.site-footer a{color:var(--blue);text-decoration:none;}
 
-.promo{background:rgba(100,150,255,.05);border:1px solid rgba(100,150,255,.2);border-radius:6px;padding:14px 18px;margin:0 auto 18px;max-width:560px;text-align:center;font-size:12px;color:#7ab0ff;line-height:1.7;}
-.promo strong{color:#a8c8ff;}
-
-/* SAVE STATUS */
-.save-status{font-size:11px;color:var(--dim);margin-top:8px;min-height:16px;text-align:center;}
-.save-status.ok{color:var(--green);}
-.save-status.err{color:var(--red);}
-
-@keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+/* UTILS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-.foot{text-align:center;margin-top:32px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.12);}
-
-/* MOBILE */
 @media(max-width:600px){
-  .quiz-c,.intro-c,.success-c,.confirm-c{padding:20px 16px;}
-  .form-grid{grid-template-columns:1fr;}
-  .confirm-steps{grid-template-columns:1fr;}
-  .hero h1{font-size:50px;}
-  .slot-banner{font-size:11px;padding:6px 12px;}
-  .wrapper{padding:90px 14px 60px;}
-  .ai-c{padding:16px;}
-  .booking-card{padding:16px;}
+  .honest-grid,.exp-grid,.loc-grid,.form-grid,.confirm-steps{grid-template-columns:1fr;}
+  .exp-card.span-full{grid-column:1;}
+  .loc-card.accent{grid-column:1;}
+  .qbody,.ai-wrap,.reg-body,.confirm-body{padding:16px;}
+  .qcard-top,.reg-top{padding:14px 16px;}
+  .hero{padding:90px 16px 40px;}
+  .hero h1{font-size:44px;letter-spacing:-1px;}
+  .btn-pill{padding:12px 20px;font-size:14px;}
+  .section{padding:56px 16px;}
+  .host-section,.honest-section,.exp-section,.loc-section{padding:56px 16px;}
+  .section-h{font-size:28px;}
+  .q-text{font-size:18px;}
+  .cd-unit .cd-num{font-size:22px;}
+  .countdown-bar{gap:10px;padding:8px 14px;}
+  .confirm-title{font-size:26px;}
+  .code-val{font-size:18px;letter-spacing:2px;}
 }
 </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
-<div class="horizon"></div>
-<div class="hud-frame"></div>
 
 <div class="lang-bar">
   <button class="lang-btn active" onclick="setLang('ko',event)">🇰🇷 한국어</button>
   <button class="lang-btn" onclick="setLang('en',event)">🇺🇸 English</button>
   <button class="lang-btn" onclick="setLang('ja',event)">🇯🇵 日本語</button>
   <button class="lang-btn" onclick="setLang('zh',event)">🇨🇳 中文</button>
+  <div class="live-clock" id="liveClock">
+    <span id="clockDate" class="clock-date-part"></span>
+    <span class="clock-sep">·</span>
+    <span id="clockTime" class="clock-time-part"></span>
+  </div>
 </div>
 
-<div class="slot-banner" id="slotBanner">
-  🎁 무료 1박 선착순 — 현재 <strong id="slotCount">?</strong>명 등록 / 30명 한정
+<!-- 카운트다운 배너 -->
+<div class="countdown-bar" id="countdownBar">
+  <span class="cd-label" id="cdLabel">OPENING IN</span>
+  <div class="cd-units">
+    <div class="cd-unit"><span class="cd-num" id="cdD">--</span><span class="cd-text" id="cdDL">DAYS</span></div>
+    <span class="cd-colon">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cdH">--</span><span class="cd-text" id="cdHL">HRS</span></div>
+    <span class="cd-colon">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cdM">--</span><span class="cd-text" id="cdML">MIN</span></div>
+    <span class="cd-colon">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cdS">--</span><span class="cd-text" id="cdSL">SEC</span></div>
+  </div>
 </div>
 
-<div class="wrapper">
-  <div class="hero">
-    <div class="hero-eye">✈ SEOUL · JUNGNANG · COCKPIT EXPERIENCE</div>
-    <h1>FLY:<span>HOME</span></h1>
+<!-- ══ HERO ══ -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><div class="live-dot"></div><span id="heroEye"></span></div>
+    <h1 id="heroH1">FLY:<em>HOME</em></h1>
+    <p class="beta-label">(beta)</p>
+    <p class="hero-tagline" id="heroTagline"></p>
     <p class="hero-sub" id="heroSub"></p>
+    <div class="cta-row">
+      <button class="btn-pill dark" onclick="goToSection('#quizSection')" id="heroCta1"></button>
+      <button class="btn-pill outline" onclick="goToSection('#quizSection',true)" id="heroCta2"></button>
+    </div>
+    <div class="hero-img-wrap">
+      <!-- 사진 교체: <img class="hero-img" src="YOUR_PHOTO_URL" alt="FLY:HOME"> -->
+      <div class="hero-img-placeholder" id="heroImgSlot">
+        <div class="icon">✈</div>
+        <div class="label">PHOTO COMING SOON</div>
+      </div>
+      <div class="hero-img-overlay">
+        <span class="hero-img-caption" id="heroImgCaption"></span>
+      </div>
+    </div>
   </div>
-  <div class="purpose-row">
-    <div class="purpose-badge pb-quiz" id="pb1"></div>
-    <div class="purpose-badge pb-stay" id="pb2"></div>
-    <div class="purpose-badge pb-biz"  id="pb3"></div>
+</section>
+
+<!-- ══ HOST STORY ══ -->
+<section class="host-section">
+  <div class="host-inner">
+    <p class="label-tag" style="color:rgba(255,255,255,0.25)" id="hostLabel"></p>
+    <blockquote class="host-quote" id="hostQuote"></blockquote>
+    <p class="host-body" id="hostBody"></p>
+    <p class="host-sig" id="hostSig"></p>
   </div>
-  <div class="alt-bar">
-    <span class="alt-label">PROGRESS</span>
-    <div class="alt-track"><div class="alt-fill" id="progressBar"></div></div>
-    <span class="alt-val" id="progressText">0%</span>
+</section>
+
+<!-- ══ HONEST ══ -->
+<section class="honest-section">
+  <div class="section-inner">
+    <p class="label-tag" id="honestLabel"></p>
+    <h2 class="section-h" id="honestTitle"></h2>
+    <p class="section-p" id="honestBody"></p>
+    <div class="honest-grid" id="honestGrid"></div>
   </div>
-  <div class="dots" id="dots"></div>
-  <div class="screen" id="mainScreen"></div>
-  <div class="foot">FLY:HOME PILOT PROGRAM · SEOUL 2026 · JUNGNANG-GU · 관광벤처사업 실증 프로젝트</div>
+</section>
+
+<!-- ══ EXPERIENCE ══ -->
+<section class="exp-section">
+  <div class="section-inner">
+    <p class="label-tag" id="expLabel"></p>
+    <h2 class="section-h" id="expTitle"></h2>
+    <p class="section-p" id="expBody"></p>
+    <div class="exp-grid" id="expGrid"></div>
+  </div>
+</section>
+
+<!-- ══ LOCATION ══ -->
+<section class="loc-section">
+  <div class="section-inner">
+    <p class="label-tag" id="locLabel"></p>
+    <h2 class="section-h" id="locTitle"></h2>
+    <p class="section-p" id="locBody"></p>
+    <div class="loc-grid" id="locGrid"></div>
+  </div>
+</section>
+
+<!-- ══ QUIZ + REG ══ -->
+<section class="quiz-section" id="quizSection">
+  <div class="quiz-inner">
+    <p class="label-tag" style="text-align:center" id="quizSectionLabel"></p>
+    <div class="dots-row" id="dots"></div>
+    <div id="screenContent"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>FLY:HOME (beta) · Seoul Jungnang-gu Mangu-dong · 2026</p>
+  <p>관광벤처사업 실증 프로젝트 · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a></p>
+  <p style="margin-top:8px;font-size:11px;">
+    <a href="#" onclick="showPrivacy();return false;" style="color:var(--gray2);text-decoration:none;">개인정보처리방침 · Privacy Policy</a>
+    &nbsp;·&nbsp;<span style="color:var(--gray3)">신청 정보는 오픈 알림 목적으로만 사용됩니다</span>
+  </p>
+</footer>
+<div id="privacyModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;overflow-y:auto;padding:20px;">
+  <div style="background:#fff;border-radius:18px;max-width:520px;margin:40px auto;padding:32px;position:relative;">
+    <button onclick="document.getElementById('privacyModal').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px;">✕</button>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:16px;">개인정보처리방침</h2>
+    <div style="font-size:13px;line-height:2;color:var(--gray1);">
+      <p><strong>수집 항목:</strong> 이름, 이메일, 국적, 방문 예정 시기</p>
+      <p><strong>수집 목적:</strong> FLY:HOME 오픈 알림 발송, 베타 무료 1박 혜택 제공</p>
+      <p><strong>보유 기간:</strong> 오픈 알림 발송 후 1년 또는 본인 요청 시 즉시 삭제</p>
+      <p><strong>제3자 제공:</strong> 없음</p>
+      <p><strong>삭제 요청:</strong> <a href="mailto:flyhome.hq@gmail.com" style="color:var(--blue)">flyhome.hq@gmail.com</a></p>
+      <hr style="margin:14px 0;border-color:var(--gray3);">
+      <p><strong>Privacy Policy (EN):</strong> We collect name, email, nationality, and planned visit date solely to send opening notifications. No third-party sharing. Deletion available any time by email.</p>
+    </div>
+  </div>
 </div>
 
 <script>
-/* STARS */
-(()=>{
-  const c=document.getElementById('stars'),ctx=c.getContext('2d');
-  c.width=window.innerWidth;c.height=window.innerHeight;
-  for(let i=0;i<200;i++){const x=Math.random()*c.width,y=Math.random()*c.height,r=Math.random()*1.1;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${Math.random()*.6+.2})`;ctx.fill();}
-})();
+const CONTACT='flyhome.hq@gmail.com';
+const PASS=4;
 
-/* TRANSLATIONS */
+/* ══ TRANSLATIONS ══ */
 const T={
-  ko:{heroSub:"항공 퀴즈 5문제를 풀어보세요!\n서울 중랑구 비행 콕핏 체험 숙소 <strong style='color:var(--gold)'>FLY:HOME</strong>을 소개합니다",
-  pb1:"✈ 퀴즈 → 무료 숙박",pb2:"🛏 콕핏 체험 숙박",pb3:"📊 지원사업 실증",screenHdr:"브리핑 진행 중",
-  introH2:"조종석에 앉을 준비 됐나요?",
-  introP:"딱 5문제예요. 어렵지 않아요 😊\n퀴즈를 통과하면 서울 중랑구 <strong style='color:#fff'>FLY:HOME</strong>에서\n<strong style='color:var(--gold)'>무료 1박 + 비행 콕핏 무제한 체험</strong> 기회를 드립니다!\n(선착순 30명, 2026년 하반기 오픈 시 사용)",
-  rewardTitle:"✦ 퀴즈 통과 시 혜택",
-  rewards:["🛏 신내동 FLY:HOME 무료 1박 (선착순 30명)","✈️ 세스나/보잉 콕핏 무제한 체험","🌆 Microsoft Flight Sim · 서울 도심 비행","📸 파일럿 수료증 + 기념 사진"],
-  btnStart:"🛫 퀴즈 시작하기",btnNext_mid:"다음 문제 →",btnNext_end:"결과 확인 →",
-  aiHdr:"AI 안내 · 질문하세요",aiPlaceholder:"한국 방문 일정, 체험 내용 등 자유롭게 질문하세요...",btnSend:"전송 ✈",
-  quickQ:["언제 오픈해요?","위치가 어디예요?","체험은 어떻게 해요?","예약 방법은?"],
-  btnGoBook:"🏆 예약 화면으로",btnRetry:"🔄 다시 도전",
-  successH2:"파일럿 자격 취득!",tagline:"퀴즈 통과 · 예약 슬롯이 열렸습니다",
-  bookTitle:"✦ 체험 예약 내역",
-  bookItems:[["숙소","FLY:HOME · 서울 중랑구 신내동"],["콕핏 체험","세스나 172 + 보잉 737 · 무제한"],["소프트웨어","Microsoft Flight Simulator"],["숙박비 (1박)","🎁 무료 (퀴즈 통과 혜택)"],["오픈 예정","2026년 하반기 · 사전 등록 중"]],
-  freeLabel:"🎁 무료",soonLabel:"2026 하반기",
-  formLabels:["이름 · Name","이메일 · Email","국적","방문 예정 시기"],
-  btnBook:"🛫 사전 예약 등록",
-  nations:["🇯🇵 일본","🇺🇸 미국","🇬🇧 영국","🇨🇳 중국","🇹🇼 대만","🇹🇭 태국","🇻🇳 베트남","🇦🇺 호주","🇰🇷 한국","기타"],
-  dates:["2026년 하반기","2027년 상반기","2027년 이후","미정"],
-  confirmH2:"예약 완료!",
-  confirmMsg:"FLY:HOME 파일럿 프로그램에 등록하셨습니다.\n정식 오픈 시 이메일로 가장 먼저 안내드립니다.",
-  confirmSteps:[["01","이메일 확인\n등록 안내 메일 발송"],["02","오픈 알림\n2026 하반기 우선 연락"],["03","서울 도착\n신내역 → FLY:HOME 안내"]],
-  btnShare:"📤 공유하기",btnAgain:"🔄 처음부터",
-  promoText:"<strong>관광벤처사업 2026 지원 프로젝트</strong><br>이 페이지의 방문자 수·퀴즈 참여율·국적별 데이터는 실제 수요 검증 자료로 활용됩니다",
-  noticeText:"* FLY:HOME은 현재 준비 중이며, 정식 오픈 시 사전 등록자께 우선 연락드립니다",
-  aiInitPass:"수고하셨습니다! 퀴즈를 통과하셨어요 🎉\nFLY:HOME은 서울 중랑구에 준비 중인 비행 콕핏 체험 숙소예요.\n궁금한 점이 있으면 편하게 물어보세요!",
-  aiInitFail:"아쉽네요! 3개 이상 맞추면 통과입니다. 다시 도전해보세요!\n그래도 FLY:HOME에 대해 궁금한 점이 있으면 물어보세요 😊",
-  slotBanner:"🎁 무료 1박 선착순 — 현재 <strong id='slotCount'>?</strong>명 등록 / 30명 한정",
-  saveOk:"✅ 등록 완료! 이메일을 확인해주세요.",saveErr:"⚠️ 저장 오류. 이메일로 직접 문의해주세요.",
-  contactLabel:"문의 · 연락",saving:"저장 중..."},
-  en:{heroSub:"5 easy aviation quiz questions!\nWin a <strong style='color:var(--gold)'>FREE night + unlimited cockpit experience</strong> at FLY:HOME, Seoul",
-  pb1:"✈ Quiz → Free Stay",pb2:"🛏 Cockpit Stay",pb3:"📊 Tourism Pilot",screenHdr:"BRIEFING IN PROGRESS",
-  introH2:"Ready to take the controls?",
-  introP:"Just 5 easy questions — anyone can do it! 😊\nPass the quiz to win a <strong style='color:var(--gold)'>FREE night + unlimited cockpit experience</strong>\nat FLY:HOME, Jungnang-gu Seoul.\n(First 30 guests · Opens 2026 H2)",
-  rewardTitle:"✦ PILOT REWARDS (Quiz Pass)",
-  rewards:["🛏 1 Free Night at FLY:HOME, Jungnang (first 30)","✈️ Unlimited Cessna / Boeing Cockpit","🌆 Microsoft Flight Sim over Seoul","📸 Pilot Certificate + Photo"],
-  btnStart:"🛫 START QUIZ",btnNext_mid:"Next →",btnNext_end:"See Results →",
-  aiHdr:"AI GUIDE · Ask Anything",aiPlaceholder:"Ask about your Korea visit, cockpit, booking...",btnSend:"Send ✈",
-  quickQ:["When does it open?","Where is it?","How does cockpit work?","How to book?"],
-  btnGoBook:"🏆 Go to Booking",btnRetry:"🔄 Try Again",
-  successH2:"PILOT CLEARANCE!",tagline:"Quiz passed · Booking slot unlocked",
-  bookTitle:"✦ BOOKING DETAILS",
-  bookItems:[["Location","FLY:HOME · Sinnae-dong, Jungnang-gu, Seoul"],["Cockpit","Cessna 172 + Boeing 737 · Unlimited"],["Software","Microsoft Flight Simulator"],["Stay (1 Night)","🎁 FREE (Quiz reward)"],["Opening","2nd half 2026 · Pre-reg open"]],
-  freeLabel:"🎁 FREE",soonLabel:"2026 H2",
-  formLabels:["Your Name","Email","Nationality","Planned Visit"],
-  btnBook:"🛫 REGISTER NOW",
-  nations:["🇯🇵 Japan","🇺🇸 USA","🇬🇧 UK","🇨🇳 China","🇹🇼 Taiwan","🇹🇭 Thailand","🇻🇳 Vietnam","🇦🇺 Australia","🇰🇷 Korea","Other"],
-  dates:["2026 (2nd half)","2027 (1st half)","2027 or later","Not sure"],
-  confirmH2:"ALL CONFIRMED!",
-  confirmMsg:"You're registered for the FLY:HOME Pilot Program.\nWe'll contact you first when we open!",
-  confirmSteps:[["01","Check Email\nConfirmation sent"],["02","Opening Alert\nPriority contact 2026"],["03","Arrive Seoul\nSinnae Stn → FLY:HOME"]],
-  btnShare:"📤 Share",btnAgain:"🔄 Start Over",
-  promoText:"<strong>2026 Tourism Venture Pilot Project</strong><br>Visit data, quiz stats & nationality breakdown used as demand proof for government grant",
-  noticeText:"* FLY:HOME is in preparation. Pre-registered guests contacted first at opening.",
-  aiInitPass:"Great job! You passed 🎉\nFLY:HOME is a cockpit experience stay in Jungnang-gu, Seoul.\nAsk me anything!",
-  aiInitFail:"So close! Need 3+ to pass. Try again?\nFeel free to ask about FLY:HOME 😊",
-  saveOk:"✅ Registered! Check your email.",saveErr:"⚠️ Save error. Please email us directly.",
-  contactLabel:"Contact",saving:"Saving..."},
-  ja:{heroSub:"簡単な航空クイズ5問に挑戦！\nソウル中浪区<strong style='color:var(--gold)'>FLY:HOME</strong>の無料宿泊を獲得しよう",
-  pb1:"✈ クイズ→無料宿泊",pb2:"🛏 コックピット体験",pb3:"📊 観光実証事業",screenHdr:"ブリーフィング進行中",
-  introH2:"操縦席に座る準備はできましたか？",
-  introP:"たった5問、誰でも答えられます 😊\nクイズに合格すると<strong style='color:var(--gold)'>無料1泊＋コックピット体験し放題</strong>をプレゼント！\n（先着30名・2026年下半期オープン時使用可）",
-  rewardTitle:"✦ クイズ合格特典",
-  rewards:["🛏 FLY:HOME無料1泊（先着30名）","✈️ セスナ/ボーイング コックピット体験し放題","🌆 Microsoft Flight Simでソウル上空を飛行","📸 パイロット修了証 + 記念写真"],
-  btnStart:"🛫 クイズをはじめる",btnNext_mid:"次の問題 →",btnNext_end:"結果を確認 →",
-  aiHdr:"AIガイド · 何でも聞いてください",aiPlaceholder:"韓国旅行の予定、体験内容など自由に質問してください...",btnSend:"送信 ✈",
-  quickQ:["いつオープン？","場所はどこ？","体験方法は？","予約方法は？"],
-  btnGoBook:"🏆 予約画面へ",btnRetry:"🔄 もう一度挑戦",
-  successH2:"パイロット資格取得！",tagline:"クイズ合格・予約スロットが開きました",
-  bookTitle:"✦ 体験予約内容",
-  bookItems:[["宿泊地","FLY:HOME · ソウル中浪区新内洞"],["コックピット","セスナ172 + ボーイング737 · し放題"],["ソフトウェア","Microsoft Flight Simulator"],["宿泊費（1泊）","🎁 無料（クイズ合格特典）"],["オープン予定","2026年下半期 · 事前登録中"]],
-  freeLabel:"🎁 無料",soonLabel:"2026年下半期",
-  formLabels:["お名前","メールアドレス","国籍","訪問予定時期"],
-  btnBook:"🛫 事前登録する",
-  nations:["🇯🇵 日本","🇺🇸 アメリカ","🇬🇧 イギリス","🇨🇳 中国","🇹🇼 台湾","🇹🇭 タイ","🇻🇳 ベトナム","🇦🇺 オーストラリア","🇰🇷 韓国","その他"],
-  dates:["2026年下半期","2027年上半期","2027年以降","未定"],
-  confirmH2:"予約完了！",
-  confirmMsg:"FLY:HOMEパイロットプログラムに登録されました。\n正式オープン時に最初にご連絡いたします。",
-  confirmSteps:[["01","メール確認\n登録案内メール送信"],["02","オープン通知\n2026年優先連絡"],["03","ソウル到着\n新内駅→FLY:HOME"]],
-  btnShare:"📤 シェアする",btnAgain:"🔄 最初から",
-  promoText:"<strong>2026年観光ベンチャー実証プロジェクト</strong><br>訪問データ・クイズ参加率・国籍別データは需要検証資料として活用されます",
-  noticeText:"※ FLY:HOMEは準備中です。正式オープン時に事前登録の方を優先してご連絡します。",
-  aiInitPass:"お疲れ様でした！クイズに合格しました 🎉\nFLY:HOMEはソウル中浪区で準備中のコックピット体験施設です。\n何でも聞いてください！",
-  aiInitFail:"惜しい！3問以上正解で合格です。もう一度挑戦してみましょう！",
-  saveOk:"✅ 登録完了！メールをご確認ください。",saveErr:"⚠️ エラーが発生しました。メールで直接お問い合わせください。",
-  contactLabel:"お問い合わせ",saving:"保存中..."},
-  zh:{heroSub:"简单的5道航空问答题！\n赢取首尔<strong style='color:var(--gold)'>FLY:HOME飞行舱体验民宿免费一晚</strong>",
-  pb1:"✈ 问答→免费住宿",pb2:"🛏 驾驶舱体验",pb3:"📊 旅游实证项目",screenHdr:"简报进行中",
-  introH2:"准备好坐上驾驶舱了吗？",
-  introP:"只有5道题，超级简单 😊\n通过问答即可获得<strong style='color:var(--gold)'>免费住宿一晚＋飞行舱无限体验</strong>！\n（先到先得30名·2026年下半年开业时使用）",
-  rewardTitle:"✦ 通过问答即可获得的奖励",
-  rewards:["🛏 FLY:HOME免费住宿一晚（先到先得30名）","✈️ 塞斯纳/波音驾驶舱无限体验","🌆 Microsoft飞行模拟器飞越首尔上空","📸 飞行员证书＋纪念照片"],
-  btnStart:"🛫 开始问答",btnNext_mid:"下一题 →",btnNext_end:"查看结果 →",
-  aiHdr:"AI导览 · 随时提问",aiPlaceholder:"随时询问韩国行程、体验内容、预约方法等...",btnSend:"发送 ✈",
-  quickQ:["什么时候开业？","在哪里？","体验是怎样的？","如何预约？"],
-  btnGoBook:"🏆 前往预约",btnRetry:"🔄 再次挑战",
-  successH2:"飞行员资格达成！",tagline:"问答通过 · 预约名额已开放",
-  bookTitle:"✦ 体验预约详情",
-  bookItems:[["地址","FLY:HOME · 首尔中浪区新内洞"],["驾驶舱","塞斯纳172 + 波音737 · 无限"],["软件","Microsoft Flight Simulator"],["住宿费（1晚）","🎁 免费（问答通过特典）"],["开业预定","2026年下半年 · 预约登记中"]],
-  freeLabel:"🎁 免费",soonLabel:"2026下半年",
-  formLabels:["姓名","电子邮件","国籍","计划访问时间"],
-  btnBook:"🛫 立即预约登记",
-  nations:["🇨🇳 中国","🇹🇼 台湾","🇯🇵 日本","🇺🇸 美国","🇹🇭 泰国","🇻🇳 越南","🇦🇺 澳大利亚","🇰🇷 韩国","其他"],
-  dates:["2026年下半年","2027年上半年","2027年以后","尚未决定"],
-  confirmH2:"预约完成！",
-  confirmMsg:"您已成功登记FLY:HOME先行体验项目。\n正式开业时将优先联系您！",
-  confirmSteps:[["01","查收邮件\n登记确认邮件已发送"],["02","开业通知\n2026年优先联系"],["03","抵达首尔\n新内站→FLY:HOME"]],
-  btnShare:"📤 分享",btnAgain:"🔄 重新开始",
-  promoText:"<strong>2026年旅游创业实证项目</strong><br>访问量、问答参与率、国籍数据将作为实际需求验证资料使用",
-  noticeText:"※ FLY:HOME目前正在准备中。正式开业时将优先联系事先登记的用户。",
-  aiInitPass:"太棒了！您通过了问答 🎉\nFLY:HOME是首尔中浪区正在筹备中的飞行驾驶舱体验民宿。\n有任何问题都可以随时询问！",
-  aiInitFail:"遗憾！答对3题以上才能通过。要再次挑战吗？",
-  saveOk:"✅ 登记完成！请查收邮件。",saveErr:"⚠️ 保存失败。请直接发送邮件联系我们。",
-  contactLabel:"联系我们",saving:"保存中..."}
+  ko:{
+    cdLabel:'오픈까지',cdDays:'일',cdHrs:'시간',cdMin:'분',cdSec:'초',
+    counterLabel:'베타 무료 신청',counterLimit:'30명 한정',counterSuffix:'명 신청 완료',
+    heroEye:'SEOUL · 한국 최초 비행 시뮬레이션 숙소 · 2026년 3분기 오픈 예정',
+    heroTagline:'Seoul is calling.',
+    heroSub:'항공 퀴즈 5문제를 풀고\n서울 중랑구 <strong>FLY:HOME</strong>의 무료 1박을 경험하세요.',
+    heroCta1:'✈ 퀴즈 시작하기',heroCta2:'바로 알림 신청',
+    heroImgCaption:'* 오픈 후 실제 숙소 사진으로 교체 예정',
+
+    hostLabel:'호스트 이야기',
+    hostQuote:'좋은 호텔은 하나도 기억나지 않아요.\n불편했던 그 숙소들만, 지금도 선명해요.',
+    hostBody:'35년 전, 배낭 하나와 영어사전 한 권을 들고 아시아를 떠돌았어요. 대만의 작은 마을에서, 처음 본 소녀가 낯선 이방인인 저를 자기 집으로 이끌었어요. 엄마가 밥을 차려줬고, 천장의 선풍기가 느릿느릿 돌았어요. 말은 통하지 않았지만, 그 아이의 얼굴이 지금도 생생해요. 귀국 후에도 몇 년간 그 소녀와 편지와 사진을 주고받았어요. 한국과 대만이 공식 수교가 단절됐던 그 시절의 일이에요.\n\n그 후로 좋은 호텔을 많이 다녔어요. 하나도 기억나지 않아요.\n\n에어비앤비라는 단어조차 없던 시절, 여행은 곧 사람과의 만남이었어요. 그 마음 하나로 FLY:HOME을 만들었습니다. 서울 주택가의 작은 집에서, 아무도 상상하지 못한 경험을 드리고 싶어요.',
+    hostSig:'— FLY:HOME 호스트 · 35년 전 배낭 하나로 아시아를 여행한 사람',
+
+    honestLabel:'솔직하게 말씀드릴게요',
+    honestTitle:'모든 분께\n맞지는 않아요.',
+    honestBody:'기대와 현실이 다를 때 실망이 생겨요. 솔직하게 알려드릴게요.',
+    honestCards:[
+      {type:'good',title:'✅ 이런 분께 딱 맞아요',items:[
+        '진짜 서울 동네 골목을 걷고 싶은 분',
+        '비행 시뮬레이션에 관심 있는 분 (입문자 환영)',
+        '호텔보다 독특한 경험을 원하는 분',
+        '혼자 여행 중 특별한 밤을 원하는 분',
+        '한국 여행의 남다른 추억을 만들고 싶은 분',
+      ]},
+      {type:'caution',title:'⚠️ 이런 분께는 맞지 않을 수 있어요',items:[
+        '명동·홍대 도보 거리 숙소를 원하시는 분',
+        '호텔 수준의 서비스와 시설을 기대하시는 분',
+        '항공사 훈련용 수억짜리 장비를 기대하시는 분 (가정용 고급 파일럿 장비예요)',
+        '매우 넓고 럭셔리한 공간을 원하시는 분 (1~2인용 소형)',
+      ]},
+    ],
+
+    expLabel:'체험 내용',
+    expTitle:'No airport\nneeded.',
+    expBody:'비행 시뮬레이터 카페는 1시간에 10만원 이상이에요. FLY:HOME에서는 체크인부터 체크아웃까지 무제한 — 숙박비에 포함이에요.\n\n💰 베타 무료 1박: 퀴즈 통과자 선착순 30명 · 이후 일반 6~8만원/박 (예정)\n장비 이용료: 숙박비 포함, 체크인~체크아웃 무제한',
+    expCards:[
+      {icon:'🕹️',title:'비행 시뮬레이션 장비',short:'Winwing · Thrustmaster + RTX 4090급 PC',detail:{
+        title:'장비 구성',
+        body:'비행 시뮬 매니아도 만족할 최신 하드웨어를 준비하고 있어요. 이 장비를 집에 모두 갖추려면 수천만 원이 필요해요.',
+        items:['Winwing & Thrustmaster 스로틀 + 러더 페달 (최신 모델)','3면 대형 스크린 — 주변시야까지 완전 몰입','RTX 4090급 GPU · Intel Core i9 · 64GB RAM','4K 초고화질 · 120fps+ 부드러운 비행','Microsoft Flight Simulator 2024','경비행기 콕핏 프레임 구현 중 · 보잉 콕핏 추진 예정'],
+        chips:['Winwing','Thrustmaster','RTX 4090급','MSFS 2024','3-Screen','4K'],
+        note:'💡 예약자에게 사전 학습 자료를 제공해드려요. 초보자도 하루밤이면 충분해요.',
+      }},
+      {icon:'🌃',title:'서울 야경 비행',short:'조종석에서 내려다보는 서울의 밤',detail:{
+        title:'이런 서울은 처음이에요',
+        body:'경비행기로 서울 도심 상공을 날며 한강, N서울타워, 도심 야경을 내려다보세요. 초보자가 하루밤에 익히기 좋은 건 경비행기예요. 조작이 직관적이고, 저공비행으로 서울의 디테일이 보여요.',
+        items:['한강 위를 날며 서울 파노라마 감상','N서울타워 · 63빌딩 저공통과','야간 도심 야경 비행 루트','기념 스크린샷 + 파일럿 수료증'],
+        chips:['서울 야경','경비행기','저공비행','야간 루트'],
+        note:'🌙 저녁 체크인 후 밤새 즐길 수 있어요. 숙소니까요.',
+      }},
+      {icon:'🏠',title:'숙소 안내',short:'서울 주택가의 진짜 로컬 홈스테이',detail:{
+        title:'작지만 특별한 공간',
+        body:'FLY:HOME은 호텔이 아니에요. 서울 중랑구 망우동의 실제 주택가에 있는 1~2인용 소형 숙소예요. 화려하지 않아요. 하지만 아무도 못 해봤던 경험을 드려요.',
+        items:['1~2인 전용 소형 객실','한국 로컬 주택가 분위기 (에어비앤비 스타일)','기본 편의시설 완비','조용한 주거 지역 위치'],
+        chips:['1~2인용','홈스테이','로컬'],
+        note:'⚠️ 럭셔리 호텔을 기대하신다면 맞지 않을 수 있어요.',
+      }},
+      {icon:'🇰🇷',title:'K-컬처 + 베타 참여',short:'한국 여행의 새로운 경험을 함께 만들어요',detail:{
+        title:'한국 최초 · 당신의 참여가 만들어요',
+        body:'FLY:HOME은 한국 정부 관광벤처 프로그램의 일환으로, 소외지역에 독특한 테마 숙소를 실증하는 프로젝트예요. K팝, K뷰티, K드라마를 넘어 — 이제 K-경험이에요.\n\n여러분의 참여가 늘어날수록 더 좋은 장비와 시설로 발전해요. 당신이 그 첫 번째 게스트예요.',
+        items:['한국 최초 비행 시뮬레이션 테마 숙소','관광벤처사업 실증 참여 게스트','베타 참여 특별 혜택 적용','여러분의 피드백이 시설을 개선해요'],
+        chips:['한국 최초','베타','K-Experience','관광벤처'],
+        note:'🌟 지금 신청하면 베타 게스트로 가장 먼저 경험할 수 있어요.',
+      }},
+    ],
+
+    locLabel:'위치 & 접근성',
+    locTitle:'명동에 없어요.\n그게 핵심이에요.',
+    locBody:'관광객으로 가득 찬 도심 호텔이 아니에요. 하지만 서울 어디든 40분이면 닿아요.',
+    locCards:[
+      {icon:'🚉',title:'망우역 도보 11~14분',body:'경의중앙선 망우역에서 도보 11~14분, 승용차 4분이에요. 명동 39분 · 시청 40분 · 건대입구 32분 · 동대문 34분 · 강남 47분'},
+      {icon:'✈️',title:'공항버스 직결',body:'인천공항·김포공항 직행 버스가 있어요. 공항에서 바로 FLY:HOME으로 올 수 있어요.'},
+      {icon:'🏕️',title:'주변 즐길 거리',body:'중랑캠핑장 (도보 20분), 망우역 전통시장, 봉화산 하이킹 등 관광책에 없는 진짜 서울이 있어요.'},
+      {type:'accent',title:'중랑구는 지도 밖이 아니에요.',body:'대부분의 여행자가 발견하지 못한 진짜 서울이에요. 조용하고, 로컬하고, 더 진짜예요. 인천공항에서 공항버스로 약 2시간이에요.',transit:['경의중앙선 망우역','인천공항 버스 2시간','명동까지 39분','강남까지 47분']},
+    ],
+
+    quizSectionLabel:'퀴즈에 참여하고 무료 1박에 도전하세요',
+    screenHdr:'항공 퀴즈',
+    passMsg:'🎉 {score}/5 정답 · 통과! 무료 1박 혜택이 생겼어요.',
+    failMsg:'아쉽네요! {score}/5점이에요. 4개 이상이면 통과예요.\n그래도 오픈 알림은 누구나 신청할 수 있어요!',
+    quickQ:['언제 오픈?','위치가 어디?','장비가 뭔가요?','초보도 괜찮아요?'],
+    aiPlaceholder:'궁금한 점을 자유롭게 물어보세요...',
+    btnSend:'전송',
+    btnGoReg:'📋 오픈 알림 신청',
+    btnRetry:'🔄 다시 도전',
+    btnNext_mid:'다음 문제 →',
+    btnNext_end:'결과 보기 →',
+    regTitle:'2026 오픈 알림 신청',
+    regSub:'2026년 3분기 오픈 시 가장 먼저 연락드립니다. 무료예요.',
+    regNotice:'🏆 퀴즈 통과자(4/5 이상)는 무료 1박 — 선착순 30명 한정이에요. 통과 여부와 관계없이 누구나 오픈 알림 신청 가능해요.',
+    formLabels:['이름','이메일','국적','방문 예정 시기'],
+    nations:['🇯🇵 일본','🇺🇸 미국','🇬🇧 영국','🇨🇳 중국','🇹🇼 대만','🇹🇭 태국','🇻🇳 베트남','🇦🇺 호주','🇰🇷 한국','기타'],
+    dates:['2026년 3분기(6월~)','2027년 상반기','2027 이후','미정'],
+    btnReg:'✈ 오픈 알림 신청하기',
+    validErr:'이름, 이메일, 국적을 입력해주세요.',
+    saving:'저장 중...',saveOk:'✅ 신청 완료! 오픈 시 가장 먼저 안내드릴게요.',
+    confirmTitle:'신청 완료!',
+    confirmMsg:'FLY:HOME 오픈 알림이 등록됐어요.\n정식 오픈 시 이메일로 가장 먼저 안내드립니다.',
+    confirmCodeLabel:'신청 확인 번호',
+    confirmCodeHint:'📸 스크린샷으로 저장해두세요',
+    confirmSteps:[['01','이메일 확인\n안내 메일 발송'],['02','오픈 알림\n2026년 3분기 우선 연락'],['03','서울 도착\n망우역 → FLY:HOME']],
+    cancelTitle:'취소·변경',
+    cancelDesc:'언제든지 취소 가능합니다.\n신청 번호와 함께 이메일로 문의해주세요.',
+    btnShare:'📤 공유',btnCopy:'📋 링크 복사',btnAgain:'처음으로',
+    shareToast:'✅ 링크 복사됐어요!',
+    contact:'문의',
+    alreadyTitle:'이미 신청하셨어요',alreadyCode:'신청 번호: ',
+  },
+  en:{
+    cdLabel:'OPENING IN',cdDays:'DAYS',cdHrs:'HRS',cdMin:'MIN',cdSec:'SEC',
+    counterLabel:'Beta Free Night',counterLimit:'30 spots only',counterSuffix:'registered',
+    heroEye:"SEOUL · KOREA'S FIRST FLIGHT SIM STAY · OPENING 2026 Q3",
+    heroTagline:'Seoul is calling.',
+    heroSub:'Answer 5 fun aviation questions\nand unlock a <strong>FREE night</strong> at FLY:HOME Seoul.\n<span style="font-size:13px;opacity:.7">(It\'s a game — no aviation knowledge needed!)</span>',
+    heroCta1:'✈ Play the Quiz',heroCta2:'Get Opening Alert',
+    heroImgCaption:'* Actual room photos coming at opening',
+
+    hostLabel:'From the Host',
+    hostQuote:"The luxury hotels? Not a single one stays with me.\nBut the uncomfortable places — those I can still picture clearly.",
+    hostBody:"Thirty-five years ago, I set off across Asia with nothing but a backpack and a pocket dictionary. In a tiny Taiwanese village, a girl I'd just met took a complete stranger into her home. Her mother cooked dinner. A ceiling fan turned lazily overhead. We didn't share a single word of language — and yet her face has never left me. For years after I returned home, we kept writing letters and sending photographs. This was during the years when Korea and Taiwan had no official diplomatic relations.\n\nSince then, I've stayed in plenty of fine hotels. I remember none of them.\n\nBack then, before 'Airbnb' was even a word, travel meant meeting people — that was all. I built FLY:HOME around that memory. A small house in a real Seoul neighborhood, offering something nobody has quite thought of before.",
+    hostSig:'— Host of FLY:HOME · Wandered across Asia with a backpack, 35 years ago',
+
+    honestLabel:'Honest talk',
+    honestTitle:"Not for\neveryone.",
+    honestBody:"When expectations don't match reality, disappointment follows. Here's what to know before you book.",
+    honestCards:[
+      {type:'good',title:'✅ This is for you if...',items:[
+        'You want to wander a neighborhood where real Seoul people actually live',
+        "You're curious about flight simulation — total beginners warmly welcome",
+        'A one-of-a-kind experience matters more to you than hotel polish',
+        "You're traveling solo and want one truly unforgettable night",
+        'You want a Korea memory that stays with you for decades',
+      ]},
+      {type:'caution',title:'⚠️ This may not be for you if...',items:[
+        'You need to be within walking distance of Myeongdong or Hongdae',
+        'You expect hotel-standard service and amenities',
+        'You expect airline-grade professional training simulators (this is top-of-the-range home pilot hardware)',
+        'You want a spacious, luxury room — this is a cozy 1–2 person space',
+      ]},
+    ],
+
+    expLabel:'The Experience',
+    expTitle:'No airport\nneeded.',
+    expBody:"Simulator cafés charge $75+ per hour. At FLY:HOME it's all-you-can-fly — included in your stay.\n(₩100,000/hr at sim cafés · FLY:HOME: unlimited overnight)\n\n💰 Beta FREE stay: first 30 quiz passers only · Regular rate approx. $45–60/night (₩60,000–80,000, planned)\nSim hardware: fully included, from check-in to checkout.",
+    expCards:[
+      {icon:'🕹️',title:'Flight Sim Hardware',short:'Winwing · Thrustmaster + RTX 4090-class PC',detail:{
+        title:'The Setup',
+        body:"Hardware that even hardcore sim enthusiasts will respect. To buy all of this yourself would run well into five figures.",
+        items:['Winwing & Thrustmaster throttle + rudder pedals (latest models)','Triple widescreen setup — full peripheral immersion','RTX 4090-class GPU · Intel Core i9 · 64GB RAM','4K · 120fps+ buttery smooth','Microsoft Flight Simulator 2024','Light aircraft cockpit frame in progress · Boeing cockpit planned'],
+        chips:['Winwing','Thrustmaster','RTX 4090-class','MSFS 2024','Triple Screen','4K'],
+        note:'💡 We send you a beginner guide before check-in. One night is genuinely enough to get flying.',
+      }},
+      {icon:'🌃',title:'Seoul Night Flight',short:'Look down on Seoul — from your cockpit seat',detail:{
+        title:"Seoul you've never seen",
+        body:"Take a light aircraft over Seoul after dark — the Han River, N Seoul Tower, the city glittering below. Light aircraft are the perfect starting point: forgiving controls, low altitude, Seoul in stunning detail.",
+        items:['Bank over the Han River with the full Seoul skyline below','Low-level pass over N Seoul Tower and the 63 Building','A curated night-lights flight route over the city','Your own screenshot + a printable pilot certificate'],
+        chips:['Seoul Night','Light Aircraft','Low & Slow','Night Route'],
+        note:"🌙 Check in at dusk and fly until dawn. It's your room — take your time.",
+      }},
+      {icon:'🏠',title:'The Stay',short:'A genuine local home in a real Seoul neighbourhood',detail:{
+        title:'Small. Different. Yours.',
+        body:"FLY:HOME is not a hotel. It's a 1–2 person guesthouse tucked inside a residential street in Mangu-dong, Jungnang-gu. Nothing flashy. But nothing else like it.",
+        items:['Intimate 1–2 person room','Local neighbourhood feel — think Airbnb, not Marriott','All the essentials taken care of','Peaceful residential setting'],
+        chips:['1–2 guests','Guesthouse','Local'],
+        note:"⚠️ If you're expecting luxury hotel standards, this honestly isn't the right fit.",
+      }},
+      {icon:'🇰🇷',title:'K-Experience + Beta',short:"Help shape Korea's newest travel story",detail:{
+        title:"Korea's first. Made with you.",
+        body:"FLY:HOME is part of a Korean government tourism initiative — piloting whether themed stays can breathe life into under-visited neighbourhoods. Beyond K-pop, K-beauty, K-drama — this is K-Experience.\n\nEvery guest who joins helps us grow the hardware and the vision. You'd be among the very first.",
+        items:["Korea's first flight simulation-themed stay",'Part of a government tourism pilot programme','Beta guest perks included','Your feedback directly shapes what we build next'],
+        chips:["Korea's First",'Beta','K-Experience','Tourism Initiative'],
+        note:'🌟 Register now to be in the founding guest cohort.',
+      }},
+    ],
+
+    locLabel:'Location & Getting Here',
+    locTitle:"Not in Myeongdong.\nThat's the whole point.",
+    locBody:"We're not a downtown hotel. But every corner of Seoul is within 40 minutes.",
+    locCards:[
+      {icon:'🚉',title:'11–14 min walk from Mangu Station',body:'Gyeongui-Jungang Line, Mangu Station — 11–14 min on foot or 4 min by car. Myeongdong 39 min · City Hall 40 min · Konkuk Univ. 32 min · Dongdaemun 34 min · Gangnam 47 min'},
+      {icon:'✈️',title:'Direct Airport Bus',body:'Direct coaches run from both Incheon and Gimpo airports. Head straight from the airport to FLY:HOME without a single transfer.'},
+      {icon:'🏕️',title:'What\'s Nearby',body:'Jungnang Camping Park (20 min walk), Mangu traditional market, Bonghwasan hiking trail — the Seoul that most visitors never find.'},
+      {type:'accent',title:"Jungnang-gu is on the map. Most tourists just haven't found it yet.",body:"Quieter. More local. More real Seoul. Incheon Airport → FLY:HOME by airport coach: approx. 2 hours, direct.",transit:['Gyeongui-Jungang Line','Airport coach ~2 hrs direct','Myeongdong 39 min','Gangnam 47 min']},
+    ],
+
+    quizSectionLabel:'Play the quiz · Unlock a free night',
+    screenHdr:'AVIATION QUIZ',
+    passMsg:'🎉 {score}/5 — You passed! FREE night unlocked.',
+    failMsg:"So close! {score}/5 — you need 4 or more to pass.\nYou can still register for our opening alert either way!",
+    quickQ:['When do you open?','Exactly where?','What gear?','OK for beginners?'],
+    aiPlaceholder:'Ask us anything about FLY:HOME...',
+    btnSend:'Send',
+    btnGoReg:'📋 Get Opening Alert',
+    btnRetry:'🔄 Try Again',
+    btnNext_mid:'Next →',btnNext_end:'See My Results →',
+    regTitle:'2026 Opening Alert',
+    regSub:"Be first in line when we open in 2026 Q3. Completely free to register.",
+    regNotice:'🏆 Quiz passers (4/5 or more) receive a FREE night — first 30 guests only. Anyone is welcome to register for the opening alert regardless of score.',
+    formLabels:['Your Name','Email Address','Nationality','When might you visit?'],
+    nations:['🇯🇵 Japan','🇺🇸 USA','🇬🇧 UK','🇨🇳 China','🇹🇼 Taiwan','🇹🇭 Thailand','🇻🇳 Vietnam','🇦🇺 Australia','🇰🇷 Korea','Other'],
+    dates:['2026 Q3 (from June)','2027 first half','2027 or later','Not sure yet'],
+    btnReg:'✈ Register for the Alert',
+    validErr:'Please fill in your name, email, and nationality.',
+    saving:'Saving...',saveOk:"✅ You're registered! We'll be in touch the moment we open.",
+    confirmTitle:"You're on the list!",
+    confirmMsg:"Welcome to FLY:HOME.\nWe'll reach out to you first when we open.",
+    confirmCodeLabel:'YOUR REFERENCE NUMBER',
+    confirmCodeHint:'📸 Screenshot this to keep it safe',
+    confirmSteps:[['01','Check your inbox\nConfirmation on its way'],['02','Opening alert\n2026 Q3 — you hear first'],['03','Land in Seoul\nMangu Stn → FLY:HOME']],
+    cancelTitle:'CANCELLATIONS',
+    cancelDesc:'Cancel any time, no questions asked.\nJust email us with your reference number.',
+    btnShare:'📤 Share',btnCopy:'📋 Copy Link',btnAgain:'Start Over',
+    shareToast:'✅ Link copied!',
+    contact:'Contact',
+    alreadyTitle:"You're already registered",alreadyCode:'Reference: ',
+  },
+  ja:{
+    cdLabel:'オープンまで',cdDays:'日',cdHrs:'時間',cdMin:'分',cdSec:'秒',
+    counterLabel:'ベータお試し無料申込',counterLimit:'30名様限定',counterSuffix:'名様がご登録済み',
+    heroEye:'ソウル · 韓国初のフライトシム宿泊施設 · 2026年Q3オープン予定',
+    heroTagline:'Seoul is calling.',
+    heroSub:'クイズ5問にチャレンジして\nソウル<strong>FLY:HOME</strong>の無料1泊を獲得しよう。\n<span style="font-size:13px;opacity:.7">（航空知識がなくても大丈夫！気軽に楽しめるゲームです）</span>',
+    heroCta1:'✈ クイズに挑戦する',heroCta2:'オープン通知を受け取る',
+    heroImgCaption:'※ オープン後、実際の施設写真に差し替え予定',
+
+    hostLabel:'ホストより',
+    hostQuote:'高級ホテルは、どこも記憶に残っていない。\n不便だったあの宿だけが、今も鮮明に目に浮かぶ。',
+    hostBody:'35年前、リュックサック一つと英和辞典一冊を持って、アジアを旅していた。台湾の小さな村で、その日初めて出会った少女が、素性も知れぬ旅人を家へ招き入れてくれた。お母さんが食事を作ってくれた。天井の扇風機がゆっくりと回っていた。言葉は何一つ通じなかったけれど、あの子の笑顔は今も消えない。帰国後も、何年もの間、手紙と写真を送り合い続けた。ちょうど韓国と台湾が正式な国交を断絶していた、あの頃の話だ。\n\nその後も、数えきれないほどの上等なホテルに泊まってきた。けれど、どこも思い出せない。\n\nまだ「Airbnb」という言葉すら存在しなかった時代、旅とはつまり、人と出会うことだった。その一つの記憶を頼りに、FLY:HOMEをつくった。ソウルの住宅街にある小さな家で、誰もまだ想像したことのない体験を届けたい。',
+    hostSig:'— FLY:HOME ホスト · 35年前、リュック一つでアジアを歩いた旅人',
+
+    honestLabel:'正直にお伝えします',
+    honestTitle:'すべての方に\n合うわけではありません。',
+    honestBody:'ご期待と実際が違うと、がっかりさせてしまいます。ご予約前にぜひご確認ください。',
+    honestCards:[
+      {type:'good',title:'✅ こんな方にぴったりです',items:[
+        '本物のソウルの住宅街を、地元の目線で歩いてみたい方',
+        'フライトシミュレーションに興味がある方（初心者の方、大歓迎です）',
+        'ホテルの快適さより、ここだけの体験を求める方',
+        'ひとり旅で、忘れられない特別な一夜を過ごしたい方',
+        '何十年経っても語れる、韓国旅行の思い出をつくりたい方',
+      ]},
+      {type:'caution',title:'⚠️ こんな方には合わないかもしれません',items:[
+        '明洞・弘大から徒歩圏内のご宿泊をご希望の方',
+        'ホテルクオリティのサービスや設備をご期待の方',
+        '航空会社が使うような業務用シミュレーターをご期待の方（高品質な民生用パイロット機材です）',
+        '広くて豪華なお部屋をご希望の方（1〜2名用のこぢんまりとしたお部屋です）',
+      ]},
+    ],
+
+    expLabel:'体験内容',
+    expTitle:'空港は\n必要ありません。',
+    expBody:'フライトシミュレーターカフェは1時間あたり10万ウォン（約1万1,000円）以上。FLY:HOMEはチェックインからチェックアウトまで使い放題 — 宿泊費に含まれています。\n\n💰 ベータお試し無料：クイズ合格者の先着30名様 · 通常料金6〜8万ウォン（約6,600〜8,800円）/泊（予定）\nシミュレーター利用料：宿泊費に込み、時間無制限',
+    expCards:[
+      {icon:'🕹️',title:'フライトシム機材',short:'Winwing・Thrustmaster + RTX 4090クラスPC',detail:{
+        title:'機材のご案内',
+        body:'フライトシムマニアの方にも納得していただける本格的なハードウェアを揃えています。すべてご自宅で揃えようとすれば、数百万円以上の投資が必要です。',
+        items:['Winwing & Thrustmaster スロットル + ラダーペダル（最新モデル）','トリプル大型スクリーン — 視野の端まで完全没入','RTX 4090クラスGPU · Intel Core i9 · 64GB RAM','4K超高画質 · 120fps以上の滑らかな映像','Microsoft Flight Simulator 2024','軽飛行機コックピットフレーム製作中 · ボーイング仕様も開発予定'],
+        chips:['Winwing','Thrustmaster','RTX 4090クラス','MSFS 2024','3スクリーン','4K'],
+        note:'💡 ご予約の方には事前学習資料をお送りします。初心者の方でも一晩で充分に楽しんでいただけます。',
+      }},
+      {icon:'🌃',title:'ソウル夜景フライト',short:'コックピットから見下ろすソウルの夜景',detail:{
+        title:'こんなソウルは、きっと初めて',
+        body:'軽飛行機でソウルの夜空を飛行——漢江、Nソウルタワー、煌めく都心の夜景を眼下に眺めながら。軽飛行機は初心者の方に最適です。操作が直感的で、低空飛行だからこそソウルの細部まで見えてきます。',
+        items:['漢江上空からソウルのパノラマを一望','Nソウルタワー・63ビル上空を低空通過','夜景を楽しむ専用フライトルート','記念スクリーンショット ＋ パイロット修了証'],
+        chips:['ソウル夜景','軽飛行機','低空飛行','夜間ルート'],
+        note:'🌙 夕方チェックインして、夜通し楽しめます。ここはあなたのお部屋ですから。',
+      }},
+      {icon:'🏠',title:'お部屋のご案内',short:'ソウルの住宅街にある、本物のローカルホームステイ',detail:{
+        title:'こぢんまりと、特別に',
+        body:'FLY:HOMEはホテルではありません。ソウル中浪区望憂洞の住宅街にある、1〜2名様向けの小さな宿泊施設です。華やかさはありません。けれど、どこにもない体験がここにあります。',
+        items:['1〜2名様専用のこぢんまりとしたお部屋','韓国ローカル住宅街の雰囲気（Airbnbスタイル）','基本的なアメニティはすべて完備','静かな住宅地エリア'],
+        chips:['1〜2名様','ホームステイ','ローカル'],
+        note:'⚠️ 高級ホテルをご期待の方には、ご期待に沿えない場合がございます。',
+      }},
+      {icon:'🇰🇷',title:'K体験 ＋ ベータ参加',short:'韓国旅行の新しい物語を、一緒につくりましょう',detail:{
+        title:'韓国初。あなたの参加が形にする。',
+        body:'FLY:HOMEは韓国政府の観光ベンチャープログラムの一環です。K-POP・K-Beauty・K-Dramaを超えた——これが「K-Experience（K体験）」です。\n\nご参加いただく方が増えるほど、設備も施設もより充実していきます。あなたが最初のゲストです。',
+        items:['韓国初のフライトシミュレーションテーマ宿泊施設','政府観光実証プログラムへの参加','ベータゲスト限定の特別特典あり','皆さまのご意見が施設をつくっていきます'],
+        chips:['韓国初','ベータ','K体験','観光ベンチャー'],
+        note:'🌟 今すぐご登録いただければ、最初のゲストとして体験できます。',
+      }},
+    ],
+
+    locLabel:'場所・アクセス',
+    locTitle:'明洞にはありません。\nそれこそが、ここの魅力です。',
+    locBody:'都心のホテルではありません。でも、ソウルのどこへも40分あれば辿り着けます。',
+    locCards:[
+      {icon:'🚉',title:'望憂（マンウ）駅から徒歩11〜14分',body:'京義中央線・望憂駅から徒歩11〜14分、お車で4分ほどです。明洞まで39分・市庁まで40分・コンデ入口まで32分・東大門まで34分・梨泰院まで50分・江南まで47分'},
+      {icon:'✈️',title:'空港バス直通',body:'仁川・金浦の両空港から直通バスが運行しています。空港からFLY:HOMEまで、乗り換えなしで直接お越しいただけます。'},
+      {icon:'🏕️',title:'周辺のおすすめスポット',body:'中浪キャンプ場（徒歩約20分）、望憂伝統市場、鳳火山ハイキングコースなど、ガイドブックには載っていない、本物のソウルがここにあります。'},
+      {type:'accent',title:'中浪区は、地図の外ではありません。',body:'ほとんどの旅行者がまだ気づいていない、本物のソウルです。静かで、ローカルで、より素顔のソウル。仁川空港からFLY:HOMEまで、空港バスで約2時間です。',transit:['京義中央線 望憂駅','空港バス約2時間（直通）','明洞まで39分','江南まで47分']},
+    ],
+
+    quizSectionLabel:'クイズに参加して、無料1泊に挑戦しよう',
+    screenHdr:'航空クイズ',
+    passMsg:'🎉 {score}/5問正解 · 合格！無料1泊特典ゲット！',
+    failMsg:'惜しい！{score}/5点。4問以上で合格です。\n合否に関わらず、オープン通知は誰でもお申し込みいただけます！',
+    quickQ:['いつオープン予定？','場所を教えてください','どんな機材？','初心者でも楽しめる？'],
+    aiPlaceholder:'FLY:HOMEについて、何でもお気軽にどうぞ...',
+    btnSend:'送信',
+    btnGoReg:'📋 オープン通知を申し込む',
+    btnRetry:'🔄 もう一度チャレンジ',
+    btnNext_mid:'次の問題へ →',btnNext_end:'結果を確認する →',
+    regTitle:'2026年オープン通知のお申し込み',
+    regSub:'2026年Q3のオープン時に、最優先でご連絡いたします。登録は無料です。',
+    regNotice:'🏆 クイズ合格者（4問以上正解）の方には無料1泊をご提供 — 先着30名様限定。合否に関わらず、どなたでもオープン通知にお申し込みいただけます。',
+    formLabels:['お名前','メールアドレス','国籍','ご訪問予定時期'],
+    nations:['🇯🇵 日本','🇺🇸 アメリカ','🇬🇧 イギリス','🇨🇳 中国','🇹🇼 台湾','🇹🇭 タイ','🇻🇳 ベトナム','🇦🇺 オーストラリア','🇰🇷 韓国','その他'],
+    dates:['2026年Q3（6月以降）','2027年上半期','2027年以降','未定'],
+    btnReg:'✈ オープン通知に申し込む',
+    validErr:'お名前・メールアドレス・国籍をご入力ください。',
+    saving:'登録中...',saveOk:'✅ 申し込み完了！オープン時に最優先でご連絡いたします。',
+    confirmTitle:'お申し込み完了！',
+    confirmMsg:'FLY:HOMEのオープン通知リストにご登録いただきました。\n正式オープンの際は、最優先でご連絡いたします。',
+    confirmCodeLabel:'申し込み確認番号',
+    confirmCodeHint:'📸 スクリーンショットで保存してください',
+    confirmSteps:[['01','メールをご確認\n確認メールをお送りします'],['02','オープン通知\n2026年Q3に最優先でご連絡'],['03','ソウルへ\n望憂駅 → FLY:HOME']],
+    cancelTitle:'キャンセル・変更について',
+    cancelDesc:'いつでもキャンセル可能です。\nお申し込み番号を添えて、メールにてご連絡ください。',
+    btnShare:'📤 シェアする',btnCopy:'📋 リンクをコピー',btnAgain:'最初からやり直す',
+    shareToast:'✅ リンクをコピーしました！',
+    contact:'お問い合わせ',
+    alreadyTitle:'すでにお申し込み済みです',alreadyCode:'お申し込み番号：',
+  },
+  zh:{
+    cdLabel:'距开业还有',cdDays:'天',cdHrs:'时',cdMin:'分',cdSec:'秒',
+    counterLabel:'测试期免费名额',counterLimit:'仅限30名',counterSuffix:'人已登记',
+    heroEye:'首尔 · 韩国首家飞行模拟住宿 · 2026年Q3盛大开业',
+    heroTagline:'Seoul is calling.',
+    heroSub:'回答5道趣味航空题\n赢取首尔<strong>FLY:HOME</strong>免费住宿一晚。\n<span style="font-size:13px;opacity:.7">（无需航空知识，轻松参与的趣味互动！）</span>',
+    heroCta1:'✈ 参与答题',heroCta2:'获取开业通知',
+    heroImgCaption:'※ 开业后将替换为实际房间照片',
+
+    hostLabel:'房东寄语',
+    hostQuote:'那些高档酒店，我一家都想不起来了。\n唯独那些简陋的地方，至今仍历历在目。',
+    hostBody:'三十五年前，我背着一只行囊、揣着一本词典，踏遍了亚洲。在台湾一个偏僻的小村里，一个素不相识的女孩，把一个陌生的旅人带回了家。她妈妈做了一桌饭，天花板上的风扇慢悠悠地转着。我们之间一句话也说不通——可那个女孩的脸，我到今天还记得一清二楚。回国之后，我们还鸿雁往来了好几年，互寄照片。那是韩国与台湾正式断绝邦交的年代。\n\n此后我住过不少豪华酒店，却一家也想不起来了。\n\n那个连"Airbnb"这个词都还不存在的年代，旅行就是与人相遇——仅此而已。带着这份珍贵的记忆，我创建了FLY:HOME。在首尔一条普通的住宅街道上，用一幢小小的房子，为您奉上一段前所未有的体验。',
+    hostSig:'— FLY:HOME 房东 · 三十五年前，背一只行囊走过亚洲的旅人',
+
+    honestLabel:'坦诚相告',
+    honestTitle:'并非适合\n每一位旅客。',
+    honestBody:'期待与现实之间的落差，是失望的根源。预约前，请先了解这些真实信息。',
+    honestCards:[
+      {type:'good',title:'✅ 非常适合您，如果……',items:[
+        '您想走进真实的首尔住宅区，感受市民日常',
+        '您对飞行模拟感兴趣（热烈欢迎零基础体验者）',
+        '比起酒店舒适度，您更在乎独特难忘的体验',
+        '您独自旅行，渴望一个终身难忘的夜晚',
+        '您想拥有一段几十年后仍能津津乐道的韩国旅行记忆',
+      ]},
+      {type:'caution',title:'⚠️ 可能不太适合您，如果……',items:[
+        '您需要住在明洞或弘大步行范围内',
+        '您期望酒店级别的服务和设施',
+        '您期望航空公司级别的专业训练设备（这是高品质家用飞行员设备）',
+        '您想要宽敞豪华的空间（1~2人小型客房）',
+      ]},
+    ],
+
+    expLabel:'体验内容',
+    expTitle:'不需要\n机场。',
+    expBody:'飞行模拟体验馆每小时收费约500元人民币（10万韩元）以上。在FLY:HOME，从入住到退房全程不限时 — 费用已包含在住宿价格中。\n\n💰 测试期免费：答题通过者前30名（约￥0） · 正式开业后约￥45~60/晚（6~8万韩元，预计）\n模拟器使用：全程包含在房价内，不限时间',
+    expCards:[
+      {icon:'🕹️',title:'飞行模拟设备',short:'Winwing · Thrustmaster + RTX 4090级PC',detail:{
+        title:'设备配置',
+        body:'连专业飞行模拟爱好者都会满意的顶级硬件。若自行购置全套设备，需花费数十万乃至上百万元人民币。',
+        items:['Winwing & Thrustmaster 油门 + 脚蹬（最新型号）','三面大型屏幕 — 完全沉浸式周边视野','RTX 4090级GPU · Intel Core i9 · 64GB内存','4K超高清 · 120fps+流畅飞行','Microsoft Flight Simulator 2024','轻型飞机驾驶舱框架制作中 · 波音驾驶舱开发计划中'],
+        chips:['Winwing','Thrustmaster','RTX 4090级','MSFS 2024','三屏','4K'],
+        note:'💡 预约者将获得提前学习资料。初学者一晚即可享受。',
+      }},
+      {icon:'🌃',title:'首尔夜景飞行',short:'从驾驶舱俯瞰首尔夜色',detail:{
+        title:'这样的首尔，您从未见过',
+        body:'驾驶轻型飞机在首尔夜空飞行——汉江、N首尔塔、都市灯光尽收眼底。轻型飞机最适合初学者：操作直观，低空飞行能看清首尔的细节。',
+        items:['飞越汉江欣赏首尔全景','低空掠过N首尔塔和63大厦','夜间都市夜景飞行路线','纪念截图 + 飞行员结业证书'],
+        chips:['首尔夜景','轻型飞机','低空飞行','夜间路线'],
+        note:'🌙 傍晚入住，彻夜飞行。因为这是您的房间。',
+      }},
+      {icon:'🏠',title:'住宿介绍',short:'首尔住宅区的真实本地民宿',detail:{
+        title:'小而特别的空间',
+        body:'FLY:HOME不是酒店，而是位于首尔中浪区望憂洞住宅区的1~2人小型民宿。不豪华，但能给您前所未有的体验。',
+        items:['1~2人专用小型客房','韩国本地住宅区氛围（Airbnb风格）','基本设施齐全','安静的住宅区位置'],
+        chips:['1~2人','民宿','本地'],
+        note:'⚠️ 如果您期望豪华酒店标准，可能不太适合。',
+      }},
+      {icon:'🇰🇷',title:'K体验 + 测试参与',short:'一起创造韩国旅行的新故事',detail:{
+        title:'韩国首创。由您共同见证。',
+        body:'FLY:HOME是韩国政府旅游创业扶持项目的一部分，致力于为鲜为人知的社区注入新活力。超越韩流、韩美妆、韩剧——这是全新的「韩式体验（K-Experience）」。\n\n参与的朋友越多，设备与设施就会不断升级完善。您将是第一批见证者。',
+        items:['韩国首创飞行模拟主题住宿','政府旅游实证项目官方参与者','测试期用户专属特别优惠','您的宝贵反馈将直接推动设施改进'],
+        chips:['韩国首家','测试版','K体验','旅游创业'],
+        note:'🌟 现在申请，成为最早体验的客人之一。',
+      }},
+    ],
+
+    locLabel:'位置与交通',
+    locTitle:'不在明洞——\n这正是这里的独特之处。',
+    locBody:'不是市中心酒店。但首尔各处40分钟内均可到达。',
+    locCards:[
+      {icon:'🚉',title:'望憂站步行11~14分钟',body:'京义中央线望憂（Mangu）站步行11~14分钟，驾车4分钟。明洞39分钟·市厅40分钟·建大入口32分钟·东大门34分钟·江南47分钟'},
+      {icon:'✈️',title:'机场巴士直达',body:'仁川·金浦两大机场均有直达大巴。无需换乘，从机场直达FLY:HOME，省心又省力。'},
+      {icon:'🏕️',title:'周边景点',body:'中浪露营公园（步行20分钟）、望憂传统市场、烽火山徒步路线等，这才是游客未曾发现的真实首尔。'},
+      {type:'accent',title:'中浪区并不偏僻。',body:'这是大多数游客尚未发现的真实首尔——宁静、本地、更加原汁原味。仁川机场乘大巴直达FLY:HOME约2小时，全程无需换乘，舒适便捷。',transit:['京义中央线 望憂站','仁川机场大巴约2小时（直达）','至明洞39分钟','至江南47分钟']},
+    ],
+
+    quizSectionLabel:'参与答题，赢取免费住宿一晚',
+    screenHdr:'趣味航空问答',
+    passMsg:'🎉 {score}/5题答对 · 通过！免费住宿资格已解锁！',
+    failMsg:'差一点点！{score}/5分，答对4题即可通过。\n无论是否通过，都可以登记开业通知！',
+    quickQ:['什么时候开业？','在哪里？','有什么设备？','初学者可以吗？'],
+    aiPlaceholder:'随时询问关于FLY:HOME的问题...',
+    btnSend:'发送',
+    btnGoReg:'📋 登记开业通知',
+    btnRetry:'🔄 再次挑战',
+    btnNext_mid:'下一题 →',btnNext_end:'查看结果 →',
+    regTitle:'2026年开业通知登记',
+    regSub:'2026年Q3开业时，第一时间通知您。完全免费。',
+    regNotice:'🏆 答题通过者（4/5以上）可获赠免费住宿一晚 — 仅限前30名。无论答题结果如何，任何人均可登记开业通知。',
+    formLabels:['您的姓名','电子邮箱','国籍','计划到访时间'],
+    nations:['🇨🇳 中国大陆','🇹🇼 台湾','🇭🇰 香港','🇯🇵 日本','🇺🇸 美国','🇹🇭 泰国','🇻🇳 越南','🇦🇺 澳大利亚','🇰🇷 韩国','其他'],
+    dates:['2026年Q3（6月起）','2027年上半年','2027年以后','暂未确定'],
+    btnReg:'✈ 立即登记开业通知',
+    validErr:'请填写您的姓名、电子邮箱及国籍。',
+    saving:'提交中...',saveOk:'✅ 登记成功！开业时我们将第一时间与您联系。',
+    confirmTitle:'登记成功！',
+    confirmMsg:'您已成功加入FLY:HOME开业通知名单。\n正式开业时，我们将优先与您取得联系！',
+    confirmCodeLabel:'登记确认编号',
+    confirmCodeHint:'📸 请截图保存，以便日后查询',
+    confirmSteps:[['01','查收邮件\n确认邮件即将发送'],['02','开业通知\n2026年Q3优先联系'],['03','抵达首尔\n望憂站 → FLY:HOME']],
+    cancelTitle:'取消与变更',
+    cancelDesc:'如需取消，随时均可办理，无任何限制。\n请附上您的登记编号发送邮件至我们。',
+    btnShare:'📤 分享给朋友',btnCopy:'📋 复制链接',btnAgain:'重新开始',
+    shareToast:'✅ 链接已复制成功！',
+    contact:'联系我们',
+    alreadyTitle:'您已完成登记',alreadyCode:'登记编号：',
+  },
 };
 
-const QUESTIONS={
+const QUESTION_POOL={
   ko:[
-    {cat:"✈ 기초 상식",q:"세스나(Cessna) 비행기는 어떤 종류의 항공기일까요?",hint:"힌트: 매우 작고 가벼운 비행기예요",choices:["전투기 (Fighter Jet)","소형 경비행기 (Small Propeller Plane)","대형 여객기 (Big Airliner)","헬리콥터 (Helicopter)"],ans:1,fb:"맞아요! 세스나는 전 세계에서 가장 많이 쓰이는 소형 경비행기예요. FLY:HOME에서 세스나 172 콕핏을 직접 체험할 수 있어요!"},
-    {cat:"🌆 서울 여행",q:"서울 중랑구는 어떤 느낌의 동네일까요?",hint:"힌트: 관광지보다는 실제 시민들이 사는 곳",choices:["명동·홍대 같은 관광 핫스팟","외국인 거의 없는 진짜 서울 로컬 동네","제주도 해변가","인천공항 바로 옆"],ans:1,fb:"정답! 중랑구는 외국인 관광객보다 서울 시민들이 사는 '진짜 서울'이에요. FLY:HOME은 바로 이곳에서 특별한 체험을 만들고 있어요!"},
-    {cat:"✈ 조종 기초",q:"비행기를 착륙시킬 때 가장 먼저 해야 할 것은?",hint:"힌트: 속도를 줄이려면?",choices:["엔진 출력을 줄인다 (Reduce Throttle)","날개를 뗀다","비상구를 연다","승객에게 방송한다"],ans:0,fb:"정답! 착륙 시 스로틀을 줄여 엔진 출력을 낮추는 것이 첫 번째예요. FLY:HOME 콕핏에서 직접 해볼 수 있어요!"},
-    {cat:"🌏 항공 상식",q:"비행기가 이륙할 때 앞쪽 조종간(요크)은 어느 방향으로 당기나요?",hint:"힌트: 위로 날아오르려면?",choices:["앞으로 민다 (기수 내려감)","뒤로 당긴다 (기수 올라감)","좌우로 돌린다","움직이지 않는다"],ans:1,fb:"정답! 이륙할 때 요크를 뒤로 당기면 기수가 올라가며 상승해요. 세스나 콕핏에서 직접 느껴보세요!"},
-    {cat:"🎯 FLY:HOME",q:"FLY:HOME 숙소에서 할 수 있는 것은?",hint:"힌트: 이 웹사이트 처음에 적혀 있었어요 😊",choices:["서핑과 스쿠버 다이빙","비행 시뮬레이터로 서울 하늘 조종 체험","클래식 음악 연주","요리 교실"],ans:1,fb:"완벽해요! FLY:HOME에서는 실제 콕핏에서 Microsoft Flight Simulator로 서울 하늘을 직접 조종해볼 수 있어요. 이제 예약하러 가볼까요? 🛫"},
+    {cat:'기초 상식',q:'세스나(Cessna)는 어떤 비행기인가요?',hint:'힌트: 작고 가벼운 비행기예요',choices:['전투기','소형 경비행기','대형 여객기','헬리콥터'],ans:1,fb:'맞아요! 세스나는 전 세계에서 가장 많이 쓰이는 소형 경비행기예요.',wfb:'세스나는 소형 경비행기예요. 1~4인승의 작은 비행기예요.'},
+    {cat:'서울 여행',q:'서울 중랑구는 어떤 곳인가요?',hint:'힌트: 관광지보다 실제 서울 시민들이 사는 곳',choices:['명동·홍대 같은 관광지','진짜 서울 시민들의 로컬 동네','제주도 해변','인천공항 근처'],ans:1,fb:'맞아요! 중랑구는 서울 시민들이 실제로 사는 동네예요.',wfb:'중랑구는 서울 시민들이 사는 로컬 동네예요.'},
+    {cat:'조종 기초',q:'비행기 착륙 시 파일럿이 가장 먼저 하는 것은?',hint:'힌트: 속도를 줄여야 해요',choices:['엔진 출력(스로틀) 줄이기','날개 분리','비상구 열기','기내 방송'],ans:0,fb:'정답! 착륙 시 스로틀을 줄여 속도를 낮추는 것이 첫 번째예요.',wfb:'착륙할 때 가장 먼저 스로틀을 줄여서 속도를 낮춰요.'},
+    {cat:'항공 상식',q:'이륙할 때 조종간(요크)을 어느 방향으로 당기나요?',hint:'힌트: 위로 올라가려면?',choices:['앞으로 민다','뒤로 당긴다','좌우로 돌린다','그대로 둔다'],ans:1,fb:'정답! 요크를 뒤로 당기면 기수가 올라가며 이륙해요.',wfb:'이륙할 때는 요크를 뒤로 당겨서 기수를 들어올려야 해요.'},
+    {cat:'FLY:HOME',q:'FLY:HOME 숙소에서 할 수 있는 것은?',hint:'힌트: 이 페이지에 나와 있어요 😊',choices:['서핑과 스쿠버 다이빙','방 안에서 비행 시뮬레이션 체험','클래식 음악 연주','요리 교실'],ans:1,fb:'완벽해요! 방 안에서 Winwing 장비로 서울 하늘을 비행할 수 있어요. ✈️',wfb:'FLY:HOME에서는 방 안에 설치된 비행 시뮬레이터로 서울 하늘을 날 수 있어요!'},
+    {cat:'항공 상식',q:'비행기 고도를 나타내는 단위는?',hint:'힌트: 길이의 단위예요',choices:['노트(Knot)','피트(Feet)','마하(Mach)','헤르츠(Hz)'],ans:1,fb:'정답! 고도는 피트(ft)로 표시해요. 1피트는 약 30cm예요.',wfb:'비행기 고도는 피트(Feet)로 표시해요. 여객기는 보통 35,000피트로 날아요.'},
+    {cat:'항공 상식',q:'비행기 속도를 나타내는 항공 단위는?',hint:'힌트: 바람·해양에서도 쓰는 단위예요',choices:['km/h','마일','노트(Knot)','RPM'],ans:2,fb:'정답! 항공에서는 속도를 노트(knot)로 표시해요.',wfb:'항공·해양에서는 속도를 노트(knot)로 표시해요. 1노트 ≈ 1.85km/h예요.'},
+    {cat:'서울 여행',q:'서울에서 가장 긴 강의 이름은?',hint:'힌트: 서울을 동서로 가로질러요',choices:['낙동강','한강','금강','영산강'],ans:1,fb:'맞아요! 한강은 서울을 동서로 가로지르는 서울의 상징이에요.',wfb:'서울을 동서로 흐르는 강은 한강이에요. 비행 시뮬레이터로 한강 위를 날 수 있어요!'},
+    {cat:'FLY:HOME',q:'FLY:HOME에서 가장 가까운 기차역은?',hint:'힌트: 경의중앙선이에요',choices:['망우역','신내역','상봉역','중랑역'],ans:0,fb:'정답! FLY:HOME은 경의중앙선 망우역에서 도보 11~14분 거리예요.',wfb:'FLY:HOME과 가장 가까운 역은 경의중앙선 망우역이에요. 도보 11~14분이에요.'},
+    {cat:'조종 기초',q:'비행기 방향타(러더)는 무엇을 제어하나요?',hint:'힌트: 좌우 회전이에요',choices:['상승·하강','좌우 방향(요잉)','속도','고도'],ans:1,fb:'정답! 러더(방향타)는 비행기의 좌우 방향(요잉)을 제어해요.',wfb:'러더는 비행기 꼬리에 있는 방향타로 좌우 방향을 제어해요.'},
+    {cat:'항공 역사',q:'세계 최초로 동력 비행에 성공한 사람은?',hint:'힌트: 형제예요',choices:['찰스 린드버그','라이트 형제','아멜리아 에어하트','닐 암스트롱'],ans:1,fb:'정답! 라이트 형제는 1903년 세계 최초 동력 비행에 성공했어요.',wfb:'1903년 라이트 형제(오빌·윌버)가 세계 최초로 동력 비행에 성공했어요.'},
+    {cat:'항공 상식',q:'여객기 조종석(콕핏)에는 보통 몇 명이 탑승하나요?',hint:'힌트: 기장과 부기장',choices:['1명','2명','3명','4명'],ans:1,fb:'정답! 현대 여객기 콕핏에는 기장과 부기장 2명이 탑승해요.',wfb:'현대 여객기는 기장과 부기장 2명이 조종해요.'},
+    {cat:'서울 여행',q:'서울의 대표 타워 이름은?',hint:'힌트: 남산에 있어요',choices:['롯데타워','63빌딩','N서울타워','광화문'],ans:2,fb:'맞아요! N서울타워는 남산에 위치한 서울의 상징이에요.',wfb:'남산에 있는 N서울타워(남산타워)가 서울의 대표 타워예요.'},
+    {cat:'FLY:HOME',q:'FLY:HOME에서 사용하는 비행 시뮬레이터 소프트웨어는?',hint:'힌트: 마이크로소프트 제품이에요',choices:['X-Plane','DCS World','Microsoft Flight Simulator','Google Earth'],ans:2,fb:'정답! Microsoft Flight Simulator 2024로 서울 하늘을 실제처럼 날 수 있어요.',wfb:'FLY:HOME은 Microsoft Flight Simulator를 사용해요. 서울 야경도 실감나게 볼 수 있어요!'},
+    {cat:'조종 기초',q:'비행기 날개의 뒷부분에서 양력을 증가시키는 장치는?',hint:'힌트: 착륙 시 펼쳐지는 것',choices:['에일러론','러더','플랩','스포일러'],ans:2,fb:'정답! 플랩은 이착륙 시 양력을 증가시켜 저속 비행을 가능하게 해요.',wfb:'플랩은 날개 뒤쪽에서 펼쳐져 양력을 높여줘요. 착륙 때 꼭 필요해요.'},
+    {cat:'항공 상식',q:'비행기 날개가 좌우로 기울어지는 움직임을 무엇이라 하나요?',hint:'힌트: 에일러론으로 제어해요',choices:['피칭(Pitching)','롤링(Rolling)','요잉(Yawing)','서징(Surging)'],ans:1,fb:'정답! 날개가 좌우로 기울어지는 움직임은 롤링(Rolling)이에요.',wfb:'날개 좌우 기울기는 롤링(Rolling)이에요. 에일러론으로 제어해요.'},
+    {cat:'서울 여행',q:'인천국제공항에서 서울 도심까지 공항철도로 걸리는 시간은?',hint:'힌트: 약 40~50분이에요',choices:['약 10분','약 30분','약 43분','약 2시간'],ans:2,fb:'맞아요! 인천공항에서 서울역까지 공항철도로 약 43분이에요.',wfb:'인천공항 → 서울역 공항철도 직통 약 43분이에요.'},
+    {cat:'항공 역사',q:'세계에서 가장 많이 팔린 여객기 기종은?',hint:'힌트: 보잉社 제품이에요',choices:['보잉 747','보잉 737','에어버스 A320','보잉 787'],ans:1,fb:'정답! 보잉 737은 세계에서 가장 많이 판매된 여객기예요.',wfb:'보잉 737이 세계에서 가장 많이 팔린 여객기예요. 1968년 첫 비행 이후 1만대 이상 생산됐어요.'},
+    {cat:'FLY:HOME',q:'FLY:HOME의 비행 시뮬레이터는 시뮬레이터 카페와 비교해 어떤 점이 다른가요?',hint:'힌트: 숙소이기 때문에 가능한 것',choices:['더 비싸요','체크인부터 체크아웃까지 무제한','낮에만 이용 가능','예약 없이 이용 가능'],ans:1,fb:'정답! 숙소이기 때문에 밤새 무제한으로 비행 시뮬레이션을 즐길 수 있어요.',wfb:'FLY:HOME은 숙소라서 체크인부터 체크아웃까지 무제한 체험이 가능해요!'},
+    {cat:'항공 상식',q:'국제 항공에서 통신에 사용하는 공식 언어는?',hint:'힌트: 전 세계 공통이에요',choices:['불어','스페인어','영어','중국어'],ans:2,fb:'정답! 전 세계 항공 통신의 공식 언어는 영어예요.',wfb:'국제민간항공기구(ICAO) 기준으로 항공 통신의 공식 언어는 영어예요.'},
+    {cat:'조종 기초',q:'비행 중 엔진이 완전히 꺼져도 안전하게 착륙할 수 있는 비행기는?',hint:'힌트: 엔진 없이도 나는 비행기',choices:['헬리콥터만 가능','모든 비행기 불가능','글라이더','로켓'],ans:2,fb:'정답! 글라이더는 엔진 없이도 양력으로 비행하고 착륙할 수 있어요.',wfb:'글라이더는 엔진 없이 공기 흐름만으로 비행해요. 여객기도 글라이딩 착륙이 가능해요.'},
   ],
   en:[
-    {cat:"✈ Aviation Basics",q:"What kind of aircraft is a Cessna?",hint:"Hint: Small and light!",choices:["Fighter jet","Small propeller plane","Giant airliner","Helicopter"],ans:1,fb:"Correct! Cessna is the world's most popular small propeller aircraft. At FLY:HOME you'll sit in a real Cessna 172 cockpit!"},
-    {cat:"🌆 Seoul Travel",q:"What is Jungnang-gu, Seoul known as?",hint:"Hint: Not a tourist hotspot",choices:["A K-pop tourist zone like Hongdae","A local residential area — the real Seoul","A beach resort","Right next to Incheon Airport"],ans:1,fb:"Spot on! Jungnang-gu is where real Seoul residents live. FLY:HOME is creating something special here!"},
-    {cat:"✈ Pilot Basics",q:"When landing, what does a pilot reduce first?",hint:"Hint: You need to slow down!",choices:["Engine power (throttle)","The wings","The seat height","The landing gear"],ans:0,fb:"Correct! Reducing throttle begins the descent. You'll do exactly this in the FLY:HOME cockpit!"},
-    {cat:"🌏 Flying 101",q:"When taking off, which way do you pull the yoke?",hint:"Hint: You want to go UP!",choices:["Push forward (nose down)","Pull back (nose up)","Turn left or right","Don't touch it"],ans:1,fb:"Perfect! Pulling back raises the nose and you climb. Feel this in the Cessna cockpit!"},
-    {cat:"🎯 FLY:HOME",q:"What can you do at FLY:HOME?",hint:"Hint: It's on the homepage 😊",choices:["Surfing and scuba diving","Fly over Seoul in a real cockpit","Play classical piano","Take a cooking class"],ans:1,fb:"Excellent! At FLY:HOME you fly over Seoul with Microsoft Flight Simulator from a real cockpit. Ready to book? 🛫"},
+    {cat:'Basics',q:'What kind of aircraft is a Cessna?',hint:'Hint: Small and light',choices:['Fighter jet','Small propeller plane','Giant airliner','Helicopter'],ans:1,fb:"Correct! Cessna makes the world's most popular small propeller aircraft.",wfb:'A Cessna is a small propeller plane — seats 1 to 4 people.'},
+    {cat:'Seoul',q:'What is Jungnang-gu known as?',hint:'Hint: Not a tourist zone',choices:['A K-pop tourist area like Hongdae','A local residential neighborhood','A beach resort','Near Incheon Airport'],ans:1,fb:'Spot on! Jungnang-gu is a real local neighborhood where Seoulites live.',wfb:'Jungnang-gu is a local residential area — not a tourist hotspot.'},
+    {cat:'Pilot Basics',q:'When landing, what does a pilot reduce first?',hint:'Hint: Need to slow down',choices:['Engine power (throttle)','The wings','Emergency exits','Passenger announcements'],ans:0,fb:'Correct! Reducing throttle is the first step when landing.',wfb:'The first step when landing is to reduce the throttle to slow the aircraft.'},
+    {cat:'Aviation',q:'When taking off, which way do you pull the yoke?',hint:'Hint: You want to go up!',choices:['Push forward','Pull back','Turn left or right','Leave it alone'],ans:1,fb:'Perfect! Pulling back raises the nose so you can climb.',wfb:'You pull the yoke back to raise the nose and climb during takeoff.'},
+    {cat:'FLY:HOME',q:'What can you do at FLY:HOME?',hint:"Hint: It's on this page 😊",choices:['Surfing and diving','In-room flight simulation','Play classical piano','Cooking class'],ans:1,fb:'Excellent! You fly over Seoul with in-room Winwing sim equipment. ✈️',wfb:'At FLY:HOME you use in-room Winwing controls to fly over Seoul!'},
+    {cat:'Aviation',q:'What unit is used to measure altitude in aviation?',hint:'Hint: A unit of length',choices:['Knots','Feet','Mach','Hertz'],ans:1,fb:'Correct! Altitude is measured in feet. Airliners typically cruise at 35,000 ft.',wfb:'Aviation uses feet for altitude. Commercial airliners cruise around 35,000 feet.'},
+    {cat:'Aviation',q:'What unit measures aircraft speed in aviation?',hint:'Hint: Also used in sailing',choices:['km/h','Miles','Knots','RPM'],ans:2,fb:'Correct! Aircraft speed is measured in knots. 1 knot ≈ 1.85 km/h.',wfb:'Aviation and sailing both use knots for speed. 1 knot = 1.852 km/h.'},
+    {cat:'Seoul',q:'What is the name of the river that flows through Seoul?',hint:'Hint: It runs east to west',choices:['Nakdong River','Han River','Geum River','Yeongsan River'],ans:1,fb:'Right! The Han River is the iconic river flowing through Seoul.',wfb:"Seoul's iconic river is the Han River. You can fly over it in the simulator!"},
+    {cat:'FLY:HOME',q:'Which train station is closest to FLY:HOME?',hint:'Hint: Gyeongui-Jungang Line',choices:['Mangu Station','Sinnae Station','Sangbong Station','Jungnang Station'],ans:0,fb:'Correct! FLY:HOME is an 11~14 min walk from Mangu Station on the Gyeongui-Jungang Line.',wfb:'The nearest station to FLY:HOME is Mangu Station (Gyeongui-Jungang Line) — about 11~14 min walk.'},
+    {cat:'Pilot Basics',q:'What does the rudder on an aircraft control?',hint:'Hint: Think left and right',choices:['Climb and descent','Left-right direction (yaw)','Speed','Altitude'],ans:1,fb:'Correct! The rudder controls the yaw — the left-right rotation of the aircraft.',wfb:'The rudder controls yaw (left-right direction). It sits on the tail of the aircraft.'},
+    {cat:'Aviation History',q:'Who made the first successful powered flight?',hint:'Hint: They were brothers',choices:['Charles Lindbergh','The Wright Brothers','Amelia Earhart','Neil Armstrong'],ans:1,fb:'Correct! The Wright Brothers achieved the first powered flight in 1903.',wfb:'Orville and Wilbur Wright made the first successful powered flight in 1903.'},
+    {cat:'Aviation',q:'How many crew members are typically in a modern airliner cockpit?',hint:'Hint: Captain and co-pilot',choices:['1','2','3','4'],ans:1,fb:'Correct! Modern airliners are flown by a captain and a first officer.',wfb:'Modern commercial aircraft are operated by 2 pilots — captain and first officer.'},
+    {cat:'Seoul',q:"What is Seoul's famous tower called?",hint:'Hint: Located on Namsan Mountain',choices:['Lotte Tower','63 Building','N Seoul Tower','Gwanghwamun'],ans:2,fb:'Right! N Seoul Tower on Namsan Mountain is an iconic Seoul landmark.',wfb:"N Seoul Tower (Namsan Tower) on Namsan Mountain is Seoul's most famous tower."},
+    {cat:'FLY:HOME',q:'What flight simulator software does FLY:HOME use?',hint:'Hint: Made by Microsoft',choices:['X-Plane','DCS World','Microsoft Flight Simulator','Google Earth'],ans:2,fb:'Correct! Microsoft Flight Simulator 2024 lets you fly over Seoul realistically.',wfb:'FLY:HOME uses Microsoft Flight Simulator. The Seoul scenery is incredibly realistic!'},
+    {cat:'Pilot Basics',q:'What device on the wing increases lift during takeoff and landing?',hint:'Hint: They extend outward',choices:['Ailerons','Rudder','Flaps','Spoilers'],ans:2,fb:'Correct! Flaps extend from the wing to increase lift at low speeds.',wfb:'Flaps extend from the rear of the wing to increase lift — essential for landing.'},
+    {cat:'Aviation',q:'What is the rolling motion of an aircraft?',hint:'Hint: Controlled by ailerons',choices:['Pitching','Rolling','Yawing','Surging'],ans:1,fb:'Correct! Rolling is the tilting of the wings left or right.',wfb:'Rolling is the wing-tilting motion, controlled by the ailerons.'},
+    {cat:'Seoul',q:'How long does the airport rail take from Incheon Airport to Seoul Station?',hint:'Hint: About 40-50 minutes',choices:['About 10 min','About 30 min','About 43 min','About 2 hours'],ans:2,fb:'Correct! The AREX express train takes about 43 minutes.',wfb:'Incheon Airport to Seoul Station by AREX express takes approximately 43 minutes.'},
+    {cat:'Aviation History',q:"What is the world's best-selling commercial jet?",hint:'Hint: Made by Boeing',choices:['Boeing 747','Boeing 737','Airbus A320','Boeing 787'],ans:1,fb:'Correct! The Boeing 737 is the best-selling commercial jet ever made.',wfb:'The Boeing 737, first flown in 1968, is the best-selling commercial jet — over 10,000 built.'},
+    {cat:'FLY:HOME',q:'What makes FLY:HOME different from a simulator cafe?',hint:'Hint: Think about overnight stays',choices:['More expensive','Unlimited use — check-in to checkout','Daytime only','No reservation needed'],ans:1,fb:"Correct! Because it's your room, you can fly all night — unlimited!",wfb:"FLY:HOME is a guesthouse, so you can use the simulator all night — no time limit!"},
+    {cat:'Aviation',q:'What is the official language of international aviation communication?',hint:'Hint: Used worldwide',choices:['French','Spanish','English','Chinese'],ans:2,fb:'Correct! English is the official language of aviation per ICAO standards.',wfb:'ICAO requires all international aviation communication to be in English.'},
   ],
   ja:[
-    {cat:"✈ 航空基礎",q:"セスナとはどんな飛行機？",hint:"ヒント：小さくて軽い",choices:["戦闘機","小型プロペラ機","大型旅客機","ヘリコプター"],ans:1,fb:"正解！セスナは世界で最も広く使われている小型プロペラ機です。"},
-    {cat:"🌆 ソウル旅行",q:"ソウル中浪区はどんなエリア？",hint:"ヒント：地元の人が暮らす場所",choices:["明洞・弘大のような観光地","地元の人が暮らすリアルなソウル","済州島のビーチ","仁川空港のすぐ隣"],ans:1,fb:"正解！中浪区は本物のソウルです。FLY:HOMEはここで新しい体験を作っています！"},
-    {cat:"✈ パイロット入門",q:"着陸時、パイロットが最初にすることは？",hint:"ヒント：速度を落とすには？",choices:["スロットルを絞る","翼を外す","非常口を開ける","機内放送をする"],ans:0,fb:"正解！スロットルを絞るのが最初のステップです。"},
-    {cat:"🌏 飛行の基本",q:"離陸時、操縦桿はどの方向に引く？",hint:"ヒント：上に飛び立つ！",choices:["前に押す","後ろに引く","左右に回す","触らない"],ans:1,fb:"完璧！後ろに引くと機首が上がります。"},
-    {cat:"🎯 FLY:HOME",q:"FLY:HOMEでできることは？",hint:"ヒント：このページの最初に書いてありましたよ 😊",choices:["サーフィンとダイビング","本物のコックピットでソウル上空を飛行","クラシック音楽演奏","料理教室"],ans:1,fb:"素晴らしい！本物のコックピットでソウルを飛べます。予約しましょう！🛫"},
+    {cat:'基礎',q:'セスナとはどんな飛行機？',hint:'ヒント：小さくて軽い',choices:['戦闘機','小型プロペラ機','大型旅客機','ヘリコプター'],ans:1,fb:'正解！セスナは世界で最も広く使われている小型プロペラ機です。',wfb:'セスナは小型プロペラ機です。1〜4人乗りの小さな飛行機です。'},
+    {cat:'ソウル',q:'中浪区はどんな場所？',hint:'ヒント：観光地ではない',choices:['明洞・弘大のような観光地','地元市民が暮らすエリア','済州島のビーチ','仁川空港近く'],ans:1,fb:'正解！中浪区はソウル市民が実際に暮らすローカルエリアです。',wfb:'中浪区は観光地ではなく、ソウル市民が暮らす住宅街です。'},
+    {cat:'操縦基礎',q:'着陸時、最初にすることは？',hint:'ヒント：速度を落とす',choices:['スロットルを絞る','翼を外す','非常口を開ける','機内放送'],ans:0,fb:'正解！まずスロットルを絞って速度を落とします。',wfb:'着陸時はまずスロットルを絞って速度を落とします。'},
+    {cat:'航空',q:'離陸時、操縦桿はどちらに引く？',hint:'ヒント：上に飛ぶ！',choices:['前に押す','後ろに引く','左右に回す','そのまま'],ans:1,fb:'完璧！後ろに引くと機首が上がり上昇します。',wfb:'離陸時は操縦桿を後ろに引いて機首を上げます。'},
+    {cat:'FLY:HOME',q:'FLY:HOMEでできることは？',hint:'ヒント：このページに書いてあります 😊',choices:['サーフィンとダイビング','室内フライトシミュレーション','クラシック演奏','料理教室'],ans:1,fb:'素晴らしい！室内でWinwing機材を使ってソウルの空を飛べます。✈️',wfb:'FLY:HOMEでは室内のWinwing機材でソウルの空を飛べます！'},
+    {cat:'航空',q:'航空で高度を表す単位は？',hint:'ヒント：長さの単位です',choices:['ノット','フィート','マッハ','ヘルツ'],ans:1,fb:'正解！高度はフィート（ft）で表します。旅客機は通常35,000フィートを飛びます。',wfb:'航空では高度をフィート（ft）で表します。1フィート≈30cmです。'},
+    {cat:'航空',q:'航空機の速度を表す単位は？',hint:'ヒント：航海でも使われます',choices:['km/h','マイル','ノット','RPM'],ans:2,fb:'正解！航空では速度をノット（knot）で表します。',wfb:'航空・航海では速度をノット（knot）で表します。1ノット≈1.85km/hです。'},
+    {cat:'ソウル',q:'ソウルを流れる有名な川の名前は？',hint:'ヒント：ソウルを東西に流れます',choices:['洛東江','漢江','錦江','栄山江'],ans:1,fb:'正解！漢江はソウルを象徴する川です。',wfb:'ソウルを東西に流れるのは漢江です。シミュレーターで漢江上空を飛べます！'},
+    {cat:'FLY:HOME',q:'FLY:HOMEに最も近い駅は？',hint:'ヒント：京義中央線です',choices:['望憂駅','新内駅','上鳳駅','中浪駅'],ans:0,fb:'正解！FLY:HOMEは京義中央線・望憂駅から徒歩11〜14分です。',wfb:'FLY:HOMEに最も近い駅は京義中央線・望憂駅です。徒歩11〜14分です。'},
+    {cat:'操縦基礎',q:'航空機のラダー（方向舵）は何を制御する？',hint:'ヒント：左右の動きです',choices:['上昇・下降','左右方向（ヨーイング）','速度','高度'],ans:1,fb:'正解！ラダーは機首の左右方向（ヨーイング）を制御します。',wfb:'ラダーは尾翼にある方向舵で、機首の左右方向を制御します。'},
+    {cat:'航空史',q:'世界初の動力飛行を成功させたのは誰？',hint:'ヒント：兄弟です',choices:['チャールズ・リンドバーグ','ライト兄弟','アメリア・エアハート','ニール・アームストロング'],ans:1,fb:'正解！ライト兄弟は1903年に世界初の動力飛行に成功しました。',wfb:'1903年、ライト兄弟（オーヴィル＆ウィルバー）が世界初の動力飛行に成功しました。'},
+    {cat:'航空',q:'現代の旅客機コックピットには通常何人乗務する？',hint:'ヒント：機長と副操縦士',choices:['1名','2名','3名','4名'],ans:1,fb:'正解！現代の旅客機は機長と副操縦士の2名で操縦します。',wfb:'現代の旅客機は機長と副操縦士（ファーストオフィサー）の2名が操縦します。'},
+    {cat:'ソウル',q:'ソウルの代表的なタワーの名前は？',hint:'ヒント：南山にあります',choices:['ロッテタワー','63ビル','Nソウルタワー','光化門'],ans:2,fb:'正解！南山にあるNソウルタワーはソウルのシンボルです。',wfb:'南山（ナムサン）にあるNソウルタワーがソウルの代表的なタワーです。'},
+    {cat:'FLY:HOME',q:'FLY:HOMEで使用するフライトシミュレーターソフトは？',hint:'ヒント：マイクロソフト製です',choices:['X-Plane','DCS World','Microsoft Flight Simulator','Google Earth'],ans:2,fb:'正解！Microsoft Flight Simulator 2024でリアルなソウルの空を飛べます。',wfb:'FLY:HOMEはMicrosoft Flight Simulatorを使用。ソウルの夜景も超リアルです！'},
+    {cat:'操縦基礎',q:'離着陸時に揚力を増やす翼の装置は？',hint:'ヒント：着陸時に展開されます',choices:['エルロン','ラダー','フラップ','スポイラー'],ans:2,fb:'正解！フラップは低速飛行時に揚力を増加させます。',wfb:'フラップは翼の後縁から展開して揚力を高めます。着陸に不可欠です。'},
+    {cat:'航空',q:'航空機の左右に傾く動きを何という？',hint:'ヒント：エルロンで制御します',choices:['ピッチング','ローリング','ヨーイング','サージング'],ans:1,fb:'正解！翼が左右に傾く動きはローリング（Rolling）です。',wfb:'翼が左右に傾く動きはローリングです。エルロンで制御します。'},
+    {cat:'ソウル',q:'仁川国際空港からソウル駅まで空港鉄道で何分？',hint:'ヒント：約40〜50分です',choices:['約10分','約30分','約43分','約2時間'],ans:2,fb:'正解！仁川空港からソウル駅まで直通約43分です。',wfb:'仁川空港←→ソウル駅は空港鉄道直通で約43分です。'},
+    {cat:'航空史',q:'世界で最も多く販売された旅客機は？',hint:'ヒント：ボーイング社製です',choices:['ボーイング747','ボーイング737','エアバスA320','ボーイング787'],ans:1,fb:'正解！ボーイング737は世界で最も多く販売された旅客機です。',wfb:'ボーイング737は1968年初飛行以来、1万機以上生産された最多販売旅客機です。'},
+    {cat:'FLY:HOME',q:'FLY:HOMEがシミュレーターカフェと違う点は？',hint:'ヒント：宿泊施設だからこそ',choices:['より高い','チェックインからチェックアウトまで無制限','昼間のみ利用可','予約不要'],ans:1,fb:'正解！宿泊施設なので夜通し無制限でフライトシミュレーションを楽しめます。',wfb:'FLY:HOMEは宿泊施設なのでチェックインからチェックアウトまで無制限です！'},
+    {cat:'航空',q:'国際航空通信の公用語は？',hint:'ヒント：世界共通です',choices:['フランス語','スペイン語','英語','中国語'],ans:2,fb:'正解！ICAO基準で航空通信の公用語は英語です。',wfb:'国際民間航空機関（ICAO）の基準で、航空通信の公用語は英語です。'},
   ],
   zh:[
-    {cat:"✈ 航空基础",q:"塞斯纳是什么样的飞机？",hint:"提示：小巧轻便",choices:["战斗机","小型螺旋桨飞机","大型客机","直升机"],ans:1,fb:"正确！塞斯纳是全球使用最广泛的小型螺旋桨飞机。"},
-    {cat:"🌆 首尔旅游",q:"首尔中浪区是什么样的地方？",hint:"提示：不是旅游景点",choices:["像明洞、弘大一样的旅游热门区","外国游客很少的本地居住区","济州岛海滩","仁川机场旁边"],ans:1,fb:"正确！中浪区是首尔市民生活的真实社区。"},
-    {cat:"✈ 驾驶基础",q:"飞机降落时，飞行员首先要做什么？",hint:"提示：要减速",choices:["减小油门","卸下机翼","打开安全出口","广播通知乘客"],ans:0,fb:"正确！减小油门是第一步。"},
-    {cat:"🌏 飞行入门",q:"起飞时，操纵杆应该往哪个方向拉？",hint:"提示：要向上飞！",choices:["向前推","向后拉","左右转","不要动"],ans:1,fb:"完美！向后拉会抬起机头并爬升。"},
-    {cat:"🎯 FLY:HOME",q:"在FLY:HOME可以做什么？",hint:"提示：页面开头有写哦 😊",choices:["冲浪和潜水","在真实驾驶舱模拟飞越首尔","演奏古典音乐","烹饪课"],ans:1,fb:"出色！坐在真实的驾驶舱里飞越首尔。准备好预约了吗？🛫"},
-  ]
+    {cat:'基础',q:'塞斯纳是什么飞机？',hint:'提示：小巧轻便',choices:['战斗机','小型螺旋桨飞机','大型客机','直升机'],ans:1,fb:'正确！塞斯纳是全球最广泛使用的小型螺旋桨飞机。',wfb:'塞斯纳是小型螺旋桨飞机，可载1~4人。'},
+    {cat:'首尔',q:'中浪区是什么样的地方？',hint:'提示：不是旅游景点',choices:['像明洞弘大一样的旅游地','市民居住的本地社区','济州岛海滩','仁川机场附近'],ans:1,fb:'正确！中浪区是首尔市民实际居住的本地社区。',wfb:'中浪区是本地居住区，不是旅游景点。'},
+    {cat:'驾驶基础',q:'降落时飞行员首先要做什么？',hint:'提示：需要减速',choices:['减小油门','卸下机翼','打开安全出口','广播通知'],ans:0,fb:'正确！首先减小油门降低速度。',wfb:'降落时首先减小油门来降低飞机速度。'},
+    {cat:'航空',q:'起飞时操纵杆往哪个方向拉？',hint:'提示：要向上飞！',choices:['向前推','向后拉','左右转','不动'],ans:1,fb:'完美！向后拉可以抬起机头并爬升。',wfb:'起飞时向后拉操纵杆抬起机头。'},
+    {cat:'FLY:HOME',q:'在FLY:HOME可以做什么？',hint:'提示：页面上写着呢 😊',choices:['冲浪和潜水','室内飞行模拟体验','演奏古典音乐','烹饪课'],ans:1,fb:'出色！可以在室内用Winwing设备飞越首尔上空。✈️',wfb:'在FLY:HOME可以用室内Winwing设备飞越首尔！'},
+    {cat:'航空',q:'航空中表示高度的单位是？',hint:'提示：长度单位',choices:['海里','英尺','马赫','赫兹'],ans:1,fb:'正确！高度用英尺（ft）表示。客机通常在35,000英尺飞行。',wfb:'航空用英尺（ft）表示高度。1英尺≈30厘米。'},
+    {cat:'航空',q:'航空中表示速度的单位是？',hint:'提示：航海中也使用',choices:['公里/小时','英里','海里/小时（节）','转/分'],ans:2,fb:'正确！航空速度用节（knot）表示。1节≈1.85km/h。',wfb:'航空和航海都用节（knot）表示速度。1节=1.852km/h。'},
+    {cat:'首尔',q:'流经首尔的著名河流叫什么？',hint:'提示：东西方向流过首尔',choices:['洛东江','汉江','锦江','荣山江'],ans:1,fb:'正确！汉江是流经首尔的标志性河流。',wfb:'流经首尔东西方向的是汉江。可以在模拟器中飞越汉江上空！'},
+    {cat:'FLY:HOME',q:'距FLY:HOME最近的车站是？',hint:'提示：京义中央线',choices:['望憂站','新内站','上鳳站','中浪站'],ans:0,fb:'正确！FLY:HOME距京义中央线望憂站步行11~14分钟。',wfb:'距FLY:HOME最近的是京义中央线望憂站，步行约11~14分钟。'},
+    {cat:'驾驶基础',q:'飞机的方向舵（rudder）控制什么？',hint:'提示：左右方向',choices:['升降','左右方向（偏航）','速度','高度'],ans:1,fb:'正确！方向舵控制飞机的左右偏航方向。',wfb:'方向舵位于尾翼，控制飞机的左右偏航（yaw）方向。'},
+    {cat:'航空史',q:'谁完成了世界上第一次动力飞行？',hint:'提示：他们是兄弟',choices:['查尔斯·林白','莱特兄弟','阿梅利亚·埃尔哈特','尼尔·阿姆斯特朗'],ans:1,fb:'正确！莱特兄弟于1903年完成了世界首次动力飞行。',wfb:'1903年，奥维尔和威尔伯·莱特完成了世界首次动力飞行。'},
+    {cat:'航空',q:'现代客机驾驶舱通常有几名飞行员？',hint:'提示：机长和副驾驶',choices:['1名','2名','3名','4名'],ans:1,fb:'正确！现代客机由机长和副驾驶2人操作。',wfb:'现代客机由机长和副驾驶（第一副机长）2人驾驶。'},
+    {cat:'首尔',q:'首尔最著名的塔叫什么？',hint:'提示：在南山上',choices:['乐天大厦','63大厦','N首尔塔','光化门'],ans:2,fb:'正确！N首尔塔（南山塔）是首尔的地标。',wfb:'位于南山的N首尔塔是首尔最具代表性的地标建筑。'},
+    {cat:'FLY:HOME',q:'FLY:HOME使用哪款飞行模拟软件？',hint:'提示：微软出品',choices:['X-Plane','DCS World','Microsoft Flight Simulator','Google Earth'],ans:2,fb:'正确！Microsoft Flight Simulator 2024可以逼真地飞越首尔上空。',wfb:'FLY:HOME使用Microsoft Flight Simulator，首尔夜景极其逼真！'},
+    {cat:'驾驶基础',q:'起降时增加升力的机翼装置是？',hint:'提示：降落时会展开',choices:['副翼','方向舵','襟翼','扰流板'],ans:2,fb:'正确！襟翼在低速飞行时展开以增加升力。',wfb:'襟翼从机翼后缘展开，增加升力，对降落至关重要。'},
+    {cat:'航空',q:'飞机左右倾斜的运动叫什么？',hint:'提示：由副翼控制',choices:['俯仰','滚转','偏航','浪涌'],ans:1,fb:'正确！机翼左右倾斜的运动叫滚转（Rolling）。',wfb:'机翼左右倾斜是滚转运动，由副翼（ailerons）控制。'},
+    {cat:'首尔',q:'仁川国际机场乘机场铁路到首尔站需要多长时间？',hint:'提示：约40~50分钟',choices:['约10分钟','约30分钟','约43分钟','约2小时'],ans:2,fb:'正确！仁川机场到首尔站乘直达列车约43分钟。',wfb:'仁川机场→首尔站，乘机场铁路直达约43分钟。'},
+    {cat:'航空史',q:'全球销量最高的商用喷气式飞机是？',hint:'提示：波音公司制造',choices:['波音747','波音737','空客A320','波音787'],ans:1,fb:'正确！波音737是全球销量最高的商用喷气式飞机。',wfb:'波音737自1968年首飞以来，已生产超过10,000架，是全球最畅销的客机。'},
+    {cat:'FLY:HOME',q:'FLY:HOME与模拟器咖啡厅有何不同？',hint:'提示：因为是住宿设施',choices:['价格更贵','从入住到退房全程无限制','仅白天开放','无需预约'],ans:1,fb:'正确！因为是住宿设施，可以整晚无限制享受飞行模拟！',wfb:'FLY:HOME是民宿，从入住到退房均可无限使用模拟器！'},
+    {cat:'航空',q:'国际航空通信的官方语言是？',hint:'提示：全球通用',choices:['法语','西班牙语','英语','中文'],ans:2,fb:'正确！根据国际民航组织（ICAO）标准，航空通信官方语言是英语。',wfb:'国际民航组织（ICAO）规定，国际航空通信必须使用英语。'},
+  ],
 };
-
-/* ── 연락처: 실제 이메일로 교체하세요 ── */
-const CONTACT_EMAIL = 'flyhome.hq@gmail.com';
+// 매 시작 시 20문제에서 5문제 랜덤 선택
+const QUESTIONS={
+  get ko(){return pickRandom(QUESTION_POOL.ko,5);},
+  get en(){return pickRandom(QUESTION_POOL.en,5);},
+  get ja(){return pickRandom(QUESTION_POOL.ja,5);},
+  get zh(){return pickRandom(QUESTION_POOL.zh,5);},
+};
+function pickRandom(arr,n){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a.slice(0,n);
+}
 
 let lang='ko';
-let st={phase:'intro',qi:0,score:0,answered:false,messages:[],loading:false,name:''};
-let registeredCount = 0;
-let registrations = []; // 메모리 저장소
+let st={phase:'quiz',qi:0,score:0,answered:false,messages:[],loading:false,name:'',email:'',bookCode:'',shuffledQ:null,alreadyBooked:false};
 
 function t(k){return T[lang][k]||'';}
-function qs(){return QUESTIONS[lang];}
 
-/* 등록자 수 로드 */
-async function loadCount(){
-  try{
-    const r=await window.storage.get('registrations_count',true);
-    registeredCount=r?parseInt(r.value)||0:0;
-  }catch(e){registeredCount=0;}
-  updateSlotBanner();
+function setLang(l,e){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  // 중국어 빨간 테마 적용
+  document.body.classList.remove('zh-active','ja-active','en-active');
+  if(l==='zh') document.body.classList.add('zh-active');
+  if(l==='ja') document.body.classList.add('ja-active');
+  // 예약 완료 상태는 언어 변경해도 반드시 유지
+  const saved={name:st.name,email:st.email,bookCode:st.bookCode,alreadyBooked:st.alreadyBooked};
+  st={
+    phase: saved.alreadyBooked ? 'confirm' : 'quiz',
+    qi:0,score:0,answered:false,messages:[],loading:false,
+    ...saved,shuffledQ:null
+  };
+  renderPage();
 }
 
-function updateSlotBanner(){
-  const remaining=Math.max(0,30-registeredCount);
-  const el=document.getElementById('slotBanner');
-  if(!el)return;
-  const msgs={ko:`🎁 무료 1박 선착순 — 현재 <strong>${registeredCount}</strong>명 등록 / 30명 한정 (남은 슬롯: <strong style="color:var(--amber)">${remaining}</strong>명)`,
-  en:`🎁 Free Night · <strong>${registeredCount}</strong> registered / 30 limit (<strong style="color:var(--amber)">${remaining}</strong> slots left)`,
-  ja:`🎁 無料1泊先着順 — 現在 <strong>${registeredCount}</strong>名登録済 / 30名限定（残り<strong style="color:var(--amber)">${remaining}</strong>名）`,
-  zh:`🎁 免费一晚先到先得 — 已登记<strong>${registeredCount}</strong>人 / 限30名（剩余<strong style="color:var(--amber)">${remaining}</strong>名）`};
-  el.innerHTML=msgs[lang];
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
 }
 
-function setLang(l,e){lang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));e.currentTarget.classList.add('active');st={phase:'intro',qi:0,score:0,answered:false,messages:[],loading:false,name:''};updateSlotBanner();render();}
-function setProgress(p){document.getElementById('progressBar').style.width=p+'%';document.getElementById('progressText').textContent=Math.round(p)+'%';}
-function renderDots(){const total=qs().length+2;const cur=st.phase==='intro'?0:st.phase==='quiz'?st.qi+1:qs().length+1;document.getElementById('dots').innerHTML=Array.from({length:total},(_,i)=>`<div class="dot ${i<cur?'done':i===cur?'active':''}"></div>`).join('');}
+function goToSection(id,skipToReg){
+  const el=document.querySelector(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(skipToReg){setTimeout(()=>{st.phase='reg';render();},400);}
+}
+
+/* ── RENDER PAGE SECTIONS ── */
+function renderPage(){
+  // COUNTDOWN labels
+  document.getElementById('cdLabel').textContent=t('cdLabel');
+  document.getElementById('cdDL').textContent=t('cdDays');
+  document.getElementById('cdHL').textContent=t('cdHrs');
+  document.getElementById('cdML').textContent=t('cdMin');
+  document.getElementById('cdSL').textContent=t('cdSec');
+
+  // HERO
+  document.getElementById('heroEye').textContent=t('heroEye');
+  document.getElementById('heroTagline').textContent=t('heroTagline');
+  document.getElementById('heroSub').innerHTML=t('heroSub').replace(/\n/g,'<br>');
+  document.getElementById('heroCta1').textContent=t('heroCta1');
+  document.getElementById('heroCta2').textContent=t('heroCta2');
+  document.getElementById('heroImgCaption').textContent=t('heroImgCaption');
+
+  // HOST
+  document.getElementById('hostLabel').textContent=t('hostLabel');
+  document.getElementById('hostQuote').innerHTML=t('hostQuote').replace(/\n/g,'<br>');
+  document.getElementById('hostBody').innerHTML=t('hostBody').replace(/\n\n/g,'</p><p class="host-body">').replace(/\n/g,'<br>');
+  document.getElementById('hostSig').textContent=t('hostSig');
+
+  // HONEST
+  document.getElementById('honestLabel').textContent=t('honestLabel');
+  document.getElementById('honestTitle').innerHTML=t('honestTitle').replace(/\n/g,'<br>');
+  document.getElementById('honestBody').textContent=t('honestBody');
+  document.getElementById('honestGrid').innerHTML=t('honestCards').map(c=>`
+    <div class="honest-card ${c.type}">
+      <h3>${c.title}</h3>
+      <ul>${c.items.map(i=>`<li><span class="mark">${c.type==='good'?'✓':'→'}</span>${i}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  // EXPERIENCE
+  document.getElementById('expLabel').textContent=t('expLabel');
+  document.getElementById('expTitle').innerHTML=t('expTitle').replace(/\n/g,'<br>');
+  document.getElementById('expBody').textContent=t('expBody');
+  const expCards=t('expCards');
+  document.getElementById('expGrid').innerHTML=expCards.map((c,i)=>`
+    <div class="exp-card" onclick="toggleDetail(${i})" id="expCard${i}">
+      <div class="card-icon">${c.icon}</div>
+      <h3>${c.title}</h3>
+      <p>${c.short}</p>
+      <span class="arrow">›</span>
+    </div>
+    <div class="exp-detail" id="expDetail${i}">
+      <h4>${c.detail.title}</h4>
+      <p>${c.detail.body.replace(/\n/g,'<br>')}</p>
+      <ul>${c.detail.items.map(item=>`<li><span>✦</span>${item}</li>`).join('')}</ul>
+      <div class="spec-chips">${c.detail.chips.map(ch=>`<span class="spec-chip">${ch}</span>`).join('')}</div>
+      ${c.detail.note?`<p style="margin-top:12px;font-size:12px;color:var(--gray2);font-style:italic;">${c.detail.note}</p>`:''}
+    </div>`).join('');
+
+  // LOCATION
+  document.getElementById('locLabel').textContent=t('locLabel');
+  document.getElementById('locTitle').innerHTML=t('locTitle').replace(/\n/g,'<br>');
+  document.getElementById('locBody').textContent=t('locBody');
+  document.getElementById('locGrid').innerHTML=t('locCards').map(c=>
+    c.type==='accent'
+    ?`<div class="loc-card accent">
+        <h3>${c.title}</h3><p>${c.body}</p>
+        <div class="transit-row">${c.transit.map(t=>`<span class="transit-badge">${t}</span>`).join('')}</div>
+      </div>`
+    :`<div class="loc-card">
+        <div class="loc-icon">${c.icon}</div>
+        <h3>${c.title}</h3><p>${c.body}</p>
+      </div>`
+  ).join('');
+
+  // QUIZ LABEL
+  document.getElementById('quizSectionLabel').textContent=t('quizSectionLabel');
+
+  // QUIZ
+  if(!st.shuffledQ) st.shuffledQ=shuffle(QUESTIONS[lang]);
+  render();
+}
+
+window.toggleDetail=function(i){
+  const detail=document.getElementById('expDetail'+i);
+  const card=document.getElementById('expCard'+i);
+  const isOpen=detail.classList.contains('open');
+  document.querySelectorAll('.exp-detail').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.exp-card .arrow').forEach(a=>a.style.transform='');
+  if(!isOpen){
+    detail.classList.add('open');
+    card.querySelector('.arrow').style.transform='rotate(90deg)';
+    detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+};
+
+/* ── QUIZ RENDER ── */
+function renderDots(){
+  const total=QUESTIONS[lang].length+2;
+  const cur=st.phase==='quiz'?st.qi:st.phase==='ai'?QUESTIONS[lang].length:QUESTIONS[lang].length+1;
+  document.getElementById('dots').innerHTML=
+    Array.from({length:total},(_,i)=>
+      `<div class="dot ${i<cur?'done':i===cur?'active':''}"></div>`).join('');
+}
 
 function render(){
   renderDots();
-  document.getElementById('heroSub').innerHTML=t('heroSub').replace(/\n/g,'<br>');
-  ['pb1','pb2','pb3'].forEach(id=>document.getElementById(id).textContent=t(id));
-  updateSlotBanner();
-  const s=document.getElementById('mainScreen');
-  if(st.phase==='intro')renderIntro(s);
-  else if(st.phase==='quiz')renderQuiz(s);
-  else if(st.phase==='ai')renderAI(s);
-  else if(st.phase==='success')renderSuccess(s);
-  else if(st.phase==='booked')renderBooked(s);
+  const el=document.getElementById('screenContent');
+  if(st.phase==='quiz')renderQuiz(el);
+  else if(st.phase==='ai')renderAI(el);
+  else if(st.phase==='reg'){renderReg(el);setTimeout(loadCounter,100);}
+  else if(st.phase==='confirm')renderConfirm(el);
 }
 
-/* INTRO */
-function renderIntro(el){
-  setProgress(0);
-  const remaining=Math.max(0,30-registeredCount);
-  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>${t('screenHdr')}</div>
-  <div class="intro-c">
-    <h2>${t('introH2')}</h2>
-    <p>${t('introP').replace(/\n/g,'<br>')}</p>
-    <div class="slot-box">
-      <div class="slot-num">${remaining}</div>
-      <div class="slot-txt"><strong>${{ko:'슬롯 남음',en:'slots left',ja:'スロット残り',zh:'名额剩余'}[lang]}</strong>${{ko:'선착순 30명 무료 1박 혜택',en:'Free night for first 30 guests',ja:'先着30名無料宿泊特典',zh:'先到先得30名免费住宿'}[lang]}</div>
-    </div>
-    <div class="reward-box"><h4>${t('rewardTitle')}</h4>${t('rewards').map(r=>`<div class="reward-item">${r}</div>`).join('')}</div>
-    <div class="promo">${t('promoText')}</div>
-    <button class="btn-start" onclick="startQuiz()">${t('btnStart')}</button>
-  </div>`;
-}
-
-/* QUIZ */
-function startQuiz(){st.phase='quiz';st.qi=0;st.score=0;st.answered=false;render();}
 function renderQuiz(el){
-  const q=qs()[st.qi];setProgress((st.qi/qs().length)*75);
+  const q=st.shuffledQ[st.qi];
+  const pct=Math.round((st.qi/st.shuffledQ.length)*100);
   const keys=['A','B','C','D'];
-  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>Q ${st.qi+1} / ${qs().length}</div>
-  <div class="quiz-c">
-    <div class="q-meta"><span class="q-cat">${q.cat}</span><span class="q-num">✦ ${st.score}/${st.qi}</span></div>
-    <div class="q-text">${q.q}</div>
-    <div class="q-hint">${q.hint}</div>
-    <div class="choices">${q.choices.map((c,i)=>`<button class="choice" onclick="selectAns(${i})" id="c${i}"><span class="choice-key">${keys[i]}</span>${c}</button>`).join('')}</div>
-    <div class="feedback" id="fb"></div>
-    <button class="btn-next" id="btnNext" onclick="nextQ()">${st.qi<qs().length-1?t('btnNext_mid'):t('btnNext_end')}</button>
+  el.innerHTML=`
+  <div class="qcard">
+    <div class="qcard-top">
+      <span class="qcard-top-label">${t('screenHdr')} · ${st.qi+1}/${st.shuffledQ.length}</span>
+      <span class="qcard-top-score">${st.score}/${st.qi}</span>
+    </div>
+    <div class="qprog"><div class="qprog-fill" style="width:${pct}%"></div></div>
+    <div class="qbody">
+      <p class="q-cat">${q.cat}</p>
+      <p class="q-text">${q.q}</p>
+      <p class="q-hint">${q.hint}</p>
+      <div class="choices">
+        ${q.choices.map((c,i)=>`
+          <button class="choice" onclick="selectAns(${i})" id="c${i}">
+            <span class="ckey">${keys[i]}</span>${c}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb"></div>
+      <button class="btn-next show" id="btnNext" onclick="nextQ()" style="display:none">
+        ${st.qi<st.shuffledQ.length-1?t('btnNext_mid'):t('btnNext_end')}
+      </button>
+    </div>
   </div>`;
   st.answered=false;
 }
-window.selectAns=function(idx){
-  if(st.answered)return;st.answered=true;
-  const q=qs()[st.qi],ok=idx===q.ans;if(ok)st.score++;
-  document.querySelectorAll('.choice').forEach((b,i)=>{if(i===q.ans)b.classList.add('correct');else if(i===idx&&!ok)b.classList.add('wrong');b.style.pointerEvents='none';});
-  const fb=document.getElementById('fb');fb.className='feedback show '+(ok?'correct-fb':'wrong-fb');fb.innerHTML=ok?q.fb:`✗ ${q.fb}`;
-  document.getElementById('btnNext').classList.add('show');
-};
-function nextQ(){st.qi++;if(st.qi>=qs().length){st.phase='ai';}else{st.answered=false;}render();}
 
-/* AI */
+window.selectAns=function(idx){
+  if(st.answered)return;
+  st.answered=true;
+  const q=st.shuffledQ[st.qi];
+  const ok=(idx===q.ans);
+  if(ok)st.score++;
+  document.querySelectorAll('.choice').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.ans)b.classList.add('correct');
+    else if(i===idx&&!ok)b.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb');
+  fb.className='feedback show '+(ok?'correct-fb':'wrong-fb');
+  fb.innerHTML=(ok?'✓ ':'✗ ')+(ok?q.fb:q.wfb);
+  const btn=document.getElementById('btnNext');
+  if(btn)btn.style.display='block';
+};
+
+function nextQ(){
+  st.qi++;
+  if(st.qi>=st.shuffledQ.length)st.phase='ai';
+  else st.answered=false;
+  render();
+}
+
 function renderAI(el){
-  setProgress(88);const passed=st.score>=3;
-  if(!st.messages.length)st.messages=[{role:'assistant',content:passed?t('aiInitPass'):t('aiInitFail')}];
-  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>${t('aiHdr')}</div>
-  <div class="ai-c">
-    <div class="quick-btns">${t('quickQ').map(q=>`<button class="quick-btn" onclick="quickSend('${q}')">${q}</button>`).join('')}</div>
-    <div class="ai-msgs" id="aiMsgs"></div>
-    <div class="ai-input-row">
-      <input class="ai-input" id="aiIn" placeholder="${t('aiPlaceholder')}" onkeydown="if(event.key==='Enter')sendMsg()">
-      <button class="btn-send" id="sendBtn" onclick="sendMsg()">${t('btnSend')}</button>
+  const passed=(st.score>=PASS);
+  const msg=t(passed?'passMsg':'failMsg').replace('{score}',st.score);
+  if(!st.messages.length)st.messages=[{role:'assistant',content:msg}];
+  el.innerHTML=`
+  <div class="qcard">
+    <div class="qcard-top">
+      <span class="qcard-top-label">AI GUIDE</span>
+      <span class="qcard-top-score">${st.score}/${st.shuffledQ.length} ★</span>
     </div>
-    <div style="display:flex;gap:8px;margin-top:12px;justify-content:center;flex-wrap:wrap">
-      ${passed?`<button class="btn-start" style="padding:10px 26px;font-size:13px" onclick="goSuccess()">${t('btnGoBook')}</button>`:''}
-      <button class="btn-start" style="padding:10px 26px;font-size:13px;background:rgba(240,165,0,.1);box-shadow:none;color:var(--gold);border:1px solid var(--gold)" onclick="startQuiz()">${t('btnRetry')}</button>
+    <div class="qbody" style="padding-top:20px">
+      <div class="ai-result">
+        <div class="ai-score">${st.score}<span style="font-size:22px;color:var(--gray2)">/${st.shuffledQ.length}</span></div>
+        <div class="ai-result-label ${passed?'ai-pass':''}">${passed?'PASS ✓':'Keep trying!'}</div>
+      </div>
+      <div class="quick-btns">
+        ${t('quickQ').map(q=>`<button class="quick-btn" onclick="quickSend('${q}')">${q}</button>`).join('')}
+      </div>
+      <div class="ai-msgs" id="aiMsgs"></div>
+      <div class="ai-input-row">
+        <input class="ai-input" id="aiIn" placeholder="${t('aiPlaceholder')}" onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="btn-send" id="sendBtn" onclick="sendMsg()">${t('btnSend')}</button>
+      </div>
+      <div class="ai-actions">
+        <button class="btn-pill dark" style="font-size:13px;padding:11px 22px" onclick="goReg()">${t('btnGoReg')}</button>
+        <button class="btn-pill outline" style="font-size:13px;padding:11px 18px" onclick="retryQuiz()">${t('btnRetry')}</button>
+      </div>
     </div>
   </div>`;
   renderMsgs();
 }
-function renderMsgs(){const c=document.getElementById('aiMsgs');if(!c)return;c.innerHTML=st.messages.map(m=>`<div class="ai-msg ${m.role==='user'?'user':''}"><div class="avatar">${m.role==='user'?'👤':'✈️'}</div><div class="bubble">${m.content.replace(/\n/g,'<br>')}</div></div>`).join('');c.scrollTop=c.scrollHeight;}
+
+function renderMsgs(){
+  const c=document.getElementById('aiMsgs');if(!c)return;
+  c.innerHTML=st.messages.map(m=>`
+    <div class="ai-msg ${m.role==='user'?'user':''}">
+      <div class="avatar">${m.role==='user'?'👤':'✈️'}</div>
+      <div class="bubble">${m.content.replace(/\n/g,'<br>')}</div>
+    </div>`).join('');
+  c.scrollTop=c.scrollHeight;
+}
+
 window.quickSend=function(text){document.getElementById('aiIn').value=text;sendMsg();};
+
 async function sendMsg(){
-  const inp=document.getElementById('aiIn'),btn=document.getElementById('sendBtn'),text=inp.value.trim();
+  const inp=document.getElementById('aiIn'),btn=document.getElementById('sendBtn');
+  const text=inp.value.trim();
   if(!text||st.loading)return;
-  st.messages.push({role:'user',content:text});inp.value='';st.loading=true;btn.disabled=true;renderMsgs();
+  st.messages.push({role:'user',content:text});
+  inp.value='';st.loading=true;btn.disabled=true;renderMsgs();
   const c=document.getElementById('aiMsgs');
-  const ty=document.createElement('div');ty.className='ai-msg';ty.innerHTML='<div class="avatar">✈️</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+  const ty=document.createElement('div');ty.className='ai-msg';
+  ty.innerHTML='<div class="avatar">✈️</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
   c.appendChild(ty);c.scrollTop=c.scrollHeight;
-  const sysMap={ko:'한국어로 응답하세요.',en:'Respond in English.',ja:'日本語で返答してください。',zh:'请用中文回复。'};
+  const sys={ko:'한국어로만 답하세요.',en:'Reply in English only.',ja:'日本語のみで答えてください。',zh:'请只用中文回复。'};
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:350,system:`당신은 FLY:HOME AI 안내원입니다. FLY:HOME은 서울 중랑구 신내동에서 준비 중인 비행 시뮬레이션 콕핏 체험 숙박업소입니다. 정식 오픈 전이며 2026년 하반기 예정. 숙박비 6만원, 세스나172/보잉737 콕핏 무제한 체험. 신내역 근처. 문의: ${CONTACT_EMAIL}. 따뜻하게 안내하세요. 120자 이내. ${sysMap[lang]}`,messages:st.messages})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:300,
+        system:`당신은 FLY:HOME의 친절한 AI 안내원입니다. 아래 정보를 정확히 숙지하고 답변하세요.
+
+[기본 정보]
+- 이름: FLY:HOME (beta)
+- 위치: 서울 중랑구 망우동 (한국 최초 비행 시뮬레이션 테마 숙소)
+- 오픈: 2026년 3분기 (6월 이후) 예정 (현재 오픈 알림 신청 중)
+
+[교통 — 반드시 이 내용으로만 답할 것]
+- 가장 가까운 역: 경의중앙선 망우역, 도보 11~14분 / 승용차 4분
+- 지하철 소요시간(망우역 기준): 명동 39분, 시청 40분, 건대입구 32분, 동대문 34분, 이태원 50분, 강남 47분
+- 인천공항: 공항버스로 FLY:HOME까지 약 2시간
+- 절대로 신내역, 6호선을 언급하지 마세요
+
+[장비]
+- Winwing + Thrustmaster 스로틀, 러더 페달 (최신 모델)
+- 3면 대형 스크린 (완전 몰입형)
+- RTX 4090급 GPU, Intel Core i9, 64GB RAM
+- Microsoft Flight Simulator 2024
+- 경비행기 콕핏 프레임 구현 중 / 보잉 콕핏 추진 예정
+- 실제 비행기 아님 — 가정용 최고급 파일럿 장비
+- 자체 구입 시 수천만 원 필요
+
+[숙박 요금]
+- 베타 무료: 퀴즈 통과자(4/5 이상) 선착순 30명 한정
+- 일반 요금: 6~8만원/박 예정
+- 장비 이용료: 숙박비에 포함, 체크인~체크아웃 무제한
+- 가격 관련 질문: 위 내용만 답하고 다른 추측 금지
+
+[숙소 특징]
+- 1~2인 소형 홈스테이 (에어비앤비 스타일)
+- 럭셔리 호텔 아님 — 진짜 서울 주택가 분위기
+- 한국 정부 관광벤처 실증 프로젝트
+
+[주변]
+- 중랑캠핑장 도보 20분
+- 망우 전통시장 근처
+- 봉화산 하이킹
+
+[규칙]
+- 답변은 따뜻하고 간결하게 150자 이내
+- 모르는 내용은 "flyhome.hq@gmail.com으로 문의해 주세요"
+- ${sys[lang]}`,
+        messages:st.messages
+      })
+    });
     const d=await r.json();
     st.messages.push({role:'assistant',content:d.content?.map(b=>b.text||'').join('')||'잠시 후 다시 시도해주세요.'});
-  }catch(e){st.messages.push({role:'assistant',content:'연결 오류. 잠시 후 다시 시도해주세요.'});}
+  }catch(e){
+    const err={ko:'연결 오류입니다. 잠시 후 다시 시도해주세요.',en:'Connection error. Please try again.',ja:'接続エラーです。',zh:'连接错误，请稍后再试。'};
+    st.messages.push({role:'assistant',content:err[lang]});
+  }
   st.loading=false;btn.disabled=false;renderMsgs();
 }
-function goSuccess(){st.phase='success';render();}
 
-/* SUCCESS */
-function renderSuccess(el){
-  setProgress(100);const bi=t('bookItems');
-  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>🏆 ${t('successH2')}</div>
-  <div class="success-c">
-    <div class="success-badge">✈️</div>
-    <h2>${t('successH2')}</h2>
-    <p class="tagline">${t('tagline')}</p>
-    <div class="score-badge">⭐ ${st.score} / ${qs().length} · PASS</div>
-    <div class="booking-card"><h3>${t('bookTitle')}</h3>${bi.map((row,i)=>`<div class="b-item"><span class="b-label">${row[0]}</span><span class="b-val ${i===3?'free':i===4?'soon':''}">${i===3?t('freeLabel'):i===4?t('soonLabel'):row[1]}</span></div>`).join('')}</div>
-    <p style="font-size:12px;color:var(--dim);margin-bottom:18px">${t('noticeText')}</p>
-    <div class="form-grid">
-      <div class="ff" style="grid-column:1/-1"><label>${t('formLabels')[0]}</label><input type="text" id="gName" placeholder="..."></div>
-      <div class="ff"><label>${t('formLabels')[1]}</label><input type="email" id="gEmail" placeholder="you@email.com"></div>
-      <div class="ff"><label>${t('formLabels')[2]}</label><select id="gNation"><option value="">...</option>${t('nations').map(n=>`<option>${n}</option>`).join('')}</select></div>
-      <div class="ff" style="grid-column:1/-1"><label>${t('formLabels')[3]}</label><select id="gDate">${t('dates').map(d=>`<option>${d}</option>`).join('')}</select></div>
-    </div>
-    <button class="btn-book" id="bookBtn" onclick="submitBook()">${t('btnBook')}</button>
-    <div class="save-status" id="saveStatus"></div>
-    <div class="contact-strip" style="margin-top:16px">
-      ${t('contactLabel')}: <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>
+function goReg(){st.phase="reg";render();goToSection('#quizSection');}
+function retryQuiz(){
+  st.phase='quiz';st.qi=0;st.score=0;st.answered=false;st.messages=[];
+  st.shuffledQ=shuffle(QUESTIONS[lang]);render();
+}
+
+function renderReg(el){
+  const passed=(st.score>=PASS);
+  if(st.alreadyBooked){
+    el.innerHTML=`
+    <div class="reg-card">
+      <div class="reg-top"><p class="reg-top-title">${t('regTitle')}</p><p class="reg-top-sub">${t('regSub')}</p></div>
+      <div class="reg-body">
+        <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:14px;padding:20px;text-align:center;margin-bottom:16px">
+          <div style="font-size:24px;margin-bottom:8px">✅</div>
+          <p style="font-size:14px;color:#166534;line-height:1.8">${t('alreadyTitle')}<br>${t('alreadyCode')}<strong style="font-family:monospace">${st.bookCode}</strong></p>
+        </div>
+        <div class="contact-foot">${t('contact')}: <a href="mailto:${CONTACT}">${CONTACT}</a></div>
+      </div>
+    </div>`;return;
+  }
+  el.innerHTML=`
+  <div class="reg-card">
+    <div class="reg-top"><p class="reg-top-title">${t('regTitle')}</p><p class="reg-top-sub">${t('regSub')}</p></div>
+    <div class="reg-body">
+      ${passed?`<div class="reg-notice">${t('regNotice')}</div>`:'<div class="reg-notice" style="background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.1);color:var(--gray1)">'+t('regNotice')+'</div>'}
+      <div id="regCounter"></div>
+      <div class="form-grid">
+        <div class="ff" style="grid-column:1/-1">
+          <label>${t('formLabels')[0]} <span class="req">*</span></label>
+          <input type="text" id="gName" placeholder="..." value="${st.name}">
+        </div>
+        <div class="ff">
+          <label>${t('formLabels')[1]} <span class="req">*</span></label>
+          <input type="email" id="gEmail" placeholder="you@email.com" value="${st.email}">
+        </div>
+        <div class="ff">
+          <label>${t('formLabels')[2]} <span class="req">*</span></label>
+          <select id="gNation"><option value="">...</option>${t('nations').map(n=>`<option>${n}</option>`).join('')}</select>
+        </div>
+        <div class="ff" style="grid-column:1/-1">
+          <label>${t('formLabels')[3]}</label>
+          <select id="gDate">${t('dates').map(d=>`<option>${d}</option>`).join('')}</select>
+        </div>
+      </div>
+      <button class="btn-register" id="regBtn" onclick="submitReg()">${t('btnReg')}</button>
+      <div class="save-status" id="saveStatus"></div>
+      <div class="contact-foot">${t('contact')}: <a href="mailto:${CONTACT}">${CONTACT}</a></div>
     </div>
   </div>`;
 }
 
-async function submitBook(){
+async function submitReg(){
   const n=document.getElementById('gName').value.trim();
   const e=document.getElementById('gEmail').value.trim();
   const nation=document.getElementById('gNation').value;
   const date=document.getElementById('gDate').value;
-  const msgs={ko:'이름과 이메일을 입력해주세요.',en:'Please enter your name and email.',ja:'名前とメールを入力してください。',zh:'请输入姓名和电子邮件。'};
-  if(!n||!e){alert(msgs[lang]);return;}
-
-  const btn=document.getElementById('bookBtn');
+  let valid=true;
+  ['gName','gEmail','gNation'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el.value.trim()){el.classList.add('error');valid=false;}
+    else el.classList.remove('error');
+  });
+  if(!valid){alert(t('validErr'));return;}
+  const btn=document.getElementById('regBtn');
   const status=document.getElementById('saveStatus');
-  btn.disabled=true;btn.textContent=t('saving');status.textContent='';
+  btn.disabled=true;
+  status.className='save-status show loading';
+  status.textContent=t('saving');
+  const code='FH-'+Date.now().toString(36).toUpperCase().slice(-4)+Math.random().toString(36).substr(2,2).toUpperCase();
+  st.name=n;st.email=e;st.bookCode=code;
+  
+  // 신청 시각 (서울 시간)
+  const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  
+  const payload={name:n,email:e,nation,date,lang,score:st.score,passed:st.score>=PASS,code,ts:new Date().toISOString(),tsKST:nowKST};
 
-  /* 메모리에 즉시 저장 */
-  registrations.push({name:n,email:e,nation,date,lang,score:st.score,timestamp:new Date().toISOString()});
-  registeredCount=registrations.length;
-  updateSlotBanner();
-  st.name=n;
+  // 1) Google Sheets 저장
+  try{
+    await fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});
+  }catch(err){console.warn('GAS 저장 실패:',err);}
 
-  /* 스토리지 저장 시도 — 결과와 무관하게 바로 완료 처리 */
-  const savePromise=window.storage.set('reg_'+Date.now(),JSON.stringify(registrations[registrations.length-1]),true).catch(()=>{});
-  const timeout=new Promise(res=>setTimeout(res,1500));
-  await Promise.race([savePromise,timeout]);
+  // 2) localStorage 백업
+  try{
+    const existing=JSON.parse(localStorage.getItem('flyhome_regs')||'[]');
+    existing.push(payload);
+    localStorage.setItem('flyhome_regs',JSON.stringify(existing));
+    localStorage.setItem('flyhome_count',String(parseInt(localStorage.getItem('flyhome_count')||'0')+1));
+  }catch(err){}
 
-  status.className='save-status ok';
+  // 3) window.storage (Claude 환경)
+  try{
+    await window.storage.set('reg:'+code,JSON.stringify(payload));
+    await incrementCounter();
+  }catch(err){}
+
+  st.alreadyBooked=true;
+  status.className='save-status show ok';
   status.textContent=t('saveOk');
-  setTimeout(()=>{st.phase='booked';render();},800);
+  setTimeout(()=>{st.phase='confirm';render();goToSection("#quizSection");},1200);
 }
 
-/* BOOKED */
-function renderBooked(el){
-  const code='FH-'+Math.random().toString(36).substr(2,6).toUpperCase();
-  el.innerHTML=`<div class="screen-hdr"><div class="ind"></div>✅ CONFIRMED</div>
-  <div class="confirm-c">
-    <div style="font-size:50px">🎉</div>
-    <h2 style="font-family:'Bebas Neue',cursive;font-size:32px;color:#fff;letter-spacing:2px;margin:10px 0 4px">${t('confirmH2')}</h2>
-    <div class="confirm-code">${code}</div>
-    <p style="font-size:13px;color:var(--dim);max-width:380px;margin:0 auto 6px;line-height:1.8">${t('confirmMsg').replace(/\n/g,'<br>')}</p>
-    <div class="confirm-steps">${t('confirmSteps').map(s=>`<div class="c-step"><div class="num">${s[0]}</div><p>${s[1].replace(/\n/g,'<br>')}</p></div>`).join('')}</div>
-    <div class="contact-strip" style="margin-top:20px">
-      ${t('contactLabel')}: <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>
-    </div>
-    <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <button class="btn-start" style="padding:10px 26px;font-size:13px" onclick="shareIt()">${t('btnShare')}</button>
-      <button class="btn-start" style="padding:10px 26px;font-size:13px;background:rgba(240,165,0,.1);box-shadow:none;border:1px solid var(--gold);color:var(--gold)" onclick="resetAll()">${t('btnAgain')}</button>
+function renderConfirm(el){
+  const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  el.innerHTML=`
+  <div class="qcard">
+    <div class="confirm-body">
+      <div class="confirm-icon">🎉</div>
+      <h2 class="confirm-title">${t('confirmTitle')}</h2>
+      <p class="confirm-msg">${t('confirmMsg').replace(/\n/g,'<br>')}</p>
+      <div class="code-box">
+        <div class="code-label">${t('confirmCodeLabel')}</div>
+        <div class="code-val">${st.bookCode}</div>
+        <div class="code-hint">${t('confirmCodeHint')}</div>
+        <div style="margin-top:8px;font-size:10px;color:var(--gray2);letter-spacing:.5px;">${nowKST} KST</div>
+      </div>
+      <div class="confirm-steps">
+        ${t('confirmSteps').map(s=>`
+          <div class="cstep">
+            <div class="num">${s[0]}</div>
+            <p>${s[1].replace(/\n/g,'<br>')}</p>
+          </div>`).join('')}
+      </div>
+      <div class="cancel-box">
+        <strong>${t('cancelTitle')}</strong>
+        ${t('cancelDesc').replace(/\n/g,'<br>')}
+        <br><a href="mailto:${CONTACT}">${CONTACT}</a>
+      </div>
+      <div class="share-row">
+        <button class="btn-share dark" onclick="shareNative()">${t('btnShare')}</button>
+        ${lang==='zh'?`<button class="btn-wechat" onclick="copyLink()"><span class="btn-wechat-icon">💬</span>微信分享</button>`:''}
+        <button class="btn-share light" onclick="copyLink()">${t('btnCopy')}</button>
+        <button class="btn-share light" onclick="retryAll()">${t('btnAgain')}</button>
+      </div>
+      <div class="share-toast" id="shareToast">${t('shareToast')}</div>
+      <div class="contact-foot">${t('contact')}: <a href="mailto:${CONTACT}">${CONTACT}</a></div>
     </div>
   </div>`;
 }
 
-function shareIt(){
-  const msgs={ko:`✈️ FLY:HOME 항공 퀴즈를 통과했어요!\n퀴즈 5문제 → 서울 콕핏 숙소 무료 1박\n도전해보세요: ${location.href}`,
-  en:`✈️ I passed the FLY:HOME cockpit quiz!\n5 questions → FREE night in a Seoul cockpit stay\nTry it: ${location.href}`,
-  ja:`✈️ FLY:HOMEのクイズに合格しました！\n5問 → ソウルコックピット無料1泊\nチャレンジ: ${location.href}`,
-  zh:`✈️ 我通过了FLY:HOME的问答！\n5道题 → 首尔飞行舱免费住宿\n来挑战: ${location.href}`};
-  if(navigator.share)navigator.share({title:'FLY:HOME',text:msgs[lang],url:location.href});
-  else{navigator.clipboard.writeText(msgs[lang]).then(()=>alert({ko:'클립보드에 복사됐어요!',en:'Copied!',ja:'コピーしました！',zh:'已复制！'}[lang])).catch(()=>{});}
+function shareNative(){
+  const msgs={
+    ko:`✈️ 서울 항공 테마 숙소 FLY:HOME 오픈 예정!\n한국 최초 비행 시뮬레이션 숙소 · 2026\n${location.href}`,
+    en:`✈️ FLY:HOME — Seoul's first flight sim stay, opening 2026!\n${location.href}`,
+    ja:`✈️ ソウル初のフライトシム宿泊施設FLY:HOME、2026年オープン予定！\n${location.href}`,
+    zh:`✈️ 首尔首家飞行模拟住宿FLY:HOME，2026年开业！\n${location.href}`
+  };
+  if(navigator.share){
+    navigator.share({title:'FLY:HOME',text:msgs[lang],url:location.href}).catch(()=>copyLink());
+  }else{copyLink();}
+}
+function copyLink(){
+  if(navigator.clipboard?.writeText){
+    navigator.clipboard.writeText(location.href).then(showToast).catch(fallbackCopy);
+  }else{fallbackCopy();}
+}
+function fallbackCopy(){
+  const ta=document.createElement('textarea');
+  ta.value=location.href;ta.style.cssText='position:fixed;opacity:0';
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{document.execCommand('copy');showToast();}catch(e){}
+  document.body.removeChild(ta);
+}
+function showToast(){
+  const el=document.getElementById('shareToast');if(!el)return;
+  el.className='share-toast show';
+  setTimeout(()=>el.classList.remove('show'),3000);
+}
+function retryAll(){
+  st={phase:'quiz',qi:0,score:0,answered:false,messages:[],loading:false,
+      name:st.name,email:st.email,bookCode:st.bookCode,shuffledQ:null,alreadyBooked:st.alreadyBooked};
+  renderPage();window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function resetAll(){st={phase:'intro',qi:0,score:0,answered:false,messages:[],loading:false,name:''};render();}
+/* ── CLOCK & COUNTDOWN ── */
+const OPEN_DATE=new Date('2026-06-01T00:00:00+09:00'); // 오픈 예정일 (KST)
+const TOTAL_SLOTS=30;
 
-/* INIT */
-document.getElementById('heroSub').innerHTML=t('heroSub').replace(/\n/g,'<br>');
-['pb1','pb2','pb3'].forEach(id=>document.getElementById(id).textContent=t(id));
-loadCount().then(()=>render());
+function pad(n){return String(n).padStart(2,'0');}
+
+function updateClock(){
+  const now=new Date();
+  // 날짜
+  const dateOpts={year:'numeric',month:'2-digit',day:'2-digit'};
+  const tz='Asia/Seoul';
+  const dateFmts={ko:{year:'numeric',month:'long',day:'numeric',weekday:'short'},en:{year:'numeric',month:'short',day:'numeric',weekday:'short'},ja:{year:'numeric',month:'short',day:'numeric',weekday:'short'},zh:{year:'numeric',month:'long',day:'numeric',weekday:'short'}};
+  const locales={ko:'ko-KR',en:'en-US',ja:'ja-JP',zh:'zh-CN'};
+  const dateStr=now.toLocaleDateString(locales[lang]||'ko-KR',{timeZone:tz,...(dateFmts[lang]||dateFmts.ko)});
+  const timeStr=now.toLocaleTimeString('ko-KR',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+  const dEl=document.getElementById('clockDate');
+  const tEl=document.getElementById('clockTime');
+  if(dEl) dEl.textContent='Seoul · '+dateStr;
+  if(tEl) tEl.textContent=timeStr;
+
+  // 카운트다운
+  const diff=OPEN_DATE-now;
+  if(diff>0){
+    const days=Math.floor(diff/(1000*60*60*24));
+    const hrs=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const mins=Math.floor((diff%(1000*60*60))/(1000*60));
+    const secs=Math.floor((diff%(1000*60))/1000);
+    const dD=document.getElementById('cdD'),dH=document.getElementById('cdH');
+    const dM=document.getElementById('cdM'),dS=document.getElementById('cdS');
+    if(dD)dD.textContent=pad(days);
+    if(dH)dH.textContent=pad(hrs);
+    if(dM)dM.textContent=pad(mins);
+    if(dS)dS.textContent=pad(secs);
+  } else {
+    // 오픈 이후
+    const bar=document.getElementById('countdownBar');
+    if(bar)bar.innerHTML=`<span style="font-size:13px;color:var(--gold-light);font-family:'DM Serif Display',serif;font-style:italic;">✈ FLY:HOME is OPEN!</span>`;
+  }
+}
+setInterval(updateClock,1000);
+updateClock();
+
+/* ── COUNTER (shared storage) ── */
+async function loadCounter(){
+  try{
+    const res=await window.storage.get('counter:total',true);
+    const count=res?parseInt(res.value)||0:0;
+    updateCounterUI(count);
+  }catch(e){updateCounterUI(0);}
+}
+
+function updateCounterUI(count){
+  const el=document.getElementById('regCounter');
+  if(!el)return;
+  const pct=Math.min(Math.round((count/TOTAL_SLOTS)*100),100);
+  const remaining=Math.max(TOTAL_SLOTS-count,0);
+  el.innerHTML=`
+    <div class="counter-strip">
+      <div class="counter-main">
+        <span class="counter-num">${count}</span>
+        <span class="counter-denom">/ ${TOTAL_SLOTS}</span>
+      </div>
+      <div class="counter-bar-wrap">
+        <div class="counter-bar-bg">
+          <div class="counter-bar-fill" style="width:${pct}%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:5px;">
+          <span style="font-size:10px;color:var(--gray2)">${t('counterLabel')}</span>
+          <span style="font-size:10px;color:${remaining<=5?'var(--red)':'var(--gray2)'}">${remaining > 0 ? ({'ko':remaining+'명 남음','en':remaining+' left','ja':'残り'+remaining+'名','zh':'剩余'+remaining+'名'}[lang]||remaining+'명 남음') : ({'ko':'마감','en':'Full','ja':'満席','zh':'已满'}[lang]||'마감')}</span>
+        </div>
+      </div>
+      <div class="counter-label">${count}${t('counterSuffix')}<br><span style="color:var(--gold);font-weight:600">${t('counterLimit')}</span></div>
+    </div>`;
+}
+
+async function incrementCounter(){
+  try{
+    const res=await window.storage.get('counter:total',true);
+    const cur=res?parseInt(res.value)||0:0;
+    await window.storage.set('counter:total',String(cur+1),true);
+    updateCounterUI(cur+1);
+  }catch(e){}
+}
+
+const GAS_URL='https://script.google.com/macros/s/AKfycbysiEZDd4RUoN74xZx7lzpxpBIUmttlH6cHVkppdN2bLngYlpIg8UgrigLFkRUzFYgaOA/exec';
+
+function showPrivacy(){document.getElementById('privacyModal').style.display='block';}
+
+/* ── INIT ── */
+renderPage();
 </script>
 </body>
 </html>
