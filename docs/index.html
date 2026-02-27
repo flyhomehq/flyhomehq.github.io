@@ -240,7 +240,7 @@ body{
   overflow:hidden;box-shadow:var(--shadow-lg);position:relative;
 }
 .hero-img{
-  width:100%;height:360px;object-fit:cover;display:block;
+  width:100%;height:420px;object-fit:cover;object-position:center 30%;display:block;
   background:linear-gradient(135deg,#0d1f35 0%,#1a3352 50%,#0f2a40 100%);
 }
 .hero-img-placeholder{
@@ -793,7 +793,7 @@ body{
         <div class="label">PHOTO COMING SOON</div>
       </div>
       <div class="hero-img-overlay">
-        <span class="hero-img-caption" id="heroImgCaption"></span>
+        <span class="hero-img-caption" id="heroImgCaption" style="font-size:11px;color:rgba(255,255,255,0.5)"></span>
       </div>
     </div>
   </div>
@@ -806,12 +806,17 @@ body{
     <blockquote class="host-quote" id="hostQuote"></blockquote>
     <p class="host-body" id="hostBody"></p>
     <p class="host-sig" id="hostSig"></p>
-  <div style="margin-top:28px;border-radius:16px;overflow:hidden;max-width:500px;opacity:0.7">
-    <img src="host1.jpg" alt="35년 전 여행 중" style="width:100%;display:block;filter:sepia(30%) contrast(0.9)"
-         onerror="this.parentElement.style.display='none'">
-    <p style="font-size:11px;color:rgba(255,255,255,0.3);padding:10px 0;font-style:italic;text-align:center">
-      35년 전, 대만 여행 중에서
-    </p>
+  <div style="margin-top:32px;max-width:420px">
+    <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);position:relative">
+      <img src="host1.jpg" alt="35년 전 대만 여행" 
+           style="width:100%;display:block;filter:sepia(40%) brightness(0.85) contrast(0.9)"
+           onerror="this.parentElement.parentElement.style.display='none'">
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent)">
+        <p style="font-size:11px;color:rgba(255,255,255,0.6);font-style:italic;margin:0">
+          1991년, 대만 어느 버스 안에서
+        </p>
+      </div>
+    </div>
   </div>
   </div>
 </section>
@@ -836,7 +841,7 @@ body{
     <img src="sim1.jpg" alt="실제 비행 시뮬레이터 화면 — 서울 한강" style="width:100%;display:block;max-height:320px;object-fit:cover"
          onerror="this.parentElement.style.display='none'">
     <p style="font-size:11px;color:var(--gray2);padding:10px 16px;font-style:italic;background:var(--white)">
-      ▲ FLY:HOME 실제 비행 화면 — 서울 한강 상공
+      ▲ FLY:HOME 실제 비행 화면 — 서울 한강 상공 · Actual flight over Seoul Han River
     </p>
   </div>
   <div class="exp-grid" id="expGrid"></div>
@@ -1719,75 +1724,6 @@ window.toggleFaq=function(i){
 function renderMsgs(){}
 window.quickSend=function(text){};
 
-async function sendMsg(){
-  const inp=document.getElementById('aiIn'),btn=document.getElementById('sendBtn');
-  const text=inp.value.trim();
-  if(!text||st.loading)return;
-  st.messages.push({role:'user',content:text});
-  inp.value='';st.loading=true;btn.disabled=true;renderMsgs();
-  const c=document.getElementById('aiMsgs');
-  const ty=document.createElement('div');ty.className='ai-msg';
-  ty.innerHTML='<div class="avatar">✈️</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
-  c.appendChild(ty);c.scrollTop=c.scrollHeight;
-  const sys={ko:'한국어로만 답하세요.',en:'Reply in English only.',ja:'日本語のみで答えてください。',zh:'请只用中文回复。'};
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:300,
-        system:`당신은 FLY:HOME의 친절한 AI 안내원입니다. 아래 정보를 정확히 숙지하고 답변하세요.
-
-[기본 정보]
-- 이름: FLY:HOME (beta)
-- 위치: 서울 중랑구 망우동 (한국 최초 비행 시뮬레이션 테마 숙소)
-- 오픈: 2026년 3분기 (6월 이후) 예정 (현재 오픈 알림 신청 중)
-
-[교통 — 반드시 이 내용으로만 답할 것]
-- 가장 가까운 역: 경의중앙선 망우역, 도보 11~14분 / 승용차 4분
-- 지하철 소요시간(망우역 기준): 명동 39분, 시청 40분, 건대입구 32분, 동대문 34분, 이태원 50분, 강남 47분
-- 인천공항: 공항버스로 FLY:HOME까지 약 2시간
-- 절대로 신내역, 6호선을 언급하지 마세요
-
-[장비]
-- Winwing + Thrustmaster 스로틀, 러더 페달 (최신 모델)
-- 3면 대형 스크린 (완전 몰입형)
-- RTX 4090급 GPU, Intel Core i9, 64GB RAM
-- Microsoft Flight Simulator 2024
-- 경비행기 콕핏 프레임 구현 중 / 보잉 콕핏 추진 예정
-- 실제 비행기 아님 — 가정용 최고급 파일럿 장비
-- 자체 구입 시 수천만 원 필요
-
-[숙박 요금]
-- 베타 무료: 퀴즈 통과자(4/5 이상) 선착순 30명 한정
-- 일반 요금: 6~8만원/박 예정
-- 장비 이용료: 숙박비에 포함, 체크인~체크아웃 무제한
-- 가격 관련 질문: 위 내용만 답하고 다른 추측 금지
-
-[숙소 특징]
-- 1~2인 소형 홈스테이 (에어비앤비 스타일)
-- 럭셔리 호텔 아님 — 진짜 서울 주택가 분위기
-- 한국 정부 관광벤처 실증 프로젝트
-
-[주변]
-- 중랑캠핑장 도보 20분
-- 망우 전통시장 근처
-- 봉화산 하이킹
-
-[규칙]
-- 답변은 따뜻하고 간결하게 150자 이내
-- 모르는 내용은 "flyhome.hq@gmail.com으로 문의해 주세요"
-- ${sys[lang]}`,
-        messages:st.messages
-      })
-    });
-    const d=await r.json();
-    st.messages.push({role:'assistant',content:d.content?.map(b=>b.text||'').join('')||'잠시 후 다시 시도해주세요.'});
-  }catch(e){
-    const err={ko:'연결 오류입니다. 잠시 후 다시 시도해주세요.',en:'Connection error. Please try again.',ja:'接続エラーです。',zh:'连接错误，请稍后再试。'};
-    st.messages.push({role:'assistant',content:err[lang]});
-  }
-  st.loading=false;btn.disabled=false;renderMsgs();
-}
 
 function goReg(){st.phase="reg";render();goToSection('#quizSection');}
 function retryQuiz(){
