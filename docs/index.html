@@ -743,6 +743,7 @@ body{
   .code-val{font-size:18px;letter-spacing:2px;}
 }
 </style>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -1891,28 +1892,41 @@ function renderConfirm(el){
 
 function getKakaoBtn(){
   if(lang==='ko') return '<button class="btn-share" style="background:#FEE500;color:#3A1D1D;font-weight:700;" onclick="shareKakao()">💬 카카오톡</button>';
-  if(lang==='ja') return '<button class="btn-share" style="background:#FEE500;color:#3A1D1D;font-weight:700;" onclick="shareKakao()">💬 カカオトーク</button>';
   return '';
 }
 function getWechatBtn(){
   if(lang==='zh') return '<button class="btn-wechat" onclick="copyLink()"><span class="btn-wechat-icon">💬</span>微信分享</button>';
+  if(lang==='ja') return '<button class="btn-share" style="background:#06C755;color:#fff;font-weight:700;" onclick="shareLine()">💬 LINE</button>';
   return '';
 }
-function shareKakao(){
-  // 카카오톡 공유 (링크 복사 방식 - SDK 없이)
-  const msgs={
-    ko:'✈️ 서울 항공 테마 숙소 FLY:HOME 오픈 예정!\n한국 최초 비행 시뮬레이션 숙소 · 2026\n'+location.href,
-    ja:'✈️ ソウル初のフライトシム宿泊施設FLY:HOME、2026年オープン予定！\n'+location.href,
-  };
-  const text=msgs[lang]||msgs.ko;
-  if(navigator.share){
-    navigator.share({title:'FLY:HOME',text:text,url:location.href}).catch(()=>copyLink());
-  }else{
-    copyLink();
-    alert('링크가 복사됐어요!\n카카오톡을 열고 붙여넣기(길게 누르기)해서 공유해주세요 😊');
-  }
+function shareLine(){
+  const url=encodeURIComponent(location.href);
+  const text=encodeURIComponent('✈ ソウル初のフライトシム宿泊施設FLY:HOME、2026年オープン！');
+  window.open('https://social-plugins.line.me/lineit/share?url='+url+'&text='+text,'_blank');
 }
-
+function shareKakao(){
+  if(!window.Kakao) { copyLink(); return; }
+  if(!Kakao.isInitialized()) Kakao.init('7f5687f700d2504a19b195aaf65d094f');
+  Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: 'FLY:HOME — 한국 최초 비행 시뮬레이션 숙소',
+      description: '서울 하늘을, 당신의 방에서. 2026년 오픈 예정.',
+      imageUrl: 'https://flyhomehq.github.io/hero.png',
+      link: {
+        mobileWebUrl: 'https://flyhomehq.github.io',
+        webUrl: 'https://flyhomehq.github.io',
+      },
+    },
+    buttons: [{
+      title: '퀴즈 도전하기',
+      link: {
+        mobileWebUrl: 'https://flyhomehq.github.io',
+        webUrl: 'https://flyhomehq.github.io',
+      },
+    }],
+  });
+}
 function shareNative(){
   const msgs={
     ko:`✈️ 서울 항공 테마 숙소 FLY:HOME 오픈 예정!\n한국 최초 비행 시뮬레이션 숙소 · 2026\n${location.href}`,
