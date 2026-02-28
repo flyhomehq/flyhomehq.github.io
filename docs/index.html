@@ -722,6 +722,16 @@ body{
 .site-footer p{font-size:12px;color:var(--gray2);line-height:2;}
 .site-footer a{color:var(--blue);text-decoration:none;}
 
+/* 이전으로 버튼 */
+.btn-back{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:20px;
+  background:transparent;border:1.5px solid var(--gray3);
+  color:var(--gray1);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s;margin-bottom:16px;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-back:hover{border-color:var(--black);color:var(--black);}
 /* UTILS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:600px){
@@ -743,15 +753,14 @@ body{
   .code-val{font-size:18px;letter-spacing:2px;}
 }
 </style>
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <div class="lang-bar">
-  <button class="lang-btn active" onclick="setLang('ko',event)">🇰🇷 한국어</button>
-  <button class="lang-btn" onclick="setLang('en',event)">🇺🇸 English</button>
-  <button class="lang-btn" onclick="setLang('ja',event)">🇯🇵 日本語</button>
-  <button class="lang-btn" onclick="setLang('zh',event)">🇨🇳 中文</button>
+  <button class="lang-btn" id="btn-en" onclick="setLang('en',event)">🇺🇸 English</button>
+  <button class="lang-btn" id="btn-ja" onclick="setLang('ja',event)">🇯🇵 日本語</button>
+  <button class="lang-btn" id="btn-zh" onclick="setLang('zh',event)">🇨🇳 中文</button>
+  <button class="lang-btn" id="btn-ko" onclick="setLang('ko',event)">🇰🇷 한국어</button>
   <div class="live-clock" id="liveClock">
     <span id="clockDate" class="clock-date-part"></span>
     <span class="clock-sep">·</span>
@@ -1727,6 +1736,11 @@ window.quickSend=function(text){};
 
 
 function goReg(){st.phase="reg";render();goToSection('#quizSection');}
+function goBack(){
+  if(st.phase==='ai'){st.phase='quiz';st.qi=Math.max(0,st.shuffledQ.length-1);render();}
+  else if(st.phase==='reg'){st.phase='ai';render();}
+  else if(st.phase==='confirm'){st.phase='reg';render();}
+}
 function retryQuiz(){
   st.phase='quiz';st.qi=0;st.score=0;st.answered=false;st.messages=[];
   st.shuffledQ=shuffle(QUESTIONS[lang]);render();
@@ -1758,6 +1772,9 @@ function renderReg(el){
     </div>`;return;
   }
   el.innerHTML=`
+  <div style="margin-bottom:8px">
+    <button class="btn-back" onclick="goBack()">← 이전으로</button>
+  </div>
   <div class="reg-card">
     <div class="reg-top">
       <p class="reg-top-title">${t('regTitle')}</p>
@@ -1905,27 +1922,9 @@ function shareLine(){
   window.open('https://social-plugins.line.me/lineit/share?url='+url+'&text='+text,'_blank');
 }
 function shareKakao(){
-  if(!window.Kakao) { copyLink(); return; }
-  if(!Kakao.isInitialized()) Kakao.init('7f5687f700d2504a19b195aaf65d094f');
-  Kakao.Share.sendDefault({
-    objectType: 'feed',
-    content: {
-      title: 'FLY:HOME — 한국 최초 비행 시뮬레이션 숙소',
-      description: '서울 하늘을, 당신의 방에서. 2026년 오픈 예정.',
-      imageUrl: 'https://flyhomehq.github.io/hero.png',
-      link: {
-        mobileWebUrl: 'https://flyhomehq.github.io',
-        webUrl: 'https://flyhomehq.github.io',
-      },
-    },
-    buttons: [{
-      title: '퀴즈 도전하기',
-      link: {
-        mobileWebUrl: 'https://flyhomehq.github.io',
-        webUrl: 'https://flyhomehq.github.io',
-      },
-    }],
-  });
+  const url = encodeURIComponent('https://flyhomehq.github.io');
+  const text = encodeURIComponent('✈ FLY:HOME — 한국 최초 비행 시뮬레이션 숙소! 2026년 오픈 예정. 퀴즈 풀고 무료 1박 도전!');
+  window.open('https://sharer.kakao.com/talk/friends/picker/link?app_key=7f5687f700d2504a19b195aaf65d094f&url='+url+'&text='+text, '_blank');
 }
 function shareNative(){
   const msgs={
@@ -2056,6 +2055,23 @@ const GAS_URL='https://script.google.com/macros/s/AKfycbysiEZDd4RUoN74xZx7lzpxpB
 function showPrivacy(){document.getElementById('privacyModal').style.display='block';}
 
 /* ── INIT ── */
+// 브라우저 언어 자동 감지
+(function(){
+  const bl = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+  if(bl.startsWith('ko')) lang = 'ko';
+  else if(bl.startsWith('ja')) lang = 'ja';
+  else if(bl.startsWith('zh')) lang = 'zh';
+  else lang = 'en'; // 기타 모든 나라 → 영어
+  // 활성 버튼 표시
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.remove('active');
+    if(b.textContent.includes(lang==='ko'?'한국어':lang==='ja'?'日本語':lang==='zh'?'中文':'English'))
+      b.classList.add('active');
+  });
+  // 중국어 테마
+  if(lang==='zh') document.body.classList.add('zh-active');
+  if(lang==='ja') document.body.classList.add('ja-active');
+})();
 renderPage();
 </script>
 </body>
