@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FLY:HOME — Seoul is calling.</title>
-<meta name="description" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 3분기 오픈 예정.">
-<meta name="keywords" content="FLY HOME, 비행 시뮬레이션, 서울 숙소, 중랑구, 테마 숙소, flight simulator, Seoul stay">
+<meta name="description" id="metaDesc" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 3분기 오픈 예정.">
+<meta name="keywords" id="metaKeywords" content="FLY HOME, flight simulation stay, Seoul guesthouse, 비행 시뮬레이션, 서울 숙소, フライトシム, 飞行模拟">
 <meta property="og:title" content="FLY:HOME — Seoul is calling.">
 <meta property="og:description" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소.">
 <meta property="og:type" content="website">
@@ -910,21 +910,21 @@ body{
 <section class="qr-section" id="qrSection">
   <div class="section-inner" style="text-align:center">
     <p class="label-tag" style="text-align:center;margin-bottom:12px">SCAN & SHARE</p>
-    <h2 class="section-h" style="text-align:center;margin-bottom:8px">QR코드로<br>공유하세요</h2>
-    <p class="section-p" style="text-align:center;margin:0 auto 28px">명함·포스터·SNS에 사용하세요.<br>스캔하면 바로 FLY:HOME으로 연결돼요.</p>
+    <h2 class="section-h" style="text-align:center;margin-bottom:8px" id="qrTitle">QR코드로<br>공유하세요</h2>
+    <p class="section-p" style="text-align:center;margin:0 auto 28px" id="qrDesc">명함·포스터·SNS에 사용하세요.<br>스캔하면 바로 FLY:HOME으로 연결돼요.</p>
     <div class="qr-box">
       <div class="qr-canvas" id="qrcode"></div>
-      <div class="qr-label">📱 카메라로 스캔하세요<br>바로 FLY:HOME으로 이동해요</div>
+      <div class="qr-label" id="qrLabel">📱 카메라로 스캔하세요<br>바로 FLY:HOME으로 이동해요</div>
       <div class="qr-url">flyhomehq.github.io</div>
     </div>
   </div>
 </section>
 <footer class="site-footer">
   <p>FLY:HOME (beta) · Seoul Jungnang-gu Mangu-dong · 2026</p>
-  <p>관광벤처사업 실증 프로젝트 · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a></p>
+  <p id="footerDesc">관광벤처사업 실증 프로젝트 · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a></p>
   <p style="margin-top:8px;font-size:11px;">
-    <a href="#" onclick="showPrivacy();return false;" style="color:var(--gray2);text-decoration:none;">개인정보처리방침 · Privacy Policy</a>
-    &nbsp;·&nbsp;<span style="color:var(--gray3)">신청 정보는 오픈 알림 목적으로만 사용됩니다</span>
+    <a href="#" onclick="showPrivacy();return false;" style="color:var(--gray2);text-decoration:none;" id="privacyLink">개인정보처리방침 · Privacy Policy</a>
+    &nbsp;·&nbsp;<span style="color:var(--gray3)" id="privacyNote">신청 정보는 오픈 알림 목적으로만 사용됩니다</span>
   </p>
 </footer>
 <div id="privacyModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;overflow-y:auto;padding:20px;">
@@ -1158,8 +1158,10 @@ const T={
     btnReg:'✈ Register for the Alert',
     validErr:'Please fill in your name, email, and nationality.',
     saving:'Saving...',saveOk:"✅ You\'re registered! We\'ll be in touch the moment we open.",
-    confirmTitle:"You\'re on the list!",
-    confirmMsg:"Welcome to FLY:HOME.\nWe\'ll reach out to you first when we open.",
+    confirmTitlePass:'🎉 Free Night Confirmed!',
+    confirmMsgPass:'Congratulations — you passed the quiz! Your free night (first 30 guests) has been reserved.\nWe\'ll be in touch with booking details when we open.',
+    confirmTitleFail:'You\'re on the list!',
+    confirmMsgFail:'Welcome to FLY:HOME.\nWe\'ll reach out to you first when we open.',
     confirmCodeLabel:'YOUR REFERENCE NUMBER',
     confirmCodeHint:'📸 Screenshot this to keep it safe',
     confirmSteps:[['01','Check your inbox\nConfirmation on its way'],['02','Opening alert\n2026 Q3 — you hear first'],['03','Land in Seoul\nMangu Stn → FLY:HOME']],
@@ -1168,7 +1170,7 @@ const T={
     btnShare:'📤 Share',btnCopy:'📋 Copy Link',btnAgain:'Start Over',
     shareToast:'✅ Link copied!',
     contact:'Contact',
-    alreadyTitle:"You're already registered",alreadyCode:'Reference: ',
+    alreadyTitle:'You\'re already registered',alreadyCode:'Reference: ',
   },
   ja:{
     cdLabel:'オープンまで',cdDays:'日',cdHrs:'時間',cdMin:'分',cdSec:'秒',
@@ -1546,6 +1548,15 @@ function goToSection(id,skipToReg){
 
 /* ── RENDER PAGE SECTIONS ── */
 function renderPage(){
+  // META 다국어 (SEO + 공유 미리보기)
+  const metaD={
+    ko:'서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 3분기 오픈 예정.',
+    en:'Fly over Seoul — from your room. Korea\'s first flight simulation-themed stay. Opening 2026 Q3.',
+    ja:'ソウルの空を、あなたのお部屋から。韓国初のフライトシミュレーションテーマ宿泊施設。2026年Q3オープン予定。',
+    zh:'在房间里飞越首尔上空。韩国首家飞行模拟主题住宿。2026年Q3开业。'
+  };
+  const metaEl=document.getElementById('metaDesc');
+  if(metaEl)metaEl.setAttribute('content',metaD[lang]||metaD.en);
   // COUNTDOWN labels
   document.getElementById('cdLabel').textContent=t('cdLabel');
   document.getElementById('cdDL').textContent=t('cdDays');
@@ -1632,6 +1643,36 @@ function renderPage(){
         <h3>${c.title}</h3><p>${c.body}</p>
       </div>`
   ).join('');
+
+  // QR 섹션 다국어
+  const qrT={ko:{title:'QR코드로<br>공유하세요',desc:'명함·포스터·SNS에 사용하세요.<br>스캔하면 바로 FLY:HOME으로 연결돼요.',label:'📱 카메라로 스캔하세요<br>바로 FLY:HOME으로 이동해요'},
+    en:{title:'Scan & Share<br>FLY:HOME',desc:'Use on business cards, posters or SNS.<br>Scan to go straight to FLY:HOME.',label:'📱 Point your camera here<br>Goes straight to FLY:HOME'},
+    ja:{title:'QRコードで<br>シェアしよう',desc:'名刺・ポスター・SNSにご利用いただけます。<br>スキャンするとFLY:HOMEに直接アクセス。',label:'📱 カメラでスキャン<br>FLY:HOMEへ直接アクセス'},
+    zh:{title:'扫码分享<br>FLY:HOME',desc:'可用于名片、海报或社交媒体。<br>扫描即可直达FLY:HOME。',label:'📱 用相机扫描<br>直达FLY:HOME'}
+  };
+  const qr=qrT[lang]||qrT.en;
+  const qrTitle=document.getElementById('qrTitle');
+  const qrDesc=document.getElementById('qrDesc');
+  const qrLabel=document.getElementById('qrLabel');
+  if(qrTitle)qrTitle.innerHTML=qr.title;
+  if(qrDesc)qrDesc.innerHTML=qr.desc;
+  if(qrLabel)qrLabel.innerHTML=qr.label;
+  // footer 다국어
+  const footerT={
+    ko:'관광벤처사업 실증 프로젝트 · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
+    en:'Tourism Venture Pilot Project · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
+    ja:'観光ベンチャー実証プロジェクト · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
+    zh:'旅游创业实证项目 · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>'
+  };
+  const footerEl=document.getElementById('footerDesc');
+  if(footerEl)footerEl.innerHTML=footerT[lang]||footerT.en;
+  // 개인정보 링크 & 안내문 다국어
+  const privacyLinkT={ko:'개인정보처리방침',en:'Privacy Policy',ja:'プライバシーポリシー',zh:'隐私政策'};
+  const privacyNoteT={ko:'신청 정보는 오픈 알림 목적으로만 사용됩니다',en:'Your info is used for opening alerts only',ja:'お申し込み情報はオープン通知目的のみに使用します',zh:'您的信息仅用于开业通知目的'};
+  const plEl=document.getElementById('privacyLink');
+  const pnEl=document.getElementById('privacyNote');
+  if(plEl)plEl.textContent=privacyLinkT[lang]||privacyLinkT.en;
+  if(pnEl)pnEl.textContent=privacyNoteT[lang]||privacyNoteT.en;
 
   // QUIZ LABEL
   document.getElementById('quizSectionLabel').textContent=t('quizSectionLabel');
@@ -1831,47 +1872,49 @@ function retryQuiz(){
 function renderReg(el){
   const passed=(st.score>=PASS);
   if(st.alreadyBooked){
+    const nowPassed = st.score >= PASS;
+    const alreadyBadge = nowPassed
+      ? {ko:'🏆 퀴즈 통과! 무료 1박 혜택 적용',en:'🏆 Quiz passed! Free night benefit applied',ja:'🏆 クイズ合格！無料1泊特典が適用されます',zh:'🏆 答题通过！免费住宿资格已适用'}
+      : {ko:'✅ 오픈 알림 등록 완료',en:'✅ Opening alert registered',ja:'✅ オープン通知登録済み',zh:'✅ 开业通知登记完成'};
+    const alreadySub = nowPassed
+      ? {ko:'선착순 30명 무료 1박 혜택이 적용됩니다. 오픈 시 가장 먼저 연락드려요.',en:'You are in the first-30 free night list. We will contact you first at opening.',ja:'先着30名様の無料1泊特典が適用されます。オープン時に最優先でご連絡します。',zh:'您已进入前30名免费住宿名单，开业时我们将优先联系您。'}
+      : {ko:'오픈 알림 신청이 완료됐어요. 퀴즈에 다시 도전해 무료 1박을 노려보세요!',en:'Already registered for the alert. Retake the quiz anytime to earn the free night!',ja:'通知登録済みです。クイズに再挑戦して無料1泊を目指しましょう！',zh:'通知已登记。随时可以重新答题，争取免费住宿资格！'};
     el.innerHTML=`
     <div class="reg-card">
-      <div class="reg-top">
-      <p class="reg-top-title">${t('regTitle')}</p>
-      <p class="reg-top-sub">${t('regSub')}</p>
-      <p style="margin-top:8px;font-size:14px;color:${passed?'#86efac':'rgba(255,255,255,0.5)'}">
-        ${passed ? '🎉 '+t('passMsg').replace('{score}',st.score) : '📋 '+t('failMsg').replace('{score}',st.score).split('\n')[0]}
-      </p>
-    </div>
+      <div class="reg-top" style="${nowPassed?'background:linear-gradient(135deg,#b07d0a,#f5a623)':''}">
+        <p class="reg-top-title">${t('regTitle')}</p>
+        <p class="reg-top-sub">${t('regSub')}</p>
+      </div>
       <div class="reg-body">
-        <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:14px;padding:20px;text-align:center;margin-bottom:16px">
-          <div style="font-size:24px;margin-bottom:8px">✅</div>
-          <p style="font-size:14px;color:#166534;line-height:1.8">${t('alreadyTitle')}<br>${t('alreadyCode')}<strong style="font-family:monospace">${st.bookCode}</strong></p>
+        <div style="background:${nowPassed?'linear-gradient(135deg,rgba(176,125,10,0.1),rgba(245,166,35,0.06))':'#f0fdf4'};border:1px solid ${nowPassed?'rgba(176,125,10,0.3)':'#86efac'};border-radius:14px;padding:20px;text-align:center;margin-bottom:16px">
+          <p style="font-size:15px;font-weight:700;color:${nowPassed?'var(--gold)':'#166534'};margin-bottom:6px">${alreadyBadge[lang]||alreadyBadge.en}</p>
+          <p style="font-size:13px;color:var(--gray1);line-height:1.7;margin-bottom:10px">${alreadySub[lang]||alreadySub.en}</p>
+          <p style="font-size:11px;color:var(--gray2)">${t('alreadyCode')}<strong style="font-family:monospace;letter-spacing:2px">${st.bookCode}</strong></p>
         </div>
         <div style="text-align:center;margin:16px 0">
-          <button class="btn-pill dark" style="font-size:13px;padding:11px 22px" onclick="retryQuizOnly()">${lang==='ko'?'✈ 퀴즈 다시 도전':lang==='en'?'✈ Try Quiz Again':lang==='ja'?'✈ クイズに再挑戦':'✈ 重新答题'}</button>
-          <p style="font-size:11px;color:var(--gray2);margin-top:8px">${lang==='ko'?'오픈 알림은 완료됐어요. 퀴즈만 다시 도전할 수 있어요.':lang==='en'?'Already registered. Retake the quiz anytime!':lang==='ja'?'通知登録済み。クイズのみ再挑戦できます。':'通知已登记，可随时重新答题。'}</p>
+          <button class="btn-pill dark" style="font-size:13px;padding:11px 22px" onclick="retryQuizOnly()">
+            ${lang==='ko'?'✈ 퀴즈 다시 도전':lang==='en'?'✈ Try Quiz Again':lang==='ja'?'✈ クイズに再挑戦':'✈ 重新答题'}
+          </button>
         </div>
         <div class="contact-foot">${t('contact')}: <a href="mailto:${CONTACT}">${CONTACT}</a></div>
       </div>
     </div>`;return;
   }
+  // 신청폼 HTML
+  const regPassed=(st.score>=PASS);
   el.innerHTML=`
-  <div style="margin-bottom:8px">
-    <button class="btn-back" onclick="goBack()">← <span id="backBtnTxt"></span></button>
-  </div>
   <div class="reg-card">
-    <div class="reg-top">
+    <div class="reg-top" style="${regPassed?'background:linear-gradient(135deg,#b07d0a,#f5a623)':''}">
       <p class="reg-top-title">${t('regTitle')}</p>
       <p class="reg-top-sub">${t('regSub')}</p>
-      <p style="margin-top:8px;font-size:14px;color:${passed?'#86efac':'rgba(255,255,255,0.5)'}">
-        ${passed ? '🎉 '+t('passMsg').replace('{score}',st.score) : '📋 '+t('failMsg').replace('{score}',st.score).split('\n')[0]}
-      </p>
     </div>
     <div class="reg-body">
-      ${passed?`<div class="reg-notice">${t('regNotice')}</div>`:'<div class="reg-notice" style="background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.1);color:var(--gray1)">'+t('regNotice')+'</div>'}
+      <div class="${passed?'reg-notice':'reg-notice'}" style="${regPassed?'':'background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.1);color:var(--gray1)'}">${t('regNotice')}</div>
       <div id="regCounter"></div>
       <div class="form-grid">
         <div class="ff" style="grid-column:1/-1">
           <label>${t('formLabels')[0]} <span class="req">*</span></label>
-          <input type="text" id="gName" placeholder="..." value="${st.name}">
+          <input type="text" id="gName" placeholder="${{ko:'홍길동',en:'Your name',ja:'山田太郎',zh:'请输入姓名'}[lang]||'Your name'}" value="${st.name}" autocomplete="name">
         </div>
         <div class="ff">
           <label>${t('formLabels')[1]} <span class="req">*</span></label>
@@ -1891,6 +1934,7 @@ function renderReg(el){
       <div class="contact-foot">${t('contact')}: <a href="mailto:${CONTACT}">${CONTACT}</a></div>
     </div>
   </div>`;
+  setTimeout(loadCounter,100);
 }
 
 async function submitReg(){
@@ -1935,6 +1979,7 @@ async function submitReg(){
   const rand = Date.now().toString(36).toUpperCase().slice(-3) + Math.random().toString(36).substr(2,2).toUpperCase();
   const code = 'FHF-' + countryCode + '-' + rand;
   st.name=n;st.email=e;st.bookCode=code;
+  st.overLimit = (currentCount >= TOTAL_SLOTS);
   
   // 신청 시각 (서울 시간)
   const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
@@ -1956,6 +2001,18 @@ async function submitReg(){
   };
 
   // 1) Google Sheets 저장
+  // 30명 초과 자동처리: storage에서 현재 count 확인
+  let currentCount = 0;
+  try{
+    const cRes = await window.storage.get('counter:total', true);
+    currentCount = cRes ? parseInt(cRes.value)||0 : 0;
+  }catch(e){}
+  // 30명 초과 시 passed 강제 false (무료 1박 혜택 제거)
+  if(currentCount >= TOTAL_SLOTS){
+    payload.passed = false;
+    payload.overLimit = true;
+  }
+
   try{
     await fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});
   }catch(err){console.warn('GAS 저장 실패:',err);}
@@ -1982,7 +2039,7 @@ async function submitReg(){
 
 function renderConfirm(el){
   const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-  const passed=(st.score>=PASS);
+  const passed=(st.score>=PASS) && !st.overLimit;
   const icon = passed ? '🎉' : '✅';
   const title = passed ? t('confirmTitlePass') : t('confirmTitleFail');
   const msg = passed ? t('confirmMsgPass') : t('confirmMsgFail');
@@ -2149,7 +2206,25 @@ updateClock();
 
 /* ── COUNTER (shared storage) ── */
 async function loadCounter(){
-  updateCounterUI(0); // 숫자 없이 배지만 표시
+  try{
+    const res=await window.storage.get('counter:total',true);
+    const count=res?parseInt(res.value)||0:0;
+    updateCounterUI(count);
+    // 30명 초과 시 신청폼 안내문 교체
+    if(count>=TOTAL_SLOTS){
+      const noticeEl=document.querySelector('.reg-notice');
+      if(noticeEl){
+        const fullMsg={
+          ko:'📋 무료 1박 30명 혜택이 모두 마감됐어요. 오픈 알림 신청은 계속 가능해요.',
+          en:'📋 All 30 free-night spots are filled. Opening alert registration is still open.',
+          ja:'📋 無料1泊30名様の枠は満員です。オープン通知のお申し込みは引き続き受け付けています。',
+          zh:'📋 30名免费住宿名额已满。开业通知登记仍在继续。'
+        };
+        noticeEl.style.cssText='background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);border-radius:12px;padding:13px 16px;margin-bottom:22px;font-size:13px;color:var(--gray1);line-height:1.7;';
+        noticeEl.textContent=fullMsg[lang]||fullMsg.en;
+      }
+    }
+  }catch(e){updateCounterUI(0);}
 }
 
 function updateCounterUI(count){
