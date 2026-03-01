@@ -1506,7 +1506,7 @@ function pickRandom(arr,n){
 }
 
 let lang='ko';
-let st={phase:'quiz',qi:0,score:0,answered:false,messages:[],loading:false,name:'',email:'',bookCode:'',shuffledQ:null,alreadyBooked:false};
+let st={phase:'quiz',qi:0,score:0,answered:false,messages:[],loading:false,name:'',email:'',bookCode:'',shuffledQ:null,alreadyBooked:false,overLimit:false};
 
 function t(k){return T[lang][k]||'';}
 
@@ -1526,6 +1526,7 @@ function setLang(l,e){
   st={
     phase: saved.alreadyBooked ? 'confirm' : 'quiz',
     qi:0,score:0,answered:false,messages:[],loading:false,
+    overLimit:saved.overLimit||false,
     ...saved,shuffledQ:null
   };
   renderPage();
