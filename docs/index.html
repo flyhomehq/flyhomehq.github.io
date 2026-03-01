@@ -839,6 +839,20 @@ body{
     <blockquote class="host-quote" id="hostQuote"></blockquote>
     <p class="host-body" id="hostBody"></p>
     <p class="host-sig" id="hostSig"></p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:640px;margin:28px auto 0;">
+      <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+        <img src="host1.jpg" alt="1991년 대만" style="width:100%;height:200px;object-fit:cover;display:block;filter:sepia(30%) brightness(0.85);">
+        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);padding:12px 14px;">
+          <p style="font-size:10px;color:rgba(255,255,255,0.6);font-style:italic;margin:0" id="hostImgCap"></p>
+        </div>
+      </div>
+      <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+        <img src="family1991.jpg" alt="대만 가족" style="width:100%;height:200px;object-fit:cover;display:block;filter:sepia(30%) brightness(0.85);">
+        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);padding:12px 14px;">
+          <p style="font-size:10px;color:rgba(255,255,255,0.6);font-style:italic;margin:0" id="hostImgCap2"></p>
+        </div>
+      </div>
+    </div>
   <div style="margin-top:32px;max-width:420px">
     <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);position:relative">
       <img src="host1.jpg" alt="35년 전 대만 여행" 
@@ -1035,7 +1049,7 @@ const T={
     regNotice:'🏆 퀴즈 통과자(4/5 이상)는 무료 1박 — 선착순 30명 한정이에요. 통과 여부와 관계없이 누구나 오픈 알림 신청 가능해요.',
     formLabels:['이름','이메일','국적','방문 예정 시기'],
     nations:['🇯🇵 일본','🇺🇸 미국','🇬🇧 영국','🇨🇳 중국','🇹🇼 대만','🇹🇭 태국','🇻🇳 베트남','🇦🇺 호주','🇰🇷 한국','기타'],
-    dates:['2026년 3분기(6월~)','2027년 상반기','2027 이후','미정'],
+    dates:['2026년 6~8월','2026년 9월 이후','2027년 상반기','2027년 이후','미정'],
     btnReg:'✈ 오픈 알림 신청하기',
     validErr:'이름, 이메일, 국적을 입력해주세요.',
     saving:'저장 중...',saveOk:'✅ 신청 완료! 오픈 시 가장 먼저 안내드릴게요.',
@@ -1143,7 +1157,7 @@ const T={
     regNotice:'🏆 Quiz passers (4/5 or more) receive a FREE night — first 30 guests only. Anyone is welcome to register for the opening alert regardless of score.',
     formLabels:['Your Name','Email Address','Nationality','When might you visit?'],
     nations:['🇯🇵 Japan','🇺🇸 USA','🇬🇧 UK','🇨🇳 China','🇹🇼 Taiwan','🇹🇭 Thailand','🇻🇳 Vietnam','🇦🇺 Australia','🇰🇷 Korea','Other'],
-    dates:['2026 Q3 (from June)','2027 first half','2027 or later','Not sure yet'],
+    dates:['2026 June~August','2026 September onwards','2027 first half','2027 or later','Not sure yet'],
     btnReg:'✈ Register for the Alert',
     validErr:'Please fill in your name, email, and nationality.',
     saving:'Saving...',saveOk:"✅ You're registered! We'll be in touch the moment we open.",
@@ -1251,7 +1265,7 @@ const T={
     regNotice:'🏆 クイズ合格者（4問以上正解）の方には無料1泊をご提供 — 先着30名様限定。合否に関わらず、どなたでもオープン通知にお申し込みいただけます。',
     formLabels:['お名前','メールアドレス','国籍','ご訪問予定時期'],
     nations:['🇯🇵 日本','🇺🇸 アメリカ','🇬🇧 イギリス','🇨🇳 中国','🇹🇼 台湾','🇹🇭 タイ','🇻🇳 ベトナム','🇦🇺 オーストラリア','🇰🇷 韓国','その他'],
-    dates:['2026年Q3（6月以降）','2027年上半期','2027年以降','未定'],
+    dates:['2026年6〜8月','2026年9月以降','2027年上半期','2027年以降','未定'],
     btnReg:'✈ オープン通知に申し込む',
     validErr:'お名前・メールアドレス・国籍をご入力ください。',
     saving:'登録中...',saveOk:'✅ 申し込み完了！オープン時に最優先でご連絡いたします。',
@@ -1359,7 +1373,7 @@ const T={
     regNotice:'🏆 答题通过者（4/5以上）可获赠免费住宿一晚 — 仅限前30名。无论答题结果如何，任何人均可登记开业通知。',
     formLabels:['您的姓名','电子邮箱','国籍','计划到访时间'],
     nations:['🇨🇳 中国大陆','🇹🇼 台湾','🇭🇰 香港','🇯🇵 日本','🇺🇸 美国','🇹🇭 泰国','🇻🇳 越南','🇦🇺 澳大利亚','🇰🇷 韩国','其他'],
-    dates:['2026年Q3（6月起）','2027年上半年','2027年以后','暂未确定'],
+    dates:['2026年6~8月','2026年9月以后','2027年上半年','2027年以后','暂未确定'],
     btnReg:'✈ 立即登记开业通知',
     validErr:'请填写您的姓名、电子邮箱及国籍。',
     saving:'提交中...',saveOk:'✅ 登记成功！开业时我们将第一时间与您联系。',
@@ -1544,6 +1558,16 @@ function renderPage(){
   document.getElementById('hostQuote').innerHTML=t('hostQuote').replace(/\n/g,'<br>');
   document.getElementById('hostBody').innerHTML=t('hostBody').replace(/\n\n/g,'</p><p class="host-body">').replace(/\n/g,'<br>');
   document.getElementById('hostSig').textContent=t('hostSig');
+  const cap1el=document.getElementById('hostImgCap');
+  const cap2el=document.getElementById('hostImgCap2');
+  const caps={
+    ko:['1991년, 대만 어느 마을에서','우리를 집으로 맞아준 가족과 함께'],
+    en:['Taiwan, 1991','With the family who welcomed a stranger home'],
+    ja:['台湾、1991年','見知らぬ旅人を家に迎えてくれた家族と'],
+    zh:['台湾，1991年','接待陌生旅人的家庭'],
+  };
+  if(cap1el) cap1el.textContent=caps[lang][0];
+  if(cap2el) cap2el.textContent=caps[lang][1];
 
   // HONEST
   document.getElementById('honestLabel').textContent=t('honestLabel');
