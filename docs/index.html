@@ -1942,6 +1942,8 @@ async function submitReg(){
   const e=document.getElementById('gEmail').value.trim();
   const nation=document.getElementById('gNation').value;
   const date=document.getElementById('gDate').value;
+
+  // 유효성 검사
   let valid=true;
   ['gName','gEmail','gNation'].forEach(id=>{
     const el=document.getElementById(id);
@@ -1949,50 +1951,41 @@ async function submitReg(){
     else el.classList.remove('error');
   });
   if(!valid){alert(t('validErr'));return;}
-  const _ev=document.getElementById('gEmail').value.trim();
-  const _ai=_ev.indexOf('@');const _di=_ev.lastIndexOf('.');
+  const _ev=e;const _ai=_ev.indexOf('@');const _di=_ev.lastIndexOf('.');
   if(_ai<1||_di<_ai+2||_di>=_ev.length-1){
     document.getElementById('gEmail').classList.add('error');
     const _em={ko:'올바른 이메일 주소를 입력해주세요.',en:'Please enter a valid email address.',ja:'正しいメールアドレスを入力してください。',zh:'请输入正确的电子邮箱地址。'};
     alert(_em[lang]);return;
   }
+
+  // 버튼 비활성화 + Saving 표시
   const btn=document.getElementById('regBtn');
   const status=document.getElementById('saveStatus');
   btn.disabled=true;
   status.className='save-status show loading';
   status.textContent=t('saving');
-  // 국적 → 국가코드 변환
-  const nationMap={
-    '🇯🇵 일본':'JP','🇺🇸 미국':'US','🇬🇧 영국':'UK',
-    '🇨🇳 중국':'CN','🇹🇼 대만':'TW','🇹🇭 태국':'TH',
-    '🇻🇳 베트남':'VN','🇦🇺 호주':'AU','🇰🇷 한국':'KR','기타':'XX',
-    '🇯🇵 Japan':'JP','🇺🇸 USA':'US','🇬🇧 UK':'UK',
-    '🇨🇳 China':'CN','🇹🇼 Taiwan':'TW','🇹🇭 Thailand':'TH',
-    '🇻🇳 Vietnam':'VN','🇦🇺 Australia':'AU','🇰🇷 Korea':'KR','Other':'XX',
-    '🇯🇵 日本':'JP','🇺🇸 アメリカ':'US','🇬🇧 イギリス':'UK',
-    '🇨🇳 中国':'CN','🇹🇼 台湾':'TW','🇹🇭 タイ':'TH',
-    '🇻🇳 ベトナム':'VN','🇦🇺 オーストラリア':'AU','🇰🇷 韓国':'KR','その他':'XX',
-    '🇨🇳 中国大陆':'CN','🇹🇼 台湾':'TW','🇭🇰 香港':'HK',
-    '🇹🇭 泰国':'TH','🇻🇳 越南':'VN','🇦🇺 澳大利亚':'AU','🇰🇷 韩国':'KR','其他':'XX',
-  };
-  const countryCode = nationMap[nation] || 'XX';
-  const rand = Date.now().toString(36).toUpperCase().slice(-3) + Math.random().toString(36).substr(2,2).toUpperCase();
-  const code = 'FHF-' + countryCode + '-' + rand;
-  st.name=n;st.email=e;st.bookCode=code;
-  st.overLimit = (currentCount >= TOTAL_SLOTS);
-  
-  // 신청 시각 (서울 시간)
-  const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  
-  // 기기 정보 수집
+
+  // 확인 코드 생성
+  const nationMap={'🇯🇵 일본':'JP','🇺🇸 미국':'US','🇬🇧 영국':'UK','🇨🇳 중국':'CN','🇹🇼 대만':'TW','🇹🇭 태국':'TH','🇻🇳 베트남':'VN','🇦🇺 호주':'AU','🇰🇷 한국':'KR','기타':'XX','🇯🇵 Japan':'JP','🇺🇸 USA':'US','🇬🇧 UK':'UK','🇨🇳 China':'CN','🇹🇼 Taiwan':'TW','🇹🇭 Thailand':'TH','🇻🇳 Vietnam':'VN','🇦🇺 Australia':'AU','🇰🇷 Korea':'KR','Other':'XX','🇯🇵 日本':'JP','🇺🇸 アメリカ':'US','🇬🇧 イギリス':'UK','🇨🇳 中国':'CN','🇹🇼 台湾':'TW','🇹🇭 タイ':'TH','🇻🇳 ベトナム':'VN','🇦🇺 オーストラリア':'AU','🇰🇷 韓国':'KR','その他':'XX','🇨🇳 中国大陆':'CN','🇭🇰 香港':'HK','🇹🇭 泰国':'TH','🇻🇳 越南':'VN','🇦🇺 澳大利亚':'AU','🇰🇷 韩国':'KR','其他':'XX'};
+  const countryCode=nationMap[nation]||'XX';
+  const rand=Date.now().toString(36).toUpperCase().slice(-3)+Math.random().toString(36).substr(2,2).toUpperCase();
+  const code='FHF-'+countryCode+'-'+rand;
+
+  // 기기 정보
   const ua=navigator.userAgent;
-  const isMobDev=/Mobi|Android|iPhone|iPad|iPod/i.test(ua);
-  const deviceType=isMobDev?(/iPad/i.test(ua)?'tablet':'mobile'):'pc';
+  const deviceType=/Mobi|Android|iPhone|iPad|iPod/i.test(ua)?(/iPad/i.test(ua)?'tablet':'mobile'):'pc';
   const osType=/iPhone|iPad|iPod/i.test(ua)?'iOS':/Android/i.test(ua)?'Android':/Windows/i.test(ua)?'Windows':/Mac/i.test(ua)?'Mac':'Other';
   const browserType=/Chrome/i.test(ua)&&!/Edge/i.test(ua)?'Chrome':/Safari/i.test(ua)&&!/Chrome/i.test(ua)?'Safari':/Firefox/i.test(ua)?'Firefox':/Edge/i.test(ua)?'Edge':'Other';
+  const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  // 30명 초과 체크 (localStorage 기반 — 빠름)
+  const localCount = parseInt(localStorage.getItem('flyhome_count')||'0');
+  const isOverLimit = localCount >= TOTAL_SLOTS;
+
   const payload={
     name:n, email:e, nation, date, lang,
-    score:st.score, passed:st.score>=PASS, code,
+    score:st.score, passed:(st.score>=PASS) && !isOverLimit,
+    overLimit:isOverLimit, code,
     ts:new Date().toISOString(), tsKST:nowKST,
     device:deviceType, os:osType, browser:browserType,
     screenW:window.screen.width,
@@ -2000,53 +1993,35 @@ async function submitReg(){
     pageTime:Math.round((Date.now()-window._pageLoadTime)/1000)
   };
 
-  // 1) Google Sheets 저장
-  // 30명 초과 자동처리: storage에서 현재 count 확인
-  let currentCount = 0;
-  try{
-    const cRes = await window.storage.get('counter:total', true);
-    currentCount = cRes ? parseInt(cRes.value)||0 : 0;
-  }catch(e){}
-  // 30명 초과 시 passed 강제 false (무료 1박 혜택 제거)
-  if(currentCount >= TOTAL_SLOTS){
-    payload.passed = false;
-    payload.overLimit = true;
-  }
+  st.name=n; st.email=e; st.bookCode=code; st.overLimit=isOverLimit; st.alreadyBooked=true;
 
-  // 저장: GAS + storage 병렬 처리, 최대 6초 타임아웃
-  const saveWithTimeout = (promise, ms) => Promise.race([
-    promise,
-    new Promise((_,rej) => setTimeout(() => rej(new Error('timeout')), ms))
-  ]);
-
-  // localStorage 즉시 저장 (동기, 빠름)
+  // ① localStorage 즉시 저장 (동기, 0ms)
   try{
-    const existing=JSON.parse(localStorage.getItem('flyhome_regs')||'[]');
-    existing.push({...payload, savedAt: Date.now()});
-    localStorage.setItem('flyhome_regs',JSON.stringify(existing));
+    const regs=JSON.parse(localStorage.getItem('flyhome_regs')||'[]');
+    regs.push({...payload, savedAt:Date.now()});
+    localStorage.setItem('flyhome_regs',JSON.stringify(regs));
+    localStorage.setItem('flyhome_count',String(localCount+1));
   }catch(err){}
 
-  // GAS + storage 병렬 처리 (최대 6초)
-  await Promise.allSettled([
-    saveWithTimeout(
-      fetch(GAS_URL,{method:'POST',mode:'no-cors',
-        headers:{'Content-Type':'text/plain'},
-        body:JSON.stringify(payload)}),
-      6000
-    ).catch(err => console.warn('GAS:', err.message)),
-
-    saveWithTimeout(
-      window.storage.set('reg:'+code, JSON.stringify(payload))
-        .then(() => incrementCounter()),
-      4000
-    ).catch(err => console.warn('Storage:', err.message))
-  ]);
-
-  st.alreadyBooked=true;
+  // ② 완료 화면 즉시 표시 (저장 기다리지 않음!)
   status.className='save-status show ok';
   status.textContent=t('saveOk');
   setTimeout(()=>{st.phase='confirm';render();goToSection("#quizSection");},800);
+
+  // ③ GAS 저장은 백그라운드에서 (사용자 기다리지 않음)
+  fetch(GAS_URL,{method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify(payload)
+  }).catch(err=>console.warn('GAS 저장 실패:',err.message));
+
+  // ④ window.storage도 백그라운드 (실패해도 OK)
+  if(window.storage){
+    window.storage.set('reg:'+code,JSON.stringify(payload))
+      .then(()=>incrementCounter())
+      .catch(()=>{});
+  }
 }
+
 
 function renderConfirm(el){
   const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
