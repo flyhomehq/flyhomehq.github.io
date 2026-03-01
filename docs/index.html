@@ -2037,7 +2037,7 @@ function renderConfirm(el){
   </div>
   <div class="qcard">
     <div class="confirm-body">
-      ${passed ? `<div style="background:linear-gradient(135deg,rgba(176,125,10,0.1),rgba(245,166,35,0.05));border:1px solid rgba(176,125,10,0.3);border-radius:14px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--gold);font-weight:600;text-align:center;">🏆 선착순 무료 1박 혜택 적용 · ${['ko','en','ja','zh'].indexOf(lang)===0?'30명 한정':lang==='en'?'First 30 guests only':lang==='ja'?'先着30名様限定':'仅限前30名'}</div>` : ''}
+      ${passed ? `<div style="background:linear-gradient(135deg,rgba(176,125,10,0.1),rgba(245,166,35,0.05));border:1px solid rgba(176,125,10,0.3);border-radius:14px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--gold);font-weight:600;text-align:center;">${lang==='ko'?'🏆 선착순 무료 1박 혜택 적용 · 30명 한정':lang==='ja'?'🏆 無料1泊特典が適用されました · 先着30名様限定':lang==='zh'?'🏆 免费住宿资格已适用 · 仅限前30名':'🏆 Free Night Confirmed · First 30 guests only'}</div>` : ''}
       <div class="confirm-icon">${icon}</div>
       <h2 class="confirm-title" style="${passed?'color:var(--gold)':''}">${title}</h2>
       <p class="confirm-msg">${msg.replace(/\n/g,'<br>')}</p>
