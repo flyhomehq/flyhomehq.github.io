@@ -39,6 +39,10 @@
 .zh-active .cstep .num { color: #c8202a; }
 .zh-active .section-h em { color: #c8202a; }
 .zh-active .host-quote::before { color: #ff6666; }
+/* 카카오 PC 숨김 */
+@media(hover:hover) and (pointer:fine){
+  .btn-kakao-mobile{display:none!important;}
+}
 /* 위챗 공유 버튼 */
 .btn-wechat {
   display: flex; align-items: center; gap: 6px;
@@ -1044,6 +1048,10 @@ const T={
     saving:'저장 중...',saveOk:'✅ 신청 완료! 오픈 시 가장 먼저 안내드릴게요.',
     confirmTitle:'신청 완료!',
     confirmMsg:'FLY:HOME 오픈 알림이 등록됐어요.\n정식 오픈 시 이메일로 가장 먼저 안내드립니다.',
+    confirmTitlePass:'🎉 무료 1박 혜택 확정!',
+    confirmMsgPass:'퀴즈를 통과하셨어요! 선착순 30명 무료 1박 혜택이 적용됩니다.\n오픈 시 이메일로 예약 안내를 가장 먼저 드립니다.',
+    confirmTitleFail:'오픈 알림 등록 완료!',
+    confirmMsgFail:'FLY:HOME 오픈 알림이 등록됐어요.\n오픈 시 이메일로 가장 먼저 소식을 전해드릴게요.',
     confirmCodeLabel:'신청 확인 번호',
     confirmCodeHint:'📸 스크린샷으로 저장해두세요',
     confirmSteps:[['01','이메일 확인\n안내 메일 발송'],['02','오픈 알림\n2026년 3분기 우선 연락'],['03','서울 도착\n망우역 → FLY:HOME']],
@@ -1260,6 +1268,10 @@ const T={
     saving:'登録中...',saveOk:'✅ 申し込み完了！オープン時に最優先でご連絡いたします。',
     confirmTitle:'お申し込み完了！',
     confirmMsg:'FLY:HOMEのオープン通知リストにご登録いただきました。\n正式オープンの際は、最優先でご連絡いたします。',
+    confirmTitlePass:'🎉 無料1泊が確定しました！',
+    confirmMsgPass:'クイズ合格おめでとうございます！先着30名様限定の無料1泊特典が適用されます。\nオープン時に予約のご案内を最優先でお送りします。',
+    confirmTitleFail:'オープン通知の登録が完了しました！',
+    confirmMsgFail:'FLY:HOMEのオープン通知リストにご登録いただきました。\nオープンの際は、いち早くお知らせいたします。',
     confirmCodeLabel:'申し込み確認番号',
     confirmCodeHint:'📸 スクリーンショットで保存してください',
     confirmSteps:[['01','メールをご確認\n確認メールをお送りします'],['02','オープン通知\n2026年Q3に最優先でご連絡'],['03','ソウルへ\n望憂駅 → FLY:HOME']],
@@ -1368,6 +1380,10 @@ const T={
     saving:'提交中...',saveOk:'✅ 登记成功！开业时我们将第一时间与您联系。',
     confirmTitle:'登记成功！',
     confirmMsg:'您已成功加入FLY:HOME开业通知名单。\n正式开业时，我们将优先与您取得联系！',
+    confirmTitlePass:'🎉 免费住宿资格已确认！',
+    confirmMsgPass:'恭喜您通过答题！您已获得仅限前30名的免费住宿一晚资格。\n开业时我们将优先联系您安排预约。',
+    confirmTitleFail:'开业通知登记成功！',
+    confirmMsgFail:'您已成功加入FLY:HOME开业通知名单。\n开业时我们将第一时间为您发送通知。',
     confirmCodeLabel:'登记确认编号',
     confirmCodeHint:'📸 请截图保存，以便日后查询',
     confirmSteps:[['01','查收邮件\n确认邮件即将发送'],['02','开业通知\n2026年Q3优先联系'],['03','抵达首尔\n望憂站 → FLY:HOME']],
@@ -1495,7 +1511,10 @@ function t(k){return T[lang][k]||'';}
 function setLang(l,e){
   lang=l;
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-  e.currentTarget.classList.add('active');
+  // id로 명확하게 활성화 (e.currentTarget 오류 방지)
+  const btnId = {ko:'btn-ko',en:'btn-en',ja:'btn-ja',zh:'btn-zh'}[l];
+  const btn = document.getElementById(btnId);
+  if(btn) btn.classList.add('active');
   // 중국어 빨간 테마 적용
   document.body.classList.remove('zh-active','ja-active','en-active');
   if(l==='zh') document.body.classList.add('zh-active');
@@ -1571,7 +1590,7 @@ function renderPage(){
   // EXPERIENCE
   document.getElementById('expLabel').textContent=t('expLabel');
   document.getElementById('expTitle').innerHTML=t('expTitle').replace(/\n/g,'<br>');
-  document.getElementById('expBody').textContent=t('expBody');
+  document.getElementById('expBody').innerHTML=t('expBody').replace(/\n/g,'<br>');
   const expCards=t('expCards');
   document.getElementById('expGrid').innerHTML=expCards.map((c,i)=>`
     <div class="exp-card" onclick="toggleDetail(${i})" id="expCard${i}">
@@ -1939,15 +1958,21 @@ async function submitReg(){
 
 function renderConfirm(el){
   const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  const passed=(st.score>=PASS);
+  const icon = passed ? '🎉' : '✅';
+  const title = passed ? t('confirmTitlePass') : t('confirmTitleFail');
+  const msg = passed ? t('confirmMsgPass') : t('confirmMsgFail');
+  const headerBg = passed ? 'background:linear-gradient(135deg,#b07d0a,#f5a623)' : 'background:var(--black)';
   el.innerHTML=`
   <div style="margin-bottom:8px">
     <button class="btn-back" onclick="goBack()">← <span id="backBtnTxt"></span></button>
   </div>
   <div class="qcard">
     <div class="confirm-body">
-      <div class="confirm-icon">🎉</div>
-      <h2 class="confirm-title">${t('confirmTitle')}</h2>
-      <p class="confirm-msg">${t('confirmMsg').replace(/\n/g,'<br>')}</p>
+      ${passed ? `<div style="background:linear-gradient(135deg,rgba(176,125,10,0.1),rgba(245,166,35,0.05));border:1px solid rgba(176,125,10,0.3);border-radius:14px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--gold);font-weight:600;text-align:center;">🏆 선착순 무료 1박 혜택 적용 · ${['ko','en','ja','zh'].indexOf(lang)===0?'30명 한정':lang==='en'?'First 30 guests only':lang==='ja'?'先着30名様限定':'仅限前30名'}</div>` : ''}
+      <div class="confirm-icon">${icon}</div>
+      <h2 class="confirm-title" style="${passed?'color:var(--gold)':''}">${title}</h2>
+      <p class="confirm-msg">${msg.replace(/\n/g,'<br>')}</p>
       <div class="code-box">
         <div class="code-label">${t('confirmCodeLabel')}</div>
         <div class="code-val">${st.bookCode}</div>
@@ -1982,14 +2007,12 @@ function renderConfirm(el){
 function getKakaoBtn(){
   // 모바일에서만 카카오 버튼 표시
   const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-  if(lang==='ko' && isMobile) return `<button class="btn-share" style="background:#FEE500;color:#000;border:none;display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:980px;font-size:13px;font-weight:600;cursor:pointer;" onclick="shareKakao()"><span>💬</span> 카카오톡 공유</button>`;
+  if(lang==='ko' && isMobile) return `<button class="btn-share" class="btn-kakao-mobile" style="background:#FEE500;color:#000;border:none;display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:980px;font-size:13px;font-weight:600;cursor:pointer;" onclick="shareKakao()"><span>💬</span> 카카오톡 공유</button>`;
   return '';
 }
 function getWechatBtn(){
   if(lang==='zh') return '<button class="btn-wechat" onclick="copyLinkWechat()"><span class="btn-wechat-icon">💬</span>复制链接·分享微信</button>';
-  const isMob = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-  if(lang==='ja' && isMob) return '<button class="btn-share" style="background:#06C755;color:#fff;font-weight:700;padding:10px 20px;border-radius:980px;border:none;cursor:pointer;font-size:13px;" onclick="shareLine()">💬 LINEで送る</button>';
-  if(lang==='ja' && !isMob) return ''; // PC에서는 숨김
+  if(lang==='ja') return '<button class="btn-kakao-mobile btn-share" style="background:#06C755;color:#fff;font-weight:700;padding:10px 20px;border-radius:980px;border:none;cursor:pointer;font-size:13px;" onclick="shareLine()">💬 LINEで送る</button>';
   return '';
 }
 function shareLine(){
