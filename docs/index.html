@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FLY:HOME — Seoul is calling.</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="description" id="metaDesc" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 3분기 오픈 예정.">
 <meta name="keywords" id="metaKeywords" content="FLY HOME, flight simulation stay, Seoul guesthouse, 비행 시뮬레이션, 서울 숙소, フライトシム, 飞行模拟">
 <meta property="og:title" content="FLY:HOME — Seoul is calling.">
@@ -1838,12 +1841,22 @@ function renderAI(el){
             <div id="faqAns${i}" style="display:none;padding:12px 16px;font-size:13px;color:var(--gray1);line-height:1.8;background:var(--white);border-top:1px solid var(--gray3)">${f.a}</div>
           </div>`).join('')}
       </div>
+      ${st.alreadyBooked && passed ? `
+      <div style="background:linear-gradient(135deg,rgba(176,125,10,0.1),rgba(245,166,35,0.05));border:1px solid rgba(176,125,10,0.3);border-radius:14px;padding:14px 18px;margin-bottom:14px;text-align:center">
+        <p style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px">${lang==='ko'?'🏆 무료 1박 혜택 업데이트 완료!':lang==='ja'?'🏆 無料1泊特典に更新されました！':lang==='zh'?'🏆 已更新为免费住宿资格！':'🏆 Free Night Benefit Updated!'}</p>
+        <p style="font-size:12px;color:var(--gray1)">${lang==='ko'?'이미 등록하신 정보에 무료 1박이 자동 적용됐어요.':lang==='ja'?'ご登録済みの情報に無料1泊が自動適用されました。':lang==='zh'?'您的登记信息已自动更新为免费住宿资格。':'Your registration has been automatically upgraded to include a free night.'}</p>
+      </div>` : ''}
       <div class="ai-actions">
         <button class="btn-pill dark" style="font-size:13px;padding:11px 22px" onclick="goReg()">${t('btnGoReg')}</button>
-        <button class="btn-pill outline" style="font-size:13px;padding:11px 18px" onclick="retryQuiz()">${t('btnRetry')}</button>
+        ${!st.alreadyBooked ? `<button class="btn-pill outline" style="font-size:13px;padding:11px 18px" onclick="retryQuiz()">${t('btnRetry')}</button>` : ''}
       </div>
     </div>
   </div>`;
+
+  // 이미 등록 + 퀴즈 통과 → GAS 자동 업데이트
+  if(st.alreadyBooked && passed && !st.overLimit){
+    updatePassedStatus();
+  }
 }
 
 window.toggleFaq=function(i){
@@ -1960,6 +1973,31 @@ async function submitReg(){
   }
 
   // 버튼 비활성화 + Saving 표시
+  // ── 이메일 중복 체크 (브라우저 1차) ──
+  try{
+    // flyhome_emails (빠른 조회) 또는 flyhome_regs 둘 다 체크
+    const emailIdx=JSON.parse(localStorage.getItem('flyhome_emails')||'{}');
+    const regs=JSON.parse(localStorage.getItem('flyhome_regs')||'[]');
+    const dupByIdx=emailIdx[e];
+    const dupByRegs=regs.find(r=>r.email===e);
+    const dup=dupByIdx||dupByRegs;
+    if(dup){
+      const dupMsg={
+        ko:`이미 등록된 이메일이에요.\n확인번호: ${dup.code}\n(스크린샷을 저장해두셨나요?)`,
+        en:`This email is already registered.\nYour reference: ${dup.code}\n(Did you save your screenshot?)`,
+        ja:`このメールアドレスはすでに登録済みです。\n確認番号: ${dup.code}`,
+        zh:`该邮箱已登记。\n确认编号: ${dup.code}`
+      };
+      alert(dupMsg[lang]||dupMsg.en);
+      // 기존 등록 정보로 confirm 화면 표시
+      st.name=dup.name||n; st.email=e; st.bookCode=dup.code;
+      st.alreadyBooked=true; st.overLimit=!(dup.passed);
+      st.score=dup.score||st.score;
+      st.phase='confirm'; render(); goToSection('#quizSection');
+      return;
+    }
+  }catch(err){}
+
   const btn=document.getElementById('regBtn');
   const status=document.getElementById('saveStatus');
   btn.disabled=true;
@@ -2014,6 +2052,14 @@ async function submitReg(){
     headers:{'Content-Type':'text/plain'},
     body:JSON.stringify(payload)
   }).catch(err=>console.warn('GAS 저장 실패:',err.message));
+
+  // ④ 이메일 인덱스 localStorage 저장 (중복 체크용)
+  try{
+    const emailIdx=JSON.parse(localStorage.getItem('flyhome_emails')||'{}');
+    emailIdx[e]={code:payload.code, passed:payload.passed, score:payload.score,
+                 name:n, ts:Date.now()};
+    localStorage.setItem('flyhome_emails',JSON.stringify(emailIdx));
+  }catch(err){}
 
   // ④ window.storage도 백그라운드 (실패해도 OK)
   if(window.storage){
@@ -2236,6 +2282,31 @@ function updateCounterUI(count){
 
 async function incrementCounter(){
   updateCounterUI(0); // 배지만 표시, 숫자 불필요
+}
+
+// 이미 등록된 사람이 퀴즈 재도전 통과 시 GAS 업데이트
+async function updatePassedStatus(){
+  if(!st.bookCode || !st.email) return;
+  const localCount = parseInt(localStorage.getItem('flyhome_count')||'0');
+  if(localCount >= TOTAL_SLOTS) return;
+  const payload={
+    type:'update_pass',
+    code:st.bookCode, email:st.email, name:st.name,
+    score:st.score, passed:true,
+    ts:new Date().toISOString(),
+    tsKST:new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})
+  };
+  fetch(GAS_URL,{method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify(payload)
+  }).catch(()=>{});
+  try{
+    const regs=JSON.parse(localStorage.getItem('flyhome_regs')||'[]');
+    const found=regs.find(r=>r.code===st.bookCode);
+    if(found){found.passed=true;found.score=st.score;found.updatedAt=Date.now();}
+    localStorage.setItem('flyhome_regs',JSON.stringify(regs));
+  }catch(e){}
+  st.overLimit=false;
 }
 
 const GAS_URL='https://script.google.com/macros/s/AKfycbysiEZDd4RUoN74xZx7lzpxpBIUmttlH6cHVkppdN2bLngYlpIg8UgrigLFkRUzFYgaOA/exec';
