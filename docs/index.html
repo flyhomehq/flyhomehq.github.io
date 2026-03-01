@@ -732,6 +732,28 @@ body{
   font-family:'DM Sans',sans-serif;
 }
 .btn-back:hover{border-color:var(--black);color:var(--black);}
+/* QR 섹션 */
+.qr-section{
+  background:var(--white);padding:60px 24px;
+  text-align:center;border-top:1px solid var(--gray3);
+}
+.qr-box{
+  display:inline-flex;flex-direction:column;align-items:center;
+  gap:16px;background:var(--bg);border-radius:20px;
+  padding:28px;border:1px solid var(--gray3);
+  max-width:280px;margin:0 auto;
+}
+.qr-canvas{
+  width:160px;height:160px;
+  border-radius:12px;overflow:hidden;
+}
+.qr-label{
+  font-size:12px;color:var(--gray1);line-height:1.7;
+}
+.qr-url{
+  font-size:11px;color:var(--gray2);
+  font-family:monospace;letter-spacing:.5px;
+}
 /* UTILS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:600px){
@@ -753,6 +775,7 @@ body{
   .code-val{font-size:18px;letter-spacing:2px;}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -877,6 +900,18 @@ body{
   </div>
 </section>
 
+<section class="qr-section" id="qrSection">
+  <div class="section-inner" style="text-align:center">
+    <p class="label-tag" style="text-align:center;margin-bottom:12px">SCAN & SHARE</p>
+    <h2 class="section-h" style="text-align:center;margin-bottom:8px">QR코드로<br>공유하세요</h2>
+    <p class="section-p" style="text-align:center;margin:0 auto 28px">명함·포스터·SNS에 사용하세요.<br>스캔하면 바로 FLY:HOME으로 연결돼요.</p>
+    <div class="qr-box">
+      <div class="qr-canvas" id="qrcode"></div>
+      <div class="qr-label">📱 카메라로 스캔하세요<br>바로 FLY:HOME으로 이동해요</div>
+      <div class="qr-url">flyhomehq.github.io</div>
+    </div>
+  </div>
+</section>
 <footer class="site-footer">
   <p>FLY:HOME (beta) · Seoul Jungnang-gu Mangu-dong · 2026</p>
   <p>관광벤처사업 실증 프로젝트 · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a></p>
@@ -1908,7 +1943,7 @@ function renderConfirm(el){
 }
 
 function getKakaoBtn(){
-  if(lang==='ko') return '<button class="btn-share" style="background:#FEE500;color:#3A1D1D;font-weight:700;" onclick="shareKakao()">💬 카카오톡</button>';
+  if(lang==='ko') return `<button class="btn-share" style="background:#FEE500;color:#000;border:none;display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:980px;font-size:13px;font-weight:600;cursor:pointer;" onclick="shareKakao()"><span>💬</span> 카카오톡 공유</button>`;
   return '';
 }
 function getWechatBtn(){
@@ -1922,9 +1957,18 @@ function shareLine(){
   window.open('https://social-plugins.line.me/lineit/share?url='+url+'&text='+text,'_blank');
 }
 function shareKakao(){
-  const url = encodeURIComponent('https://flyhomehq.github.io');
-  const text = encodeURIComponent('✈ FLY:HOME — 한국 최초 비행 시뮬레이션 숙소! 2026년 오픈 예정. 퀴즈 풀고 무료 1박 도전!');
-  window.open('https://sharer.kakao.com/talk/friends/picker/link?app_key=7f5687f700d2504a19b195aaf65d094f&url='+url+'&text='+text, '_blank');
+  // 모바일: 네이티브 공유 (카카오톡 포함)
+  // PC: 링크복사
+  const shareData = {
+    title: 'FLY:HOME — 한국 최초 비행 시뮬레이션 숙소',
+    text: '✈ 서울 하늘을 방에서! 퀴즈 풀고 무료 1박 도전하세요.',
+    url: 'https://flyhomehq.github.io'
+  };
+  if(navigator.share && /Mobi|Android/i.test(navigator.userAgent)){
+    navigator.share(shareData).catch(()=>copyLink());
+  } else {
+    copyLink();
+  }
 }
 function shareNative(){
   const msgs={
@@ -2053,6 +2097,22 @@ async function incrementCounter(){
 const GAS_URL='https://script.google.com/macros/s/AKfycbysiEZDd4RUoN74xZx7lzpxpBIUmttlH6cHVkppdN2bLngYlpIg8UgrigLFkRUzFYgaOA/exec';
 
 function showPrivacy(){document.getElementById('privacyModal').style.display='block';}
+
+/* ── QR CODE ── */
+function initQR(){
+  const el = document.getElementById('qrcode');
+  if(!el || el.innerHTML) return;
+  try{
+    new QRCode(el, {
+      text: 'https://flyhomehq.github.io',
+      width: 160, height: 160,
+      colorDark: '#1d1d1f',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }catch(e){}
+}
+window.addEventListener('load', function(){ setTimeout(initQR, 500); });
 
 /* ── INIT ── */
 // 브라우저 언어 자동 감지
