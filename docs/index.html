@@ -841,13 +841,13 @@ body{
     <p class="host-sig" id="hostSig"></p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:640px;margin:28px auto 0;">
       <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px rgba(0,0,0,0.4);">
-        <img src="host1.jpg" alt="1991년 대만" style="width:100%;height:200px;object-fit:cover;display:block;filter:sepia(30%) brightness(0.85);">
+        <img src="host1.jpg" alt="Taiwan 1991" style="width:100%;height:200px;object-fit:cover;display:block;filter:sepia(30%) brightness(0.85);">
         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);padding:12px 14px;">
           <p style="font-size:10px;color:rgba(255,255,255,0.6);font-style:italic;margin:0" id="hostImgCap"></p>
         </div>
       </div>
       <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px rgba(0,0,0,0.4);">
-        <img src="family1991.jpg" alt="대만 가족" style="width:100%;height:200px;object-fit:cover;display:block;filter:sepia(30%) brightness(0.85);">
+        <img src="family1991.jpg" alt="Taiwan family 1991" style="width:100%;height:200px;object-fit:cover;display:block;filter:sepia(30%) brightness(0.85);">
         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);padding:12px 14px;">
           <p style="font-size:10px;color:rgba(255,255,255,0.6);font-style:italic;margin:0" id="hostImgCap2"></p>
         </div>
@@ -1980,12 +1980,16 @@ function renderConfirm(el){
 }
 
 function getKakaoBtn(){
-  if(lang==='ko') return `<button class="btn-share" style="background:#FEE500;color:#000;border:none;display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:980px;font-size:13px;font-weight:600;cursor:pointer;" onclick="shareKakao()"><span>💬</span> 카카오톡 공유</button>`;
+  // 모바일에서만 카카오 버튼 표시
+  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  if(lang==='ko' && isMobile) return `<button class="btn-share" style="background:#FEE500;color:#000;border:none;display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:980px;font-size:13px;font-weight:600;cursor:pointer;" onclick="shareKakao()"><span>💬</span> 카카오톡 공유</button>`;
   return '';
 }
 function getWechatBtn(){
   if(lang==='zh') return '<button class="btn-wechat" onclick="copyLinkWechat()"><span class="btn-wechat-icon">💬</span>复制链接·分享微信</button>';
-  if(lang==='ja') return '<button class="btn-share" style="background:#06C755;color:#fff;font-weight:700;padding:10px 20px;border-radius:980px;border:none;cursor:pointer;font-size:13px;" onclick="shareLine()">💬 LINEで送る</button>';
+  const isMob = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  if(lang==='ja' && isMob) return '<button class="btn-share" style="background:#06C755;color:#fff;font-weight:700;padding:10px 20px;border-radius:980px;border:none;cursor:pointer;font-size:13px;" onclick="shareLine()">💬 LINEで送る</button>';
+  if(lang==='ja' && !isMob) return ''; // PC에서는 숨김
   return '';
 }
 function shareLine(){
