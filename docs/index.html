@@ -1939,7 +1939,21 @@ async function submitReg(){
   // 신청 시각 (서울 시간)
   const nowKST=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
   
-  const payload={name:n,email:e,nation,date,lang,score:st.score,passed:st.score>=PASS,code,ts:new Date().toISOString(),tsKST:nowKST};
+  // 기기 정보 수집
+  const ua=navigator.userAgent;
+  const isMobDev=/Mobi|Android|iPhone|iPad|iPod/i.test(ua);
+  const deviceType=isMobDev?(/iPad/i.test(ua)?'tablet':'mobile'):'pc';
+  const osType=/iPhone|iPad|iPod/i.test(ua)?'iOS':/Android/i.test(ua)?'Android':/Windows/i.test(ua)?'Windows':/Mac/i.test(ua)?'Mac':'Other';
+  const browserType=/Chrome/i.test(ua)&&!/Edge/i.test(ua)?'Chrome':/Safari/i.test(ua)&&!/Chrome/i.test(ua)?'Safari':/Firefox/i.test(ua)?'Firefox':/Edge/i.test(ua)?'Edge':'Other';
+  const payload={
+    name:n, email:e, nation, date, lang,
+    score:st.score, passed:st.score>=PASS, code,
+    ts:new Date().toISOString(), tsKST:nowKST,
+    device:deviceType, os:osType, browser:browserType,
+    screenW:window.screen.width,
+    referrer:document.referrer?document.referrer.replace(/https?:\/\//,'').split('/')[0]:'direct',
+    pageTime:Math.round((Date.now()-window._pageLoadTime)/1000)
+  };
 
   // 1) Google Sheets 저장
   try{
@@ -2135,44 +2149,31 @@ updateClock();
 
 /* ── COUNTER (shared storage) ── */
 async function loadCounter(){
-  try{
-    const res=await window.storage.get('counter:total',true);
-    const count=res?parseInt(res.value)||0:0;
-    updateCounterUI(count);
-  }catch(e){updateCounterUI(0);}
+  updateCounterUI(0); // 숫자 없이 배지만 표시
 }
 
 function updateCounterUI(count){
+  // 숫자 카운터 대신 간단한 한정 배지만 표시
   const el=document.getElementById('regCounter');
   if(!el)return;
-  const pct=Math.min(Math.round((count/TOTAL_SLOTS)*100),100);
-  const remaining=Math.max(TOTAL_SLOTS-count,0);
+  const limitMsg={
+    ko:'🏆 베타 무료 1박 · 선착순 30명 한정',
+    en:'🏆 Beta FREE night · First 30 guests only',
+    ja:'🏆 テスト期間無料 · 先着30名様限定',
+    zh:'🏆 测试期免费 · 仅限前30名'
+  };
   el.innerHTML=`
-    <div class="counter-strip">
-      <div class="counter-main">
-        <span class="counter-num">${count}</span>
-        <span class="counter-denom">/ ${TOTAL_SLOTS}</span>
-      </div>
-      <div class="counter-bar-wrap">
-        <div class="counter-bar-bg">
-          <div class="counter-bar-fill" style="width:${pct}%"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-top:5px;">
-          <span style="font-size:10px;color:var(--gray2)">${t('counterLabel')}</span>
-          <span style="font-size:10px;color:${remaining<=5?'var(--red)':'var(--gray2)'}">${remaining > 0 ? ({'ko':remaining+'명 남음','en':remaining+' left','ja':'残り'+remaining+'名','zh':'剩余'+remaining+'名'}[lang]||remaining+'명 남음') : ({'ko':'마감','en':'Full','ja':'満席','zh':'已满'}[lang]||'마감')}</span>
-        </div>
-      </div>
-      <div class="counter-label">${count}${t('counterSuffix')}<br><span style="color:var(--gold);font-weight:600">${t('counterLimit')}</span></div>
+    <div style="background:linear-gradient(135deg,rgba(176,125,10,0.08),rgba(245,166,35,0.05));
+      border:1px solid rgba(176,125,10,0.2);border-radius:12px;
+      padding:11px 18px;text-align:center;margin-bottom:16px;">
+      <span style="font-size:13px;color:var(--gold);font-weight:600;">
+        ${limitMsg[lang]||limitMsg.en}
+      </span>
     </div>`;
 }
 
 async function incrementCounter(){
-  try{
-    const res=await window.storage.get('counter:total',true);
-    const cur=res?parseInt(res.value)||0:0;
-    await window.storage.set('counter:total',String(cur+1),true);
-    updateCounterUI(cur+1);
-  }catch(e){}
+  updateCounterUI(0); // 배지만 표시, 숫자 불필요
 }
 
 const GAS_URL='https://script.google.com/macros/s/AKfycbysiEZDd4RUoN74xZx7lzpxpBIUmttlH6cHVkppdN2bLngYlpIg8UgrigLFkRUzFYgaOA/exec';
@@ -2196,6 +2197,7 @@ function initQR(){
 window.addEventListener('load', function(){ setTimeout(initQR, 500); });
 
 /* ── INIT ── */
+window._pageLoadTime = Date.now(); // 페이지 로드 시각 기록
 // 브라우저 언어 자동 감지
 (function(){
   const bl = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
