@@ -827,7 +827,7 @@ body{
            onerror="this.style.display='none';document.getElementById('heroImgSlot').style.display='flex'">
       <div class="hero-img-placeholder" id="heroImgSlot" style="display:none">
         <div class="icon">✈</div>
-        <div class="label">PHOTO COMING SOON</div>
+        <div class="label" id="heroPlaceholderLabel">PHOTO COMING SOON</div>
       </div>
       <div class="hero-img-overlay">
         <span class="hero-img-caption" id="heroImgCaption" style="font-size:11px;color:rgba(255,255,255,0.5)"></span>
@@ -878,9 +878,9 @@ body{
     <h2 class="section-h" id="expTitle"></h2>
     <p class="section-p" id="expBody"></p>
     <div style="margin:20px 0 32px;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.1)">
-    <img src="sim1.jpg" alt="실제 비행 시뮬레이터 화면 — 서울 한강" style="width:100%;display:block;max-height:320px;object-fit:cover"
+    <img src="sim1.jpg" alt="FLY:HOME flight simulation — Seoul Han River" style="width:100%;display:block;max-height:320px;object-fit:cover"
          onerror="this.parentElement.style.display='none'">
-    <p style="font-size:11px;color:var(--gray2);padding:10px 16px;font-style:italic;background:var(--white)">
+    <p style="font-size:11px;color:var(--gray2);padding:10px 16px;font-style:italic;background:var(--white)" id="simCaption">
       ▲ FLY:HOME 실제 비행 화면 — 서울 한강 상공 · Actual flight over Seoul Han River
     </p>
   </div>
@@ -989,7 +989,7 @@ const T={
       {icon:'🕹️',title:'비행 시뮬레이션 장비',short:'Winwing · Thrustmaster + RTX 4090급 PC',detail:{
         title:'장비 구성',
         body:'비행 시뮬 매니아도 만족할 최신 하드웨어를 준비하고 있어요. 이 장비를 집에 모두 갖추려면 수천만 원이 필요해요.',
-        items:['Winwing & Thrustmaster 스로틀 + 러더 페달 (최신 모델)','3면 대형 스크린 — 주변시야까지 완전 몰입','RTX 4090급 GPU · Intel Core i9 · 64GB RAM','4K 초고화질 · 120fps+ 부드러운 비행','Microsoft Flight Simulator 2024','경비행기 콕핏 프레임 구현 중 · 보잉 콕핏 추진 예정'],
+        items:['Winwing & Thrustmaster 스로틀 + 러더 페달 (최신 모델)','다면 대형 스크린 (최대 3면) — 완전 몰입형 시야','RTX 4090급 GPU · Intel Core i9 · 64GB RAM','4K 초고화질 · 120fps+ 부드러운 비행','Microsoft Flight Simulator 2024','경비행기 콕핏 프레임 구현 중 · 보잉 콕핏 추진 예정'],
         chips:['Winwing','Thrustmaster','RTX 4090급','MSFS 2024','3-Screen','4K'],
         note:'💡 예약자에게 사전 학습 자료를 제공해드려요. 초보자도 하루밤이면 충분해요.',
       }},
@@ -1021,7 +1021,7 @@ const T={
     locBody:'관광객으로 가득 찬 도심 호텔이 아니에요. 하지만 서울 어디든 40분이면 닿아요.',
     locCards:[
       {icon:'🚉',title:'망우역 도보 11~14분',body:'경의중앙선 망우역에서 도보 11~14분, 승용차 4분이에요. 명동 39분 · 시청 40분 · 건대입구 32분 · 동대문 34분 · 강남 47분'},
-      {icon:'✈️',title:'공항버스 직결',body:'인천공항·김포공항 직행 버스가 있어요. 공항에서 바로 FLY:HOME으로 올 수 있어요.'},
+      {icon:'✈️',title:'공항버스 직결',body:'인천공항에서 공항버스 직행으로 약 1시간 50분이에요. 명동·강남이 1시간 30분이고 거기서 30분 더예요. 환승 없이 바로 올 수 있어요.'},
       {icon:'🏕️',title:'주변 즐길 거리',body:'중랑캠핑장 (도보 20분), 망우역 전통시장, 봉화산 하이킹 등 관광책에 없는 진짜 서울이 있어요.'},
       {type:'accent',title:'중랑구는 지도 밖이 아니에요.',body:'대부분의 여행자가 발견하지 못한 진짜 서울이에요. 조용하고, 로컬하고, 더 진짜예요. 인천공항에서 공항버스로 약 2시간이에요.',transit:['경의중앙선 망우역','인천공항 버스 2시간','명동까지 39분','강남까지 47분']},
     ],
@@ -1102,7 +1102,7 @@ const T={
       {icon:'🕹️',title:'Flight Sim Hardware',short:'Winwing · Thrustmaster + RTX 4090-class PC',detail:{
         title:'The Setup',
         body:"Hardware that even hardcore sim enthusiasts will respect. To buy all of this yourself would run well into five figures.",
-        items:['Winwing & Thrustmaster throttle + rudder pedals (latest models)','Triple widescreen setup — full peripheral immersion','RTX 4090-class GPU · Intel Core i9 · 64GB RAM','4K · 120fps+ buttery smooth','Microsoft Flight Simulator 2024','Light aircraft cockpit frame in progress · Boeing cockpit planned'],
+        items:['Winwing & Thrustmaster throttle + rudder pedals (latest models)','Multi-screen setup (up to triple) — full peripheral immersion','RTX 4090-class GPU · Intel Core i9 · 64GB RAM','4K · 120fps+ buttery smooth','Microsoft Flight Simulator 2024','Light aircraft cockpit frame in progress · Boeing cockpit planned'],
         chips:['Winwing','Thrustmaster','RTX 4090-class','MSFS 2024','Triple Screen','4K'],
         note:'💡 We send you a beginner guide before check-in. One night is genuinely enough to get flying.',
       }},
@@ -1134,7 +1134,7 @@ const T={
     locBody:"We\'re not a downtown hotel. But every corner of Seoul is within 40 minutes.",
     locCards:[
       {icon:'🚉',title:'11–14 min walk from Mangu Station',body:'Gyeongui-Jungang Line, Mangu Station — 11–14 min on foot or 4 min by car. Myeongdong 39 min · City Hall 40 min · Konkuk Univ. 32 min · Dongdaemun 34 min · Gangnam 47 min'},
-      {icon:'✈️',title:'Direct Airport Bus',body:'Direct coaches run from both Incheon and Gimpo airports. Head straight from the airport to FLY:HOME without a single transfer.'},
+      {icon:'✈️',title:'Direct Airport Bus',body:'About 1hr 50min by direct coach from Incheon Airport — Myeongdong and Gangnam take 90min, we\'re just 30min further. No transfers needed.'},
       {icon:'🏕️',title:'What\'s Nearby',body:'Jungnang Camping Park (20 min walk), Mangu traditional market, Bonghwasan hiking trail — the Seoul that most visitors never find.'},
       {type:'accent',title:"Jungnang-gu is on the map. Most tourists just haven\'t found it yet.",body:"Quieter. More local. More real Seoul. Incheon Airport → FLY:HOME by airport coach: approx. 2 hours, direct.",transit:['Gyeongui-Jungang Line','Airport coach ~2 hrs direct','Myeongdong 39 min','Gangnam 47 min']},
     ],
@@ -1210,7 +1210,7 @@ const T={
       {icon:'🕹️',title:'フライトシム機材',short:'Winwing・Thrustmaster + RTX 4090クラスPC',detail:{
         title:'機材のご案内',
         body:'フライトシムマニアの方にも納得していただける本格的なハードウェアを揃えています。すべてご自宅で揃えようとすれば、数百万円以上の投資が必要です。',
-        items:['Winwing & Thrustmaster スロットル + ラダーペダル（最新モデル）','トリプル大型スクリーン — 視野の端まで完全没入','RTX 4090クラスGPU · Intel Core i9 · 64GB RAM','4K超高画質 · 120fps以上の滑らかな映像','Microsoft Flight Simulator 2024','軽飛行機コックピットフレーム製作中 · ボーイング仕様も開発予定'],
+        items:['Winwing & Thrustmaster スロットル + ラダーペダル（最新モデル）','大型マルチスクリーン（最大3面） — 視野の端まで完全没入','RTX 4090クラスGPU · Intel Core i9 · 64GB RAM','4K超高画質 · 120fps以上の滑らかな映像','Microsoft Flight Simulator 2024','軽飛行機コックピットフレーム製作中 · ボーイング仕様も開発予定'],
         chips:['Winwing','Thrustmaster','RTX 4090クラス','MSFS 2024','3スクリーン','4K'],
         note:'💡 ご予約の方には事前学習資料をお送りします。初心者の方でも一晩で充分に楽しんでいただけます。',
       }},
@@ -1242,7 +1242,7 @@ const T={
     locBody:'都心のホテルではありません。でも、ソウルのどこへも40分あれば辿り着けます。',
     locCards:[
       {icon:'🚉',title:'望憂（マンウ）駅から徒歩11〜14分',body:'京義中央線・望憂駅から徒歩11〜14分、お車で4分ほどです。明洞まで39分・市庁まで40分・コンデ入口まで32分・東大門まで34分・梨泰院まで50分・江南まで47分'},
-      {icon:'✈️',title:'空港バス直通',body:'仁川・金浦の両空港から直通バスが運行しています。空港からFLY:HOMEまで、乗り換えなしで直接お越しいただけます。'},
+      {icon:'✈️',title:'空港バス直通',body:'仁川空港から直行バスで約1時間50分です。明洞・江南が90分、そこからさらに30分ほど。乗り換え不要で直接お越しいただけます。'},
       {icon:'🏕️',title:'周辺のおすすめスポット',body:'中浪キャンプ場（徒歩約20分）、望憂伝統市場、鳳火山ハイキングコースなど、ガイドブックには載っていない、本物のソウルがここにあります。'},
       {type:'accent',title:'中浪区は、地図の外ではありません。',body:'ほとんどの旅行者がまだ気づいていない、本物のソウルです。静かで、ローカルで、より素顔のソウル。仁川空港からFLY:HOMEまで、空港バスで約2時間です。',transit:['京義中央線 望憂駅','空港バス約2時間（直通）','明洞まで39分','江南まで47分']},
     ],
@@ -1322,7 +1322,7 @@ const T={
       {icon:'🕹️',title:'飞行模拟设备',short:'Winwing · Thrustmaster + RTX 4090级PC',detail:{
         title:'设备配置',
         body:'连专业飞行模拟爱好者都会满意的顶级硬件。若自行购置全套设备，需花费数十万乃至上百万元人民币。',
-        items:['Winwing & Thrustmaster 油门 + 脚蹬（最新型号）','三面大型屏幕 — 完全沉浸式周边视野','RTX 4090级GPU · Intel Core i9 · 64GB内存','4K超高清 · 120fps+流畅飞行','Microsoft Flight Simulator 2024','轻型飞机驾驶舱框架制作中 · 波音驾驶舱开发计划中'],
+        items:['Winwing & Thrustmaster 油门 + 脚蹬（最新型号）','多面大屏幕（最多三屏） — 完全沉浸式视野','RTX 4090级GPU · Intel Core i9 · 64GB内存','4K超高清 · 120fps+流畅飞行','Microsoft Flight Simulator 2024','轻型飞机驾驶舱框架制作中 · 波音驾驶舱开发计划中'],
         chips:['Winwing','Thrustmaster','RTX 4090级','MSFS 2024','三屏','4K'],
         note:'💡 预约者将获得提前学习资料。初学者一晚即可享受。',
       }},
@@ -1354,7 +1354,7 @@ const T={
     locBody:'不是市中心酒店。但首尔各处40分钟内均可到达。',
     locCards:[
       {icon:'🚉',title:'望憂站步行11~14分钟',body:'京义中央线望憂（Mangu）站步行11~14分钟，驾车4分钟。明洞39分钟·市厅40分钟·建大入口32分钟·东大门34分钟·江南47分钟'},
-      {icon:'✈️',title:'机场巴士直达',body:'仁川·金浦两大机场均有直达大巴。无需换乘，从机场直达FLY:HOME，省心又省力。'},
+      {icon:'✈️',title:'机场巴士直达',body:'仁川机场乘直达大巴约1小时50分钟。明洞、江南约90分钟，再多30分钟即到。全程无需换乘直达FLY:HOME。'},
       {icon:'🏕️',title:'周边景点',body:'中浪露营公园（步行20分钟）、望憂传统市场、烽火山徒步路线等，这才是游客未曾发现的真实首尔。'},
       {type:'accent',title:'中浪区并不偏僻。',body:'这是大多数游客尚未发现的真实首尔——宁静、本地、更加原汁原味。仁川机场乘大巴直达FLY:HOME约2小时，全程无需换乘，舒适便捷。',transit:['京义中央线 望憂站','仁川机场大巴约2小时（直达）','至明洞39分钟','至江南47分钟']},
     ],
@@ -1560,6 +1560,16 @@ function renderPage(){
   document.getElementById('heroCta1').textContent=t('heroCta1');
   document.getElementById('heroCta2').textContent=t('heroCta2');
   document.getElementById('heroImgCaption').textContent=t('heroImgCaption');
+  const pl=document.getElementById('heroPlaceholderLabel');
+  if(pl){const plT={'ko':'사진 준비 중','en':'PHOTO COMING SOON','ja':'写真準備中','zh':'照片准备中'};pl.textContent=plT[lang]||'PHOTO COMING SOON';}
+  // 비행화면 사진 캡션 다국어
+  const simCap=document.getElementById('simCaption');
+  if(simCap){const capT={
+    'ko':'▲ FLY:HOME 실제 비행 화면 — 서울 한강 상공',
+    'en':'▲ FLY:HOME in-room flight simulation — Over Seoul Han River',
+    'ja':'▲ FLY:HOME 室内フライトシミュレーション — ソウル漢江上空',
+    'zh':'▲ FLY:HOME 室内飞行模拟画面 — 首尔汉江上空'
+  };simCap.textContent=capT[lang]||capT['en'];}
 
   // HOST
   document.getElementById('hostLabel').textContent=t('hostLabel');
