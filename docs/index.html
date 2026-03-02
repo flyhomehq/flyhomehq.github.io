@@ -10,7 +10,7 @@
 <script>
 // GitHub Pages 캐시 강제 갱신
 (function(){
-  const VER = '20260302-v14i';
+  const VER = '20260302-v14j';
   // ?reset 파라미터로 테스트 데이터 초기화
   if(location.search.includes('reset')){
     ['flyhome_regs','flyhome_emails','flyhome_count','flyhome_ver'].forEach(k=>localStorage.removeItem(k));
@@ -1883,6 +1883,9 @@ function renderAI(el){
       <div style="background:linear-gradient(135deg,rgba(176,125,10,0.1),rgba(245,166,35,0.05));border:1px solid rgba(176,125,10,0.3);border-radius:14px;padding:14px 18px;margin-bottom:14px;text-align:center">
         <p style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px">${lang==='ko'?'🏆 무료 1박 혜택 업데이트 완료!':lang==='ja'?'🏆 無料1泊特典に更新されました！':lang==='zh'?'🏆 已更新为免费住宿资格！':'🏆 Free Night Benefit Updated!'}</p>
         <p style="font-size:12px;color:var(--gray1)">${lang==='ko'?'이미 등록하신 정보에 무료 1박이 자동 적용됐어요.':lang==='ja'?'ご登録済みの情報に無料1泊が自動適用されました。':lang==='zh'?'您的登记信息已自动更新为免费住宿资格。':'Your registration has been automatically upgraded to include a free night.'}</p>
+        <button onclick="showUpgradedConfirm()" style="margin-top:10px;background:var(--gold);color:#fff;border:none;border-radius:980px;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">
+          ${lang==='ko'?'🎉 무료 1박 확인하기':lang==='ja'?'🎉 無料1泊を確認する':lang==='zh'?'🎉 查看免费住宿确认':'🎉 View Free Night Confirmation'}
+        </button>
       </div>` : ''}
       <div class="ai-actions">
         <button class="btn-pill dark" style="font-size:13px;padding:11px 22px" onclick="goReg()">${t('btnGoReg')}</button>
@@ -1896,6 +1899,15 @@ function renderAI(el){
     updatePassedStatus();
   }
 }
+
+// 재도전 통과 → 🎉 confirm 페이지로 이동
+window.showUpgradedConfirm = function(){
+  // overLimit을 false로 설정 (이미 통과했으므로)
+  st.overLimit = false;
+  st.phase = 'confirm';
+  render();
+  goToSection('#quizSection');
+};
 
 window.toggleFaq=function(i){
   const ans=document.getElementById('faqAns'+i);
@@ -2387,8 +2399,9 @@ async function incrementCounter(){
 // 이미 등록된 사람이 퀴즈 재도전 통과 시 GAS 업데이트
 async function updatePassedStatus(){
   if(!st.bookCode || !st.email) return;
+  // 재도전 통과: 카운터 초과만 체크 (한국인 체크 제외 — 이미 등록된 외국인)
   const localCount = parseInt(localStorage.getItem('flyhome_count')||'0');
-  if(localCount >= TOTAL_SLOTS) return;
+  // 주의: 여기서는 한국인 여부를 다시 체크하지 않음 (이미 등록된 사람의 점수 업데이트)
   const payload={
     type:'update_pass',
     code:st.bookCode, email:st.email, name:st.name,
