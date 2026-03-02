@@ -10,7 +10,7 @@
 <script>
 // GitHub Pages 캐시 강제 갱신
 (function(){
-  const VER = '20260302-v14h';
+  const VER = '20260302-v14i';
   // ?reset 파라미터로 테스트 데이터 초기화
   if(location.search.includes('reset')){
     ['flyhome_regs','flyhome_emails','flyhome_count','flyhome_ver'].forEach(k=>localStorage.removeItem(k));
@@ -2035,7 +2035,7 @@ async function submitReg(){
       const dupCC = dupNationMap[dupNation]||'XX';
       const dupKoreanDomains=['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com'];
       const dupEmailDomain=(e.split('@')[1]||'').toLowerCase();
-      const dupIsKorean=(dupCC==='KR')||dupKoreanDomains.includes(dupEmailDomain);
+      const dupIsKorean=(dupCC==='KR')||dupKoreanDomains.includes(dupEmailDomain)||(lang==='ko');
       const dupLocalCount=parseInt(localStorage.getItem('flyhome_count')||'0');
       const dupIsOver=dupLocalCount>=TOTAL_SLOTS;
       st.name=dup.name||n; st.email=e; st.bookCode=dup.code;
@@ -2072,7 +2072,8 @@ async function submitReg(){
   // 국적 선택 + 이메일 도메인 둘 다 체크
   const koreanDomains=['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com','paran.com','dreamwiz.com'];
   const emailDomain=(e.split('@')[1]||'').toLowerCase();
-  const isKorean = (countryCode === 'KR') || koreanDomains.includes(emailDomain);
+  // 한국어 페이지 사용 + 한국 도메인 + 한국 국적 모두 체크
+  const isKorean = (countryCode === 'KR') || koreanDomains.includes(emailDomain) || (lang === 'ko');
   const passedFinal = (st.score>=PASS) && !isOverLimit && !isKorean;
   const payload={
     name:n, email:e, nation, date, lang,
@@ -2144,6 +2145,9 @@ function renderConfirm(el){
       <div class="code-box">
         <div class="code-label">${t('confirmCodeLabel')}</div>
         <div class="code-val">${st.bookCode}</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--gray1);background:var(--white);border-radius:8px;padding:7px 12px;border:1px solid var(--gray3)">
+          📧 ${st.email}
+        </div>
         <div class="code-hint">${t('confirmCodeHint')}</div>
         <div style="margin-top:8px;font-size:10px;color:var(--gray2);letter-spacing:.5px;">${nowKST} KST</div>
       </div>
