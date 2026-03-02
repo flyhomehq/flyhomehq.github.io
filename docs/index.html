@@ -10,7 +10,20 @@
 <script>
 // GitHub Pages 캐시 강제 갱신
 (function(){
-  const VER = '20260302-v14f';
+  const VER = '20260302-v14h';
+  // ?reset 파라미터로 테스트 데이터 초기화
+  if(location.search.includes('reset')){
+    ['flyhome_regs','flyhome_emails','flyhome_count','flyhome_ver'].forEach(k=>localStorage.removeItem(k));
+    history.replaceState(null,'',location.pathname);
+    // 팝업 대신 화면 상단에 배너로 표시
+    document.addEventListener('DOMContentLoaded',function(){
+      const b=document.createElement('div');
+      b.style.cssText='position:fixed;top:50px;left:0;right:0;z-index:9999;background:#1a7f4b;color:#fff;text-align:center;padding:14px;font-size:14px;font-family:DM Sans,sans-serif;font-weight:600;';
+      b.textContent='✅ 테스트 데이터 초기화 완료! 이제 새로 테스트할 수 있어요.';
+      document.body.appendChild(b);
+      setTimeout(()=>b.remove(),4000);
+    });
+  }
   const saved = localStorage.getItem('flyhome_ver');
   if(saved && saved !== VER){
     localStorage.setItem('flyhome_ver', VER);
@@ -2016,8 +2029,17 @@ async function submitReg(){
       };
       alert(dupMsg[lang]||dupMsg.en);
       // 기존 등록 정보로 confirm 화면 표시
+      // 중복 감지 시 현재 국적+이메일 기준으로 재계산
+      const dupNation = document.getElementById('gNation')?.value||'';
+      const dupNationMap={'🇯🇵 일본':'JP','🇺🇸 미국':'US','🇬🇧 영국':'UK','🇨🇳 중국':'CN','🇹🇼 대만':'TW','🇹🇭 태국':'TH','🇻🇳 베트남':'VN','🇦🇺 호주':'AU','🇰🇷 한국':'KR','기타':'XX','🇯🇵 Japan':'JP','🇺🇸 USA':'US','🇬🇧 UK':'UK','🇨🇳 China':'CN','🇹🇼 Taiwan':'TW','🇹🇭 Thailand':'TH','🇻🇳 Vietnam':'VN','🇦🇺 Australia':'AU','🇰🇷 Korea':'KR','Other':'XX'};
+      const dupCC = dupNationMap[dupNation]||'XX';
+      const dupKoreanDomains=['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com'];
+      const dupEmailDomain=(e.split('@')[1]||'').toLowerCase();
+      const dupIsKorean=(dupCC==='KR')||dupKoreanDomains.includes(dupEmailDomain);
+      const dupLocalCount=parseInt(localStorage.getItem('flyhome_count')||'0');
+      const dupIsOver=dupLocalCount>=TOTAL_SLOTS;
       st.name=dup.name||n; st.email=e; st.bookCode=dup.code;
-      st.alreadyBooked=true; st.overLimit=!(dup.passed);
+      st.alreadyBooked=true; st.overLimit=dupIsOver||dupIsKorean;
       st.score=dup.score||st.score;
       st.phase='confirm'; render(); goToSection('#quizSection');
       return;
