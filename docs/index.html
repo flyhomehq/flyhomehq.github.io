@@ -1968,10 +1968,10 @@ function renderReg(el){
   if(st.alreadyBooked){
     const nowPassed = st.score >= PASS;
     const alreadyBadge = nowPassed
-? {ko:"🏆 예약 등록 완료! (안내 대상)",en:"🏆 Quiz passed! Free night benefit applied",ja:"🏆 クイズ合格！無料1泊特典が適用されます",zh:"🏆 答题通过！免费住宿资格已适用"}
-    : {ko:"🏆 오픈 알림 등록 완료",en:"✅ Opening alert registered",ja:"✅ オープン通知登録済み",zh:"✅ 开业通知登记完成"};
-  const alreadySub = nowPassed
-    ? {ko:"K-관광 활성화 정책에 따라 무료 1박은 외국인에게 우선 제공됩니다. 한국인 신청자분들은 오픈 알림 대상으로 정상 등록되었습니다.",en:"Already registered for the alert.",ja:"すでに登録済みです。",zh:"已经登记完成。"}
+? {ko:"🏆 예약 등록 완료! (안내 대상)",en:"🏆 Quiz passed!",ja:"🏆 クイズ合格！",zh:"🏆 答题通过！"}
+    : {ko:"🏆 오픈 알림 등록 완료",en:"✅ Opening alert registered",ja:"✅ 登録済み",zh:"✅ 登记完成"};
+const alreadySub = nowPassed
+    ? {ko:"K-관광 활성화 정책에 따라 무료 1박은 외국인에게 우선 제공됩니다. 한국인 신청자분들은 오픈 알림 대상으로 정상 등록되었습니다.",en:"Foreigners priority policy applied.",ja:"外国人優先政策が適用されます。",zh:"外国人优先政策已适用。"}
     : {ko:"K-관광 활성화 정책에 따라 무료 1박은 외국인에게 우선 제공됩니다. 한국인 신청자분들은 오픈 알림 대상으로 정상 등록되었습니다.",en:"Already registered for the alert.",ja:"すでに登録済みです。",zh:"已经登记完成。"};
 
   el.innerHTML=`
