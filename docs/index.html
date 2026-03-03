@@ -1931,9 +1931,19 @@ window.showUpgradedConfirm = function(){
     });
   }
 
-  // 3. 화면 처리 (한국인 여부 재판단 로직 포함)
-  isKR = (lang === 'ko' || st.nation.includes('한국') || ['naver.com','daum.net','kakao.com','hanmail.net'].some(d => (st.email||'').includes(d)));
-  st.overLimit = isKR ? true : false; 
+  // 3. 한국어 페이지 제한 및 외국인 안내 로직
+  if (lang === 'ko') {
+    st.overLimit = true; // 한국어 페이지는 무조건 무료 혜택 제외
+    const isForeigner = !(st.nation.includes('한국') || st.nation.includes('Korea') || st.nation.includes('韓国') || st.nation.includes('韩国'));
+    if (isForeigner) {
+      alert("⚠️ 안내: 외국인 전용 무료 1박 혜택을 받으시려면 해당 국가의 언어 페이지(English, 日本語, 中文)에서 다시 신청해 주세요. 한국어 페이지 신청은 혜택 대상에서 제외됩니다.");
+    }
+  } else {
+    // 외국어 페이지에서는 한국인인지 체크하여 제한
+    const isKR = (st.nation.includes('한국') || ['naver.com','daum.net','kakao.com','hanmail.net'].some(d => (st.email||'').includes(d)));
+    st.overLimit = isKR ? true : false;
+  }
+
   st.phase = 'confirm';
   render();
   if(typeof goToSection === 'function') goToSection('#quizSection');
