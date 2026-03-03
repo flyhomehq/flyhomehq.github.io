@@ -1082,8 +1082,8 @@ const T={
     confirmMsgPass:'퀴즈를 통과하셨어요! 선착순 30명 무료 1박 혜택이 적용됩니다.\n오픈 시 이메일로 예약 안내를 가장 먼저 드립니다.',
     confirmTitleFail:'오픈 알림 등록 완료!',
     confirmMsgFail:'FLY:HOME 오픈 알림이 등록됐어요.\n오픈 시 이메일로 가장 먼저 소식을 전해드릴게요.',
-    confirmTitleKorean:'예약 등록 완료! 🇰🇷',
-    confirmMsgKorean:'K-관광 활성화 정책에 따라 베타 무료 1박은 외국인 여행자에게 우선 배정됩니다.\n정식 오픈 시 한국인 우선 배정 대상으로 가장 먼저 이메일 안내드릴게요!',
+    confirmTitleKorean: '예약 등록 완료! 🇰🇷',
+    confirmMsgKorean: "K-관광 활성화 정책에 따라 이번 '무료 1박 업그레이드' 이벤트는 외국인 관광객에게 우선 제공됩니다. 한국인 신청자분들은 추후 오픈될 '우선 통보 확인 오픈 알림' 대상으로 정상 등록되었습니다.",
     confirmCodeLabel:'신청 확인 번호',
     confirmCodeHint:'📸 스크린샷으로 저장해두세요',
     confirmSteps:[['01','이메일 확인\n안내 메일 발송'],['02','오픈 알림\n2026년 3분기 우선 연락'],['03','서울 도착\n망우역 → FLY:HOME']],
@@ -1915,12 +1915,12 @@ window.showUpgradedConfirm = function(){
     code: st.bookCode,
     email: st.email,
     name: st.name,
-    action: 'RETRY_SUCCESS', // 스프레드시트에서 재도전임을 알 수 있게 함
+    action: 'RETRY_SUCCESS',
     isKorean: isKR,
     timestamp: new Date().toISOString()
   };
 
-  // GAS_URL로 데이터 전송 (이미 파일 하단에 GAS_URL이 정의되어 있습니다)
+  // 이 if문이 아래에 있다고 하셨는데, 함수 안으로 들어와야 정상입니다!
   if(typeof GAS_URL !== 'undefined'){
     fetch(GAS_URL, {
       method: 'POST',
@@ -1930,6 +1930,12 @@ window.showUpgradedConfirm = function(){
       body: JSON.stringify(updateData)
     });
   }
+
+  // 3. 화면 처리
+  st.phase = 'confirm';
+  render();
+  if(typeof goToSection === 'function') goToSection('#quizSection');
+};
 
   // 3. 화면 처리
   st.phase = 'confirm';
