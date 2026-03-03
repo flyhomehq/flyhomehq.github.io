@@ -1940,8 +1940,8 @@ window.showUpgradedConfirm = function(){
   }
   const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
   const cc = nationMap[myNation]||'';
-  const browserLangKo2 = (navigator.language||'').toLowerCase().startsWith('ko');
-  const isKorean = (cc==='KR') || koreanDomains.includes(emailDomain) || (lang==='ko') || browserLangKo2;
+  // 재도전 시 국적/이메일 도메인만으로 판별 (브라우저/UI 언어는 제외)
+  const isKorean = (cc==='KR') || koreanDomains.includes(emailDomain);
 
   // overLimit: 외국인만 해제, 한국인은 유지
   st.overLimit = isKorean ? true : false;
@@ -2150,8 +2150,7 @@ async function submitReg(){
   const koreanDomains=['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com','paran.com','dreamwiz.com'];
   const emailDomain=(e.split('@')[1]||'').toLowerCase();
   // 한국어 페이지 사용 + 한국 도메인 + 한국 국적 모두 체크
-  const browserLangKo = (navigator.language||'').toLowerCase().startsWith('ko');
-  const isKorean = (countryCode === 'KR') || koreanDomains.includes(emailDomain) || (lang === 'ko') || browserLangKo;
+  const isKorean = (countryCode === 'KR') || koreanDomains.includes(emailDomain) || (lang === 'ko');
   const passedFinal = (st.score>=PASS) && !isOverLimit && !isKorean;
   const payload={
     name:n, email:e, nation, date, lang,
@@ -2224,7 +2223,7 @@ function renderConfirm(el){
     icon='🌍'; title='오픈 알림 등록 완료!'; headerBg='background:var(--black)';
     msg='신청이 완료됐어요. 오픈 시 이메일로 안내드립니다.\n\n✈️ 무료 1박 혜택을 받으시려면\nEnglish / 日本語 / 中文 탭에서 다시 신청해 주세요.\n(같은 이메일로 중복 신청 가능)';
   } else if(isKoreanGuest){
-    icon='🇰🇷'; title=t('confirmTitleKorean'); msg=t('confirmMsgKorean');
+    icon='🏠'; title=t('confirmTitleKorean'); msg=t('confirmMsgKorean');
     headerBg='background:linear-gradient(135deg,#003478,#cd2e3a)';
   } else {
     icon='✅'; title=t('confirmTitleFail'); msg=t('confirmMsgFail');
