@@ -1940,7 +1940,8 @@ window.showUpgradedConfirm = function(){
   }
   const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
   const cc = nationMap[myNation]||'';
-  const isKorean = (cc==='KR') || koreanDomains.includes(emailDomain) || (lang==='ko');
+  const browserLangKo2 = (navigator.language||'').toLowerCase().startsWith('ko');
+  const isKorean = (cc==='KR') || koreanDomains.includes(emailDomain) || (lang==='ko') || browserLangKo2;
 
   // overLimit: 외국인만 해제, 한국인은 유지
   st.overLimit = isKorean ? true : false;
@@ -2149,7 +2150,8 @@ async function submitReg(){
   const koreanDomains=['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com','paran.com','dreamwiz.com'];
   const emailDomain=(e.split('@')[1]||'').toLowerCase();
   // 한국어 페이지 사용 + 한국 도메인 + 한국 국적 모두 체크
-  const isKorean = (countryCode === 'KR') || koreanDomains.includes(emailDomain) || (lang === 'ko');
+  const browserLangKo = (navigator.language||'').toLowerCase().startsWith('ko');
+  const isKorean = (countryCode === 'KR') || koreanDomains.includes(emailDomain) || (lang === 'ko') || browserLangKo;
   const passedFinal = (st.score>=PASS) && !isOverLimit && !isKorean;
   const payload={
     name:n, email:e, nation, date, lang,
