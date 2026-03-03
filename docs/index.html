@@ -1931,7 +1931,7 @@ window.showUpgradedConfirm = function(){
     });
   }
 
-  // 3. 한국어 페이지 제한 및 외국인 안내 로직
+// 3. 한국어 페이지 제한 및 외국인 안내 로직
   if (lang === 'ko') {
     st.overLimit = true; // 한국어 페이지는 무조건 무료 혜택 제외
     const isForeigner = !(st.nation.includes('한국') || st.nation.includes('Korea') || st.nation.includes('韓国') || st.nation.includes('韩国'));
