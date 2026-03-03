@@ -2611,4 +2611,34 @@ window._pageLoadTime = Date.now(); // 페이지 로드 시각 기록
   else lang = 'en'; // 기타 모든 나라 → 영어
   // 활성 버튼 표시
   document.querySelectorAll('.lang-btn').forEach(b=>{
-  
+    if(b.id==='btn-'+lang) b.classList.add('active');
+    else b.classList.remove('active');
+  });
+  if(lang==='zh') document.body.classList.add('zh-active');
+  if(lang==='ja') document.body.classList.add('ja-active');
+  // 저장된 예약 정보 복원
+  try{
+    const regs=JSON.parse(localStorage.getItem('flyhome_regs')||'[]');
+    if(regs.length>0){
+      const last=regs[regs.length-1];
+      if(last && last.code){
+        st.name=last.name||''; st.email=last.email||'';
+        st.nation=last.nation||''; st.bookCode=last.code;
+        st.alreadyBooked=true;
+        const koreanDomains=['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com','paran.com','dreamwiz.com'];
+        const emailDomain=(last.email||'').split('@')[1]||'';
+        const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
+        const cc=nationMap[last.nation||'']||'';
+        const isKorean=(cc==='KR')||koreanDomains.includes(emailDomain.toLowerCase());
+        const localCount=parseInt(localStorage.getItem('flyhome_count')||'0');
+        st.overLimit=(localCount>=TOTAL_SLOTS)||isKorean;
+        st.score=last.score||0;
+      }
+    }
+  }catch(e){}
+  renderPage();
+  updateTodayDate();
+})();
+</script>
+</body>
+</html>
