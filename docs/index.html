@@ -1906,7 +1906,7 @@ window.showUpgradedConfirm = function(){
   const koreanDomains = ['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com','paran.com','dreamwiz.com'];
   const emailDomain = (st.email.split('@')[1] || '').toLowerCase();
   const nationMap = {'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
-  const isKR = (nationMap[st.nation] === 'KR' || koreanDomains.includes(emailDomain));
+  let isKR = (nationMap[st.nation] === 'KR' || koreanDomains.includes(emailDomain));
 
   st.overLimit = isKR ? true : false; 
 
@@ -1932,7 +1932,7 @@ window.showUpgradedConfirm = function(){
   }
 
   // 3. 화면 처리 (한국인 여부 재판단 로직 포함)
-  const isKR = (lang === 'ko' || st.nation.includes('한국') || ['naver.com','daum.net','kakao.com','hanmail.net'].some(d => (st.email||'').includes(d)));
+  isKR = (lang === 'ko' || st.nation.includes('한국') || ['naver.com','daum.net','kakao.com','hanmail.net'].some(d => (st.email||'').includes(d)));
   st.overLimit = isKR ? true : false; 
   st.phase = 'confirm';
   render();
