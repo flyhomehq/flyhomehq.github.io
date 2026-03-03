@@ -1902,12 +1902,36 @@ function renderAI(el){
 
 // 재도전 통과 → 🎉 confirm 페이지로 이동
 window.showUpgradedConfirm = function(){
+  // 1. 한국인 여부 재판단 (기존 로직 유지)
   const koreanDomains = ['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com','paran.com','dreamwiz.com'];
   const emailDomain = (st.email.split('@')[1] || '').toLowerCase();
   const nationMap = {'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
   const isKR = (nationMap[st.nation] === 'KR' || koreanDomains.includes(emailDomain));
 
   st.overLimit = isKR ? true : false; 
+
+  // 2. [추가] 스프레드시트에 재도전 성공 정보 전송
+  const updateData = {
+    code: st.bookCode,
+    email: st.email,
+    name: st.name,
+    action: 'RETRY_SUCCESS', // 스프레드시트에서 재도전임을 알 수 있게 함
+    isKorean: isKR,
+    timestamp: new Date().toISOString()
+  };
+
+  // GAS_URL로 데이터 전송 (이미 파일 하단에 GAS_URL이 정의되어 있습니다)
+  if(typeof GAS_URL !== 'undefined'){
+    fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updateData)
+    });
+  }
+
+  // 3. 화면 처리
   st.phase = 'confirm';
   render();
   if(typeof goToSection === 'function') goToSection('#quizSection');
