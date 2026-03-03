@@ -1902,11 +1902,15 @@ function renderAI(el){
 
 // 재도전 통과 → 🎉 confirm 페이지로 이동
 window.showUpgradedConfirm = function(){
-  // overLimit을 false로 설정 (이미 통과했으므로)
-  st.overLimit = false;
+  const koreanDomains = ['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com','paran.com','dreamwiz.com'];
+  const emailDomain = (st.email.split('@')[1] || '').toLowerCase();
+  const nationMap = {'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
+  const isKR = (nationMap[st.nation] === 'KR' || koreanDomains.includes(emailDomain));
+
+  st.overLimit = isKR ? true : false; 
   st.phase = 'confirm';
   render();
-  goToSection('#quizSection');
+  if(typeof goToSection === 'function') goToSection('#quizSection');
 };
 
 window.toggleFaq=function(i){
