@@ -1937,12 +1937,6 @@ window.showUpgradedConfirm = function(){
   if(typeof goToSection === 'function') goToSection('#quizSection');
 };
 
-  // 3. 화면 처리
-  st.phase = 'confirm';
-  render();
-  if(typeof goToSection === 'function') goToSection('#quizSection');
-};
-
 window.toggleFaq=function(i){
   const ans=document.getElementById('faqAns'+i);
   const arr=document.getElementById('faqArr'+i);
