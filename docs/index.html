@@ -11,7 +11,7 @@
 <script>
 // GitHub Pages 캐시 강제 갱신
 (function(){
-  const VER = '20260303-v15b';
+  const VER = '20260303-v16';
   // ?reset 파라미터로 테스트 데이터 초기화
   if(location.search.includes('reset')){
     ['flyhome_regs','flyhome_emails','flyhome_count','flyhome_ver'].forEach(k=>localStorage.removeItem(k));
@@ -810,6 +810,9 @@ body{
   .confirm-title{font-size:26px;}
   .code-val{font-size:18px;letter-spacing:2px;}
 }
+
+.sdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.45);cursor:pointer;transition:all .25s;display:inline-block;}
+.sdot.active{background:#fff;transform:scale(1.3);}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -839,7 +842,7 @@ body{
     <span class="cd-colon">:</span>
     <div class="cd-unit"><span class="cd-num" id="cdS">--</span><span class="cd-text" id="cdSL">SEC</span></div>
   </div>
-  <span id="todayDateDisplay" style="font-size:11px;color:rgba(255,255,255,0.55);font-family:'DM Sans',sans-serif;margin-left:8px;white-space:nowrap;"></span>
+  <span id="todayDateDisplay" style="font-size:12px;color:rgba(255,255,255,0.92);font-family:'DM Sans',sans-serif;margin-left:14px;white-space:nowrap;background:rgba(255,255,255,0.12);border-radius:20px;padding:3px 12px;border:1px solid rgba(255,255,255,0.2);letter-spacing:0.4px;font-weight:500;"></span>
 </div>
 
 <!-- ══ HERO ══ -->
@@ -855,9 +858,25 @@ body{
       <button class="btn-pill outline" onclick="goToSection('#quizSection',true)" id="heroCta2"></button>
     </div>
     <div class="hero-img-wrap">
-      <!-- 사진 교체: <img class="hero-img" src="YOUR_PHOTO_URL" alt="FLY:HOME"> -->
-      <img class="hero-img" src="hero.png" alt="FLY:HOME — Seoul flight simulation"
-           onerror="this.style.display='none';document.getElementById('heroImgSlot').style.display='flex'">
+      <!-- ── 슬라이드쇼 4장 ── -->
+      <div id="heroSlider" style="position:relative;width:100%;overflow:hidden;border-radius:18px;">
+        <div id="heroSlides" style="display:flex;transition:transform 0.65s cubic-bezier(.4,0,.2,1);will-change:transform;">
+          <img class="hero-img" src="hero.png"        alt="FLY:HOME" style="min-width:100%;flex-shrink:0;object-fit:cover;" onerror="this.style.opacity='0.01'">
+          <img class="hero-img" src="sim1.jpg"        alt="FLY:HOME Simulator" style="min-width:100%;flex-shrink:0;object-fit:cover;" onerror="this.style.opacity='0.01'">
+          <img class="hero-img" src="host1.jpg"       alt="FLY:HOME Host" style="min-width:100%;flex-shrink:0;object-fit:cover;" onerror="this.style.opacity='0.01'">
+          <img class="hero-img" src="family1991.jpg"  alt="FLY:HOME Story" style="min-width:100%;flex-shrink:0;object-fit:cover;" onerror="this.style.opacity='0.01'">
+        </div>
+        <!-- 인디케이터 닷 -->
+        <div id="slideDots" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;">
+          <span class="sdot active" onclick="goSlide(0)"></span>
+          <span class="sdot" onclick="goSlide(1)"></span>
+          <span class="sdot" onclick="goSlide(2)"></span>
+          <span class="sdot" onclick="goSlide(3)"></span>
+        </div>
+        <!-- 좌우 화살표 -->
+        <button onclick="prevSlide()" aria-label="이전" style="position:absolute;top:50%;left:10px;transform:translateY(-50%);background:rgba(0,0,0,0.38);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;z-index:10;line-height:1;">&#8249;</button>
+        <button onclick="nextSlide()" aria-label="다음" style="position:absolute;top:50%;right:10px;transform:translateY(-50%);background:rgba(0,0,0,0.38);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;z-index:10;line-height:1;">&#8250;</button>
+      </div>
       <div class="hero-img-placeholder" id="heroImgSlot" style="display:none">
         <div class="icon">✈</div>
         <div class="label" id="heroPlaceholderLabel">PHOTO COMING SOON</div>
@@ -2528,6 +2547,40 @@ async function updatePassedStatus(){
 }
 
 const GAS_URL='https://script.google.com/macros/s/AKfycbysiEZDd4RUoN74xZx7lzpxpBIUmttlH6cHVkppdN2bLngYlpIg8UgrigLFkRUzFYgaOA/exec';
+
+/* ── HERO SLIDER ── */
+(function(){
+  var cur=0,total=4,timer=null;
+  function goSlide(n){
+    cur=(n+total)%total;
+    var s=document.getElementById('heroSlides');
+    if(s) s.style.transform='translateX(-'+cur*100+'%)';
+    document.querySelectorAll('.sdot').forEach(function(d,i){
+      d.classList.toggle('active',i===cur);
+    });
+  }
+  function nextSlide(){goSlide(cur+1);}
+  function prevSlide(){goSlide(cur-1);}
+  function startAuto(){timer=setInterval(function(){goSlide(cur+1);},4500);}
+  function stopAuto(){if(timer){clearInterval(timer);timer=null;}}
+  window.goSlide=goSlide;
+  window.nextSlide=nextSlide;
+  window.prevSlide=prevSlide;
+  document.addEventListener('DOMContentLoaded',function(){
+    var el=document.getElementById('heroSlider');
+    if(!el) return;
+    var sx=0;
+    el.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;stopAuto();},{passive:true});
+    el.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-sx;
+      if(Math.abs(dx)>40) dx<0?nextSlide():prevSlide();
+      startAuto();
+    },{passive:true});
+    el.addEventListener('mouseenter',stopAuto);
+    el.addEventListener('mouseleave',startAuto);
+    startAuto();
+  });
+})();
 
 function showPrivacy(){document.getElementById('privacyModal').style.display='block';}
 
