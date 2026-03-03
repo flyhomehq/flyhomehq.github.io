@@ -16,7 +16,6 @@
   if(location.search.includes('reset')){
     ['flyhome_regs','flyhome_emails','flyhome_count','flyhome_ver'].forEach(k=>localStorage.removeItem(k));
     history.replaceState(null,'',location.pathname);
-    // 팝업 대신 화면 상단에 배너로 표시
     document.addEventListener('DOMContentLoaded',function(){
       const b=document.createElement('div');
       b.style.cssText='position:fixed;top:50px;left:0;right:0;z-index:9999;background:#1a7f4b;color:#fff;text-align:center;padding:14px;font-size:14px;font-family:DM Sans,sans-serif;font-weight:600;';
@@ -26,10 +25,13 @@
     });
   }
   const saved = localStorage.getItem('flyhome_ver');
-  if(saved && saved !== VER){
+  // 무한루프 방지: 이미 reload 중이면 skip
+  if(saved && saved !== VER && !sessionStorage.getItem('reloading')){
+    sessionStorage.setItem('reloading','1');
     localStorage.setItem('flyhome_ver', VER);
     location.reload(true);
   } else {
+    sessionStorage.removeItem('reloading');
     localStorage.setItem('flyhome_ver', VER);
   }
 })();
@@ -974,7 +976,7 @@ body{
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const CONTACT='flyhome.hq@gmail.com';
 const PASS=4;
 
