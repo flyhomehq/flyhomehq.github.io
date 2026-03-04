@@ -1210,7 +1210,7 @@ const T={
     regNotice:'🏆 Quiz passers (4/5 or more) receive a FREE night — first 30 guests only. ✈️ Free nights are prioritised for international visitors (Korea Tourism Promotion Policy). Anyone is welcome to register for the opening alert regardless of score.',
     formLabels:['Your Name','Email Address','Nationality','When might you visit?'],
     nations:['🇯🇵 Japan','🇺🇸 USA','🇬🇧 UK','🇨🇳 China','🇹🇼 Taiwan','🇹🇭 Thailand','🇻🇳 Vietnam','🇦🇺 Australia','🇰🇷 Korea','Other'],
-    dates:['2026 June~August','2026 September onwards','2027 first half','2027 or later','Not sure yet'],
+    dates:['2026 June – August','From September 2026','2027 first half','2027 or later','Not sure yet'],
     btnReg:'✈ Register for the Alert',
     validErr:'Please fill in your name, email, and nationality.',
     saving:'Saving...',saveOk:"✅ You\'re registered! We\'ll be in touch the moment we open.",
@@ -1903,7 +1903,7 @@ function renderAI(el){
             <div id="faqAns${i}" style="display:none;padding:12px 16px;font-size:13px;color:var(--gray1);line-height:1.8;background:var(--white);border-top:1px solid var(--gray3)">${f.a}</div>
           </div>`).join('')}
       </div>
-      ${st.alreadyBooked && passed ? `
+      ${st.alreadyBooked && passed && !st.overLimit ? `
       <div style="background:linear-gradient(135deg,rgba(176,125,10,0.1),rgba(245,166,35,0.05));border:1px solid rgba(176,125,10,0.3);border-radius:14px;padding:14px 18px;margin-bottom:14px;text-align:center">
         <p style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px">${lang==='ko'?'🏆 무료 1박 혜택 업데이트 완료!':lang==='ja'?'🏆 無料1泊特典に更新されました！':lang==='zh'?'🏆 已更新为免费住宿资格！':'🏆 Free Night Benefit Updated!'}</p>
         <p style="font-size:12px;color:var(--gray1)">${lang==='ko'?'이미 등록하신 정보에 무료 1박이 자동 적용됐어요.':lang==='ja'?'ご登録済みの情報に無料1泊が自動適用されました。':lang==='zh'?'您的登记信息已自动更新为免费住宿资格。':'Your registration has been automatically upgraded to include a free night.'}</p>
@@ -1938,7 +1938,7 @@ window.showUpgradedConfirm = function(){
       myNation = myReg ? (myReg.nation||'') : '';
     }catch(e){}
   }
-  const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
+  const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR','🇨🇳 中国大陆':'CN','🇨🇳 中国':'CN','🇹🇼 台湾':'TW','🇭🇰 香港':'HK','🇯🇵 日本':'JP','🇺🇸 アメリカ':'US','🇺🇸 美国':'US','🇺🇸 USA':'US','🇬🇧 イギリス':'UK','🇬🇧 UK':'UK','🇬🇧 영국':'UK','🇹🇭 タイ':'TH','🇹🇭 泰国':'TH','🇻🇳 ベトナム':'VN','🇻🇳 越南':'VN','🇦🇺 オーストラリア':'AU','🇦🇺 澳大利亚':'AU','🇰🇷 韩国':'KR','其他':'XX','その他':'XX','Other':'XX','기타':'XX'};
   const cc = nationMap[myNation]||'';
   // 재도전 시 국적/이메일 도메인만으로 판별 (브라우저/UI 언어는 제외)
   const isKorean = (cc==='KR') || koreanDomains.includes(emailDomain);
@@ -2108,7 +2108,7 @@ async function submitReg(){
       // 기존 등록 정보로 confirm 화면 표시
       // 중복 감지 시 현재 국적+이메일 기준으로 재계산
       const dupNation = document.getElementById('gNation')?.value||'';
-      const dupNationMap={'🇯🇵 일본':'JP','🇺🇸 미국':'US','🇬🇧 영국':'UK','🇨🇳 중국':'CN','🇹🇼 대만':'TW','🇹🇭 태국':'TH','🇻🇳 베트남':'VN','🇦🇺 호주':'AU','🇰🇷 한국':'KR','기타':'XX','🇯🇵 Japan':'JP','🇺🇸 USA':'US','🇬🇧 UK':'UK','🇨🇳 China':'CN','🇹🇼 Taiwan':'TW','🇹🇭 Thailand':'TH','🇻🇳 Vietnam':'VN','🇦🇺 Australia':'AU','🇰🇷 Korea':'KR','Other':'XX'};
+      const dupNationMap={'🇯🇵 일본':'JP','🇺🇸 미국':'US','🇬🇧 영국':'UK','🇨🇳 중국':'CN','🇹🇼 대만':'TW','🇹🇭 태국':'TH','🇻🇳 베트남':'VN','🇦🇺 호주':'AU','🇰🇷 한국':'KR','기타':'XX','🇯🇵 Japan':'JP','🇺🇸 USA':'US','🇬🇧 UK':'UK','🇨🇳 China':'CN','🇹🇼 Taiwan':'TW','🇹🇭 Thailand':'TH','🇻🇳 Vietnam':'VN','🇦🇺 Australia':'AU','🇰🇷 Korea':'KR','Other':'XX','🇯🇵 日本':'JP','🇺🇸 アメリカ':'US','🇬🇧 イギリス':'UK','🇨🇳 中国':'CN','🇹🇼 台湾':'TW','🇹🇭 タイ':'TH','🇻🇳 ベトナム':'VN','🇦🇺 オーストラリア':'AU','🇰🇷 韓国':'KR','その他':'XX','🇨🇳 中国大陆':'CN','🇭🇰 香港':'HK','🇹🇭 泰国':'TH','🇻🇳 越南':'VN','🇦🇺 澳大利亚':'AU','🇰🇷 韩国':'KR','其他':'XX'};
       const dupCC = dupNationMap[dupNation]||'XX';
       const dupKoreanDomains=['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com'];
       const dupEmailDomain=(e.split('@')[1]||'').toLowerCase();
@@ -2522,7 +2522,7 @@ async function updatePassedStatus(){
       myNation=myReg?(myReg.nation||''):'';
     }catch(e){}
   }
-  const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
+  const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR','🇨🇳 中国大陆':'CN','🇨🇳 中国':'CN','🇹🇼 台湾':'TW','🇭🇰 香港':'HK','🇯🇵 日本':'JP','🇺🇸 アメリカ':'US','🇺🇸 美国':'US','🇺🇸 USA':'US','🇬🇧 イギリス':'UK','🇬🇧 UK':'UK','🇬🇧 영국':'UK','🇹🇭 タイ':'TH','🇹🇭 泰国':'TH','🇻🇳 ベトナム':'VN','🇻🇳 越南':'VN','🇦🇺 オーストラリア':'AU','🇦🇺 澳大利亚':'AU','🇰🇷 韩国':'KR','其他':'XX','その他':'XX','Other':'XX','기타':'XX'};
   const cc=nationMap[myNation]||'';
   const isKorean=(cc==='KR')||koreanDomains.includes(emailDomain)||(lang==='ko');
 
@@ -2628,7 +2628,7 @@ window._pageLoadTime = Date.now(); // 페이지 로드 시각 기록
         st.alreadyBooked=true;
         const koreanDomains=['naver.com','daum.net','kakao.com','hanmail.net','nate.com','korea.com','paran.com','dreamwiz.com'];
         const emailDomain=(last.email||'').split('@')[1]||'';
-        const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR'};
+        const nationMap={'🇰🇷 한국':'KR','🇰🇷 Korea':'KR','🇰🇷 韓国':'KR','🇰🇷 韩国':'KR','🇨🇳 中国大陆':'CN','🇨🇳 中国':'CN','🇹🇼 台湾':'TW','🇭🇰 香港':'HK','🇯🇵 日本':'JP','🇺🇸 アメリカ':'US','🇺🇸 美国':'US','🇺🇸 USA':'US','🇬🇧 イギリス':'UK','🇬🇧 UK':'UK','🇬🇧 영국':'UK','🇹🇭 タイ':'TH','🇹🇭 泰国':'TH','🇻🇳 ベトナム':'VN','🇻🇳 越南':'VN','🇦🇺 オーストラリア':'AU','🇦🇺 澳大利亚':'AU','🇰🇷 韩国':'KR','其他':'XX','その他':'XX','Other':'XX','기타':'XX'};
         const cc=nationMap[last.nation||'']||'';
         const isKorean=(cc==='KR')||koreanDomains.includes(emailDomain.toLowerCase());
         const localCount=parseInt(localStorage.getItem('flyhome_count')||'0');
