@@ -2001,13 +2001,15 @@ function retryQuiz(){
 function renderReg(el){
   const passed=(st.score>=PASS);
   if(st.alreadyBooked){
-    const nowPassed = st.score >= PASS;
+    const nowPassed = (st.score >= PASS) && !st.overLimit;
     const alreadyBadge = nowPassed
       ? {ko:'🏆 퀴즈 통과! 무료 1박 혜택 적용',en:'🏆 Quiz passed! Free night benefit applied',ja:'🏆 クイズ合格！無料1泊特典が適用されます',zh:'🏆 答题通过！免费住宿资格已适用'}
       : {ko:'✅ 오픈 알림 등록 완료',en:'✅ Opening alert registered',ja:'✅ オープン通知登録済み',zh:'✅ 开业通知登记完成'};
     const alreadySub = nowPassed
       ? {ko:'선착순 30명 무료 1박 혜택이 적용됩니다. 오픈 시 가장 먼저 연락드려요.',en:'You are in the first-30 free night list. We will contact you first at opening.',ja:'先着30名様の無料1泊特典が適用されます。オープン時に最優先でご連絡します。',zh:'您已进入前30名免费住宿名单，开业时我们将优先联系您。'}
-      : {ko:'오픈 알림 신청이 완료됐어요. 퀴즈에 다시 도전해 무료 1박을 노려보세요!',en:'Already registered for the alert. Retake the quiz anytime to earn the free night!',ja:'通知登録済みです。クイズに再挑戦して無料1泊を目指しましょう！',zh:'通知已登记。随时可以重新答题，争取免费住宿资格！'};
+      : (st.overLimit && lang==='ko')
+        ? {ko:'오픈 알림 신청이 완료됐어요. 정식 오픈 시 한국인 우선 안내를 드립니다!',en:'Already registered for the alert. Retake the quiz anytime to earn the free night!',ja:'通知登録済みです。クイズに再挑戦して無料1泊を目指しましょう！',zh:'通知已登记。随时可以重新答题，争取免费住宿资格！'}
+        : {ko:'오픈 알림 신청이 완료됐어요. 퀴즈에 다시 도전해 무료 1박을 노려보세요!',en:'Already registered for the alert. Retake the quiz anytime to earn the free night!',ja:'通知登録済みです。クイズに再挑戦して無料1泊を目指しましょう！',zh:'通知已登记。随时可以重新答题，争取免费住宿资格！'};
     el.innerHTML=`
     <div class="reg-card">
       <div class="reg-top" style="${nowPassed?'background:linear-gradient(135deg,#b07d0a,#f5a623)':''}">
