@@ -1206,7 +1206,7 @@ const T={
     btnRetry:'🔄 Try Again',
     btnNext_mid:'Next →',btnNext_end:'See My Results →',
     regTitle:'2026 Opening Alert',
-    regSub:"Be first in line when we open open on Sep 1, 2026. Completely free to register.",
+    regSub:"Be first in line when we open on Sep 1, 2026. Completely free to register.",
     regNotice:'🏆 Quiz passers (4/5 or more) receive a FREE night — first 30 guests only. ✈️ Free nights are prioritised for international visitors (Korea Tourism Promotion Policy). Anyone is welcome to register for the opening alert regardless of score.',
     formLabels:['Your Name','Email Address','Nationality','When might you visit?'],
     nations:['🇯🇵 Japan','🇺🇸 USA','🇬🇧 UK','🇨🇳 China','🇹🇼 Taiwan','🇹🇭 Thailand','🇻🇳 Vietnam','🇦🇺 Australia','🇰🇷 Korea','Other'],
@@ -1569,7 +1569,7 @@ function pickRandom(arr,n){
   return a.slice(0,n);
 }
 
-let lang='ko';
+let lang='en';
 let st={phase:'quiz',qi:0,score:0,answered:false,messages:[],loading:false,name:'',email:'',nation:'',bookCode:'',shuffledQ:null,alreadyBooked:false,overLimit:false};
 
 function t(k){return T[lang][k]||'';}
@@ -1617,7 +1617,7 @@ function renderPage(){
   // META 다국어 (SEO + 공유 미리보기)
   const metaD={
     ko:'서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 9월 1일 오픈 예정.',
-    en:'Fly over Seoul — from your room. Korea\'s first flight simulation-themed stay. Opening Opening Sep 1, 2026.',
+    en:'Fly over Seoul — from your room. Korea\'s first flight simulation-themed stay. Opening Sep 1, 2026.',
     ja:'ソウルの空を、あなたのお部屋から。韓国初のフライトシミュレーションテーマ宿泊施設。2026年9月1日オープン予定。',
     zh:'在房间里飞越首尔上空。韩国首家飞行模拟主题住宿。2026年9月1日开业。'
   };
@@ -1852,7 +1852,7 @@ function renderAI(el){
       {q:'무료 1박 조건은?',a:'퀴즈 5문제 중 4개 이상 맞추면 통과예요. 통과자 선착순 30명에게 무료 1박을 드려요. 지금 바로 신청하세요!'},
     ],
     en:[
-      {q:'When do you open?',a:'We open on Sep 1, 2026. Register now and you'll be the first to hear!'},
+      {q:'When do you open?',a:'We open on Sep 1, 2026. Register now and you\'ll be the first to hear!'},
       {q:'Where exactly?',a:'Mangu-dong, Jungnang-gu, Seoul. 11-14 min walk from Mangu Station (Gyeongui-Jungang Line). Myeongdong 39 min, Gangnam 47 min.'},
       {q:'What gear do you have?',a:'Winwing + Thrustmaster latest controls, RTX 4090-class PC, multi-screen setup (up to triple), Microsoft Flight Simulator 2024. Better than most sim cafés!'},
       {q:'OK for beginners?',a:'No worries at all! We send you study materials before arrival, and our AI guide system walks you through everything. Your feedback helps us improve the experience. One night is genuinely enough!'},
