@@ -36,7 +36,7 @@
   }
 })();
 </script>
-<meta name="description" id="metaDesc" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 3분기 오픈 예정.">
+<meta name="description" id="metaDesc" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 9월 1일 오픈 예정.">
 <meta name="keywords" id="metaKeywords" content="FLY HOME, flight simulation stay, Seoul guesthouse, 비행 시뮬레이션, 서울 숙소, フライトシム, 飞行模拟">
 <meta property="og:title" content="FLY:HOME — Seoul is calling.">
 <meta property="og:description" content="서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소.">
@@ -1004,7 +1004,7 @@ const T={
   ko:{
     cdLabel:'오픈까지',cdDays:'일',cdHrs:'시간',cdMin:'분',cdSec:'초',
     counterLabel:'베타 무료 신청',counterLimit:'30명 한정',counterSuffix:'명 신청 완료',
-    heroEye:'SEOUL · 한국 최초 비행 시뮬레이션 숙소 · 2026년 3분기 오픈 예정',
+    heroEye:'SEOUL · 한국 최초 비행 시뮬레이션 숙소 · 2026년 9월 1일 오픈 예정',
     heroTagline:'Seoul is calling.',
     heroSub:'항공 퀴즈 5문제를 풀고\n서울 중랑구 <strong>FLY:HOME</strong>의 무료 1박을 경험하세요.',
     heroCta1:'✈ 퀴즈 시작하기',heroCta2:'바로 알림 신청',
@@ -1091,11 +1091,11 @@ const T={
     btnNext_mid:'다음 문제 →',
     btnNext_end:'결과 보기 →',
     regTitle:'2026 오픈 알림 신청',
-    regSub:'2026년 3분기 오픈 시 가장 먼저 연락드립니다. 무료예요.',
+    regSub:'2026년 9월 오픈 시 가장 먼저 연락드립니다. 무료예요.',
     regNotice:'🏆 퀴즈 통과자(4/5 이상) 무료 1박 — 선착순 30명 한정이에요. ✈️ 무료 1박은 외국인 여행자에게 우선 배정됩니다 (K-관광 활성화 정책). 🇰🇷 한국인은 예약 등록 후 정식 오픈 시 우선 배정 대상으로 이메일 안내드립니다. 누구나 오픈 알림 신청 가능해요.',
     formLabels:['이름','이메일','국적','방문 예정 시기'],
     nations:['🇯🇵 일본','🇺🇸 미국','🇬🇧 영국','🇨🇳 중국','🇹🇼 대만','🇹🇭 태국','🇻🇳 베트남','🇦🇺 호주','🇰🇷 한국','기타'],
-    dates:['2026년 6~8월','2026년 9월 이후','2027년 상반기','2027년 이후','미정'],
+    dates:['2026년 9~10월','2026년 11~12월','2027년 상반기','2027년 이후','미정'],
     btnReg:'✈ 오픈 알림 신청하기',
     validErr:'이름, 이메일, 국적을 입력해주세요.',
     saving:'저장 중...',saveOk:'✅ 신청 완료! 오픈 시 가장 먼저 안내드릴게요.',
@@ -1109,7 +1109,7 @@ const T={
     confirmMsgKorean:'K-관광 활성화 정책에 따라 베타 무료 1박은 외국인 여행자에게 우선 배정됩니다.\n정식 오픈 시 한국인 우선 배정 대상으로 가장 먼저 이메일 안내드릴게요!',
     confirmCodeLabel:'신청 확인 번호',
     confirmCodeHint:'📸 스크린샷으로 저장해두세요',
-    confirmSteps:[['01','이메일 확인\n안내 메일 발송'],['02','오픈 알림\n2026년 3분기 우선 연락'],['03','서울 도착\n망우역 → FLY:HOME']],
+    confirmSteps:[['01','이메일 확인\n안내 메일 발송'],['02','오픈 알림\n2026년 9월  우선 연락'],['03','서울 도착\n망우역 → FLY:HOME']],
     cancelTitle:'취소·변경',
     cancelDesc:'언제든지 취소 가능합니다.\n신청 번호와 함께 이메일로 문의해주세요.',
     btnShare:'📤 공유',btnCopy:'📋 링크 복사',btnAgain:'처음으로',
@@ -1616,7 +1616,7 @@ function goToSection(id,skipToReg){
 function renderPage(){
   // META 다국어 (SEO + 공유 미리보기)
   const metaD={
-    ko:'서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 3분기 오픈 예정.',
+    ko:'서울 하늘을, 당신의 방에서. 한국 최초 비행 시뮬레이션 테마 숙소. 2026년 9월 1일 오픈 예정.',
     en:'Fly over Seoul — from your room. Korea\'s first flight simulation-themed stay. Opening 2026 Q3.',
     ja:'ソウルの空を、あなたのお部屋から。韓国初のフライトシミュレーションテーマ宿泊施設。2026年Q3オープン予定。',
     zh:'在房间里飞越首尔上空。韩国首家飞行模拟主题住宿。2026年Q3开业。'
@@ -1843,7 +1843,7 @@ function renderAI(el){
   const passed=(st.score>=PASS);
   const FAQ={
     ko:[
-      {q:'언제 오픈하나요?',a:'2026년 3분기(6월 이후) 오픈 예정이에요. 지금 알림 신청하시면 가장 먼저 연락드려요!'},
+      {q:'언제 오픈하나요?',a:'2026년 9월 오픈 예정이에요. 지금 알림 신청하시면 가장 먼저 연락드려요!'},
       {q:'위치가 어디예요?',a:'서울 중랑구 망우동이에요. 경의중앙선 망우역에서 도보 11~14분이에요. 명동까지 39분, 강남까지 47분이에요.'},
       {q:'장비가 뭔가요?',a:'Winwing + Thrustmaster 최신 조종 장치, RTX 4090급 PC, 다면 대형 스크린(최대 3면), Microsoft Flight Simulator 2024예요. 시뮬레이터 카페보다 훨씬 좋아요!'},
       {q:'초보자도 괜찮아요?',a:'전혀 걱정 안 하셔도 돼요! 사전에 학습 자료를 드리고, AI 안내 시스템이 체험을 도와드려요. 여러분의 참여가 시설을 더 좋게 만들어요. 하루밤이면 충분히 즐길 수 있어요!'},
