@@ -879,7 +879,7 @@ body{
       </div>
       <div class="hero-img-placeholder" id="heroImgSlot" style="display:none">
         <div class="icon">✈</div>
-        <div class="label" id="heroPlaceholderLabel">실제 룸 사진은 오픈과 함께 공개됩니다 · Real room photos drop on opening day — 지금 알림 신청하시면 가장 먼저 받아보실 수 있어요</div>
+        <div class="label" id="heroPlaceholderLabel">세스나 조종석 · 객실 · 마당 — FLY:HOME Seoul · Cessna cockpit · Room · Garden — FLY:HOME Seoul — 지금 알림 신청하시면 가장 먼저 받아보실 수 있어요</div>
       </div>
       <div class="hero-img-overlay">
         <span class="hero-img-caption" id="heroImgCaption" style="font-size:11px;color:rgba(255,255,255,0.5)"></span>
@@ -1008,7 +1008,7 @@ const T={
     heroTagline:'Seoul is calling.',
     heroSub:'항공 퀴즈 5문제를 풀고\n서울 중랑구 <strong>FLY:HOME</strong>의 무료 1박을 경험하세요.',
     heroCta1:'✈ 퀴즈 시작하기',heroCta2:'바로 알림 신청',
-    heroImgCaption:'실제 룸 사진은 오픈과 함께 공개됩니다',
+    heroImgCaption:'세스나 조종석 · 객실 · 마당 — FLY:HOME Seoul',
 
     hostLabel:'호스트 이야기',
     hostQuote:'좋은 호텔은 하나도 기억나지 않아요.\n불편했던 그 숙소들만, 지금도 선명해요.',
@@ -1124,7 +1124,7 @@ const T={
     heroTagline:'Seoul is calling.',
     heroSub:'Answer 5 fun aviation questions\nand unlock a <strong>FREE night</strong> at FLY:HOME Seoul.\n<span style="font-size:13px;opacity:.7">(It\'s a game — no aviation knowledge needed!)</span>',
     heroCta1:'✈ Play the Quiz',heroCta2:'Get Opening Alert',
-    heroImgCaption:'Real room photos drop on opening day',
+    heroImgCaption:'Cessna cockpit · Room · Garden — FLY:HOME Seoul',
 
     hostLabel:'From the Host',
     hostQuote:"The luxury hotels? Not a single one stays with me.\nBut the uncomfortable places — those I can still picture clearly.",
@@ -1237,7 +1237,7 @@ const T={
     heroTagline:'Seoul is calling.',
     heroSub:'クイズ5問にチャレンジして\nソウル<strong>FLY:HOME</strong>の無料1泊を獲得しよう。\n<span style="font-size:13px;opacity:.7">（航空知識がなくても大丈夫！気軽に楽しめるゲームです）</span>',
     heroCta1:'✈ クイズに挑戦する',heroCta2:'オープン通知を受け取る',
-    heroImgCaption:'実際のお部屋写真はオープンと同時に公開します',
+    heroImgCaption:'セスナコックピット · 客室 · お庭 — FLY:HOME Seoul',
 
     hostLabel:'ホストより',
     hostQuote:'高級ホテルは、どこも記憶に残っていない。\n不便だったあの宿だけが、今も鮮明に目に浮かぶ。',
@@ -1352,7 +1352,7 @@ const T={
     heroTagline:'Seoul is calling.',
     heroSub:'回答5道趣味航空题\n赢取首尔<strong>FLY:HOME</strong>免费住宿一晚。\n<span style="font-size:13px;opacity:.7">（无需航空知识，轻松参与的趣味互动！）</span>',
     heroCta1:'✈ 参与答题',heroCta2:'获取开业通知',
-    heroImgCaption:'实际客房照片将在开业时公开',
+    heroImgCaption:'塞斯纳驾驶舱 · 客房 · 庭院 — FLY:HOME Seoul',
 
     hostLabel:'房东寄语',
     hostQuote:'那些高档酒店，我一家都想不起来了。\n唯独那些简陋的地方，至今仍历历在目。',
@@ -1638,7 +1638,7 @@ function renderPage(){
   document.getElementById('heroCta2').textContent=t('heroCta2');
   document.getElementById('heroImgCaption').textContent=t('heroImgCaption');
   const pl=document.getElementById('heroPlaceholderLabel');
-  if(pl){const plT={'ko':'실제 룸 사진은 오픈과 함께 공개됩니다 — 지금 알림 신청하시면 가장 먼저 받아보실 수 있어요','en':'Real room photos drop on opening day — sign up now to be the first to see them','ja':'実際のお部屋写真はオープン時に公開します · 通知登録で一番乗り','zh':'实际客房照片将在开业时公开 · 立即注册通知第一时间获取'};pl.textContent=plT[lang]||'실제 룸 사진은 오픈과 함께 공개됩니다 · Real room photos drop on opening day — 지금 알림 신청하시면 가장 먼저 받아보실 수 있어요';}
+  if(pl){const plT={'ko':'세스나 조종석 · 객실 · 마당 — FLY:HOME Seoul — 지금 알림 신청하시면 가장 먼저 받아보실 수 있어요','en':'Cessna cockpit · Room · Garden — FLY:HOME Seoul — sign up now to be the first to see them','ja':'セスナコックピット · 客室 · お庭 — FLY:HOME Seoul · 通知登録で一番乗り','zh':'塞斯纳驾驶舱 · 客房 · 庭院 — FLY:HOME Seoul'};pl.textContent=plT[lang]||'세스나 조종석 · 객실 · 마당 — FLY:HOME Seoul · Cessna cockpit · Room · Garden — FLY:HOME Seoul — 지금 알림 신청하시면 가장 먼저 받아보실 수 있어요';}
   // 비행화면 사진 캡션 다국어
   const simCap=document.getElementById('simCaption');
   if(simCap){const capT={
