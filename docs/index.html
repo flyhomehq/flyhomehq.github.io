@@ -1735,12 +1735,12 @@ function renderPage(){
   if(qrDesc)qrDesc.innerHTML=qr.desc;
   if(qrLabel)qrLabel.innerHTML=qr.label;
   // footer 다국어
-  const footerT={
-    ko:'관광벤처사업 실증 프로젝트 · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
-    en:'Tourism Venture Pilot Project · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
-    ja:'観光ベンチャー実証プロジェクト · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
-    zh:'旅游创业实证项目 · <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>'
-  };
+ const footerT={
+  ko:'관광벤처사업 실증 프로젝트 · ✉️ 문의: <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
+  en:'Tourism Venture Pilot Project · ✉️ Contact: <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
+  ja:'観光ベンチャー実証プロジェクト · ✉️ お問合せ: <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>',
+  zh:'旅游创业实证项目 · ✉️ 联系我们: <a href="mailto:flyhome.hq@gmail.com">flyhome.hq@gmail.com</a>'
+};
   const footerEl=document.getElementById('footerDesc');
   if(footerEl)footerEl.innerHTML=footerT[lang]||footerT.en;
   // 개인정보 링크 & 안내문 다국어
