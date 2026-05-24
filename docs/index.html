@@ -978,7 +978,7 @@ body{
     <div class="qr-box">
       <div class="qr-canvas" id="qrcode"></div>
       <div class="qr-label" id="qrLabel">📱 카메라로 스캔하세요<br>바로 FLY:HOME으로 이동해요</div>
-      <div class="qr-url">flyhomehq.github.io</div>
+      <div class="qr-url">flyhomebnb.com</div>
     </div>
   </div>
 </section>
@@ -2325,7 +2325,7 @@ function shareKakao(){
   const shareData = {
     title: 'FLY:HOME — 한국 최초 비행 시뮬레이션 숙소',
     text: '✈ 서울 하늘을 방에서! 퀴즈 풀고 무료 1박 도전하세요.',
-    url: 'https://flyhomehq.github.io'
+    url: 'https://flyhomebnb.com'
   };
   if(navigator.share && /Mobi|Android/i.test(navigator.userAgent)){
     navigator.share(shareData).catch(()=>copyLink());
@@ -2604,7 +2604,7 @@ function initQR(){
   if(!el || el.innerHTML) return;
   try{
     new QRCode(el, {
-      text: 'https://flyhomehq.github.io',
+      text: 'https://flyhomebnb.com',
       width: 160, height: 160,
       colorDark: '#1d1d1f',
       colorLight: '#ffffff',
