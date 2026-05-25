@@ -813,13 +813,15 @@ body{
 
 @media (max-width: 480px) {
   .countdown-bar {
-    margin-top: 0px !important; /* 외부 여백을 원래대로 리셋 */
-    margin-bottom: 0px !important; /* 외부 여백을 원래대로 리셋 */
-    padding: 15px 4px !important; /* ⭐ 검은색 바의 위아래 안쪽 여백을 넓혀서 글자가 절대 안 가려지게 만듭니다 */
+    position: relative !important;
+    top: 42px !important; /* ⭐ 언어 바 높이만큼 검은색 띠 전체를 아래로 안전하게 밀어내립니다 */
+    margin-top: 0px !important;
+    margin-bottom: 42px !important; /* ⭐ 밀어내린 만큼 아래쪽 배너들과의 간격을 보정해줍니다 */
+    padding: 10px 4px !important; /* 위아래 두께를 보기 좋게 최적화 */
     gap: 6px !important; 
     flex-wrap: nowrap !important;
     justify-content: center !important; 
-    align-items: center !important; /* 글자들이 검은 바 세로 기준으로 정중앙에 오도록 정렬 */
+    align-items: center !important;
   }
   .countdown-bar .cd-label {
     font-size: 8px !important; 
